@@ -23,7 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
 // @value 조사하기
 @Configuration
 @PropertySource(
-	    value = "file:C:/Users/jclle/Documents/Project/hexagon_pj/hexa2_1031/config/db-local.properties",
+	    value = "classpath:db.local.properties",
 	    encoding = "UTF-8"
 	)
 
@@ -41,7 +41,7 @@ public class RootConfig {
         HikariDataSource dataSource = new HikariDataSource();
 
         dataSource.setDriverClassName(
-                "oracle.jdbc.driver.OracleDriver"
+                "com.mysql.cj.jdbc.Driver"
         );
 
         dataSource.setJdbcUrl(
@@ -95,8 +95,8 @@ public class RootConfig {
 
         return Flyway.configure()
                 .dataSource(dataSource)
-                .locations("classpath:db/migration")
-                .baselineOnMigrate(true)
+                .locations("classpath:db/mysql")
+                .baselineOnMigrate(false)
                 .baselineVersion("0")
                 .load();
     }
