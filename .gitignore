@@ -1,0 +1,57 @@
+# ==========================================
+# Spring Framework 5 MVC / Eclipse STS / Maven
+# ==========================================
+
+# Maven build output
+target/
+**/target/
+
+# Eclipse / Spring Tool Suite
+.classpath
+.project
+.settings/
+.factorypath
+.metadata/
+.recommenders/
+.springBeans
+.sts4-cache/
+
+# Eclipse generated files
+.apt_generated/
+.apt_generated_tests/
+/bin/
+
+# Java compiled files
+*.class
+
+# IDE settings
+.idea/
+*.iml
+.vscode/
+
+# Logs
+*.log
+logs/
+hs_err_pid*
+replay_pid*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local.properties
+
+# Oracle DB 개인 접속 정보
+db-local.properties
