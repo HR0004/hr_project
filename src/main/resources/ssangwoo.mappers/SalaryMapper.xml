@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hexagon.ssangwoo.mapper.SalaryMapper">
+
+    <resultMap id="salaryMap"
+               type="com.hexagon.ssangwoo.domain.Salary">
+        <id column="salary_id" property="salaryId"/>
+        <result column="emp_id" property="empId"/>
+        <result column="salary_year_month" property="salaryYearMonth"/>
+        <result column="base_salary" property="baseSalary"/>
+        <result column="bonus" property="bonus"/>
+        <result column="deduction" property="deduction"/>
+        <result column="net_salary" property="netSalary"/>
+        <result column="payment_date" property="paymentDate"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="salaryMap">
+        SELECT
+            salary_id,
+            emp_id,
+            salary_year_month,
+            base_salary,
+            bonus,
+            deduction,
+            net_salary,
+            payment_date
+        FROM salary
+        ORDER BY salary_year_month DESC, salary_id DESC
+    </select>
+    <!-- 동일 사원·지급 연월의 급여 건수 조회 -->
+    <select id="countByEmpAndYearMonth" resultType="int">
+        SELECT COUNT(*)
+        FROM salary
+        WHERE emp_id = #{empId}
+          AND salary_year_month = #{salaryYearMonth}
+    </select>
+
+    <!-- 급여 등록 -->
+    <insert id="insert"
+            parameterType="com.hexagon.ssangwoo.domain.Salary">
+
+        <selectKey keyProperty="salaryId"
+                   resultType="java.lang.Long"
+                   order="BEFORE">
+            SELECT seq_salary.NEXTVAL FROM dual
+        </selectKey>
+
+        INSERT INTO salary (
+            salary_id,
+            emp_id,
+            salary_year_month,
+            base_salary,
+            bonus,
+            deduction,
+            net_salary,
+            payment_date
+        ) VALUES (
+            #{salaryId},
+            #{empId},
+            #{salaryYearMonth},
+            #{baseSalary},
+            #{bonus},
+            #{deduction},
+            #{netSalary},
+            #{paymentDate, jdbcType=DATE}
+        )
+    </insert>
+</mapper>
