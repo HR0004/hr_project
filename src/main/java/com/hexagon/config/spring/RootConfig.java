@@ -23,7 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
 // @value 조사하기
 @Configuration
 @PropertySource(
-	    value = "classpath:db.local.properties",
+	    value = "classpath:config/db-local.properties",
 	    encoding = "UTF-8"
 	)
 
@@ -41,11 +41,12 @@ public class RootConfig {
         HikariDataSource dataSource = new HikariDataSource();
 
         dataSource.setDriverClassName(
-                "com.mysql.cj.jdbc.Driver"
+        		environment.getRequiredProperty("db.driver")
         );
 
         dataSource.setJdbcUrl(
                 environment.getRequiredProperty("db.url")
+        		
         );
 
         dataSource.setUsername(
