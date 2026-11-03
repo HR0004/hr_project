@@ -1,0 +1,66 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!-- 사이드바 -->
+<aside class="main-sidebar sidebar-light-primary elevation-0">
+
+    <!-- 로고 -->
+    <a href="#" class="brand-link">
+        <span class="brand-text">
+            ▦ HRMS Admin
+        </span>
+    </a>
+
+    <div class="sidebar">
+
+        <div class="sidebar-title">
+            인사관리 시스템
+        </div>
+
+        <!-- 메뉴 -->
+        <nav class="mt-2">
+
+            <ul class="nav nav-pills nav-sidebar flex-column"
+                role="menu">
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <p>01 부서 관리</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <p>02 직급 관리</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <p>03 사원 관리</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="<%=request.getContextPath()%>/test/attendance.jsp"
+                       class="nav-link active">
+                        <p>04 근태 관리</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <p>05 휴가 관리</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <p>06 급여 관리</p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </div>
+</aside>

@@ -10,5 +10,7 @@
 		<typeAliases>
 			<typeAlias type="com.hexagon.joo.domain.Department" alias="Department"/>
 			<typeAlias type="com.hexagon.joo.domain.Job" alias="Job"/>
+			<typeAlias type="com.hexagon.kuma.domain.Emp" alias="Emp"/>
+			<typeAlias type="com.hexagon.kuma.domain.Account" alias="Account"/>
 		</typeAliases>
 </configuration>

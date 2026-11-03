@@ -23,14 +23,16 @@ import com.zaxxer.hikari.HikariDataSource;
 // @value 조사하기
 @Configuration
 @PropertySource(
-	    value = "file:C:/Users/jclle/Documents/Project/hexagon_pj/hexa2_1031/config/db-local.properties",
+		value = "file:${DB_CONFIG_PATH}",
 	    encoding = "UTF-8"
 	)
 
-@MapperScan(basePackages= {"com.hexagon.joo.mapper"})
+@MapperScan(basePackages= {"com.hexagon.joo.mapper",
+		"com.hexagon.kuma.mapper"})
 @EnableTransactionManagement
 @ComponentScan(basePackages= {
-		"com.hexagon.joo.department.service"
+		"com.hexagon.joo.department.service",
+	    "com.hexagon.kuma.service"
 })
 public class RootConfig {
 
