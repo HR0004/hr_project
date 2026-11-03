@@ -30,7 +30,9 @@ import com.zaxxer.hikari.HikariDataSource;
 @MapperScan(basePackages= {"com.hexagon.hrproject.mapper"})
 @EnableTransactionManagement
 @ComponentScan(basePackages= {
-		"com.hexagon.hrproject.service"
+		"com.hexagon.hrproject.service",
+		"com.hexagon.hrproject.spring.security"
+		
 })
 public class RootConfig {
 
