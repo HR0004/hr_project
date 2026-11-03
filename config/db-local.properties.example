@@ -1,3 +1,11 @@
 db.url=jdbc:oracle:thin:@localhost:1521/XEPDB1
 db.username=YOUR_DB_USERNAME
 db.password=YOUR_DB_PASSWORD
+
+db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/hr_project?connectionTimeZone=Asia/Seoul
+db.username=YOUR_DB_USERNAME
+db.password=YOUR_DB_PASSWORD
+
+각자 자신의 비밀번호로 db.local.properties를 만들도록 하면 돼.
+src/main/resources/db.local.properties
