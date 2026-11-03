@@ -95,7 +95,7 @@ public class RootConfig {
 
         return Flyway.configure()
                 .dataSource(dataSource)
-                .locations("classpath:db/mysql")
+                .locations("classpath:db/migration")
                 .baselineOnMigrate(false)
                 .baselineVersion("0")
                 .load();
