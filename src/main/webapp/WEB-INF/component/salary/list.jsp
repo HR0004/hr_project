@@ -4,7 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="java.text.DecimalFormat" %>
-<%@ page import="com.hexagon.ssangwoo.domain.Salary" %>
+<%@ page import="com.hexagon.hrproject.domain.Salary" %>
 <%@ page import="org.springframework.web.util.HtmlUtils" %>
 
 <%!
