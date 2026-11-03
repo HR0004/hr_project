@@ -1,5 +1,7 @@
 package com.hexagon.joo.department.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.hexagon.joo.domain.Department;
@@ -34,7 +36,10 @@ public class DepartmentService {
 
         // 5. mapper 호출해서 insert
         int result = departmentMapper.insert(dept);
-        return result;
-		
+        return result;	
+	}
+	
+	public List<Department> getList(){
+		return departmentMapper.selectAll();
 	}
 }

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration//이 클래스는 로직용이 아니라, 빈 설정용이다!
 @ComponentScan(basePackages = {
 		"com.hexagon.joo.controller", 
-		"com.hexagon.joo.restcontroller", 
+		"com.hexagon.joo.rest.controller", 
 		"com.hexagon.springmvc.common.web"
 })
 public class AppConfig {

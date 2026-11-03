@@ -38,7 +38,8 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected Class<?>[] getServletConfigClasses() {
 		// TODO Auto-generated method stub
 		return new Class<?>[] {
-			AppConfig.class
+			AppConfig.class,
+			WebConfig.class
 		};
 		
 	}
