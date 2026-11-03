@@ -1,5 +1,6 @@
 package com.hexagon.hrproject.service;
 
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import com.hexagon.hrproject.exception.SalaryBusinessException;
 import java.util.List;
@@ -50,8 +51,18 @@ public class SalaryService {
 		salary.setDeduction(request.getDeduction());
 		salary.setPaymentDate(request.getPaymentDate());
 
-		salary.setNetSalary(
-				SalaryCalculator.calculate(request.getBaseSalary(), request.getBonus(), request.getDeduction()));
+		BigDecimal netSalary = SalaryCalculator.calculate(
+		        request.getBaseSalary(),
+		        request.getBonus(),
+		        request.getDeduction());
+
+		// DB의 DECIMAL(15, 0)에 저장 가능한 금액인지 확인
+		if (netSalary.abs().compareTo(new BigDecimal("999999999999999")) > 0) {
+		    throw new SalaryBusinessException(
+		            "실수령액은 15자리 이내의 금액이어야 합니다.");
+		}
+
+		salary.setNetSalary(netSalary);
 
 		return salary;
 	}
