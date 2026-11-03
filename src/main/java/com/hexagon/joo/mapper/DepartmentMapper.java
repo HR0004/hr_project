@@ -1,5 +1,7 @@
 package com.hexagon.joo.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.hexagon.joo.domain.Department;
@@ -10,5 +12,7 @@ public interface DepartmentMapper {
 	int insert(Department department);
 
 	Department select(int departmentId);
+	
+	List<Department> selectAll();
 
 }

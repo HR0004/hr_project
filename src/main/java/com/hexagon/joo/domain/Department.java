@@ -10,4 +10,5 @@ public class Department {
 	private String departmentCode;
 	private String departmentName;
 	private int isActive;
+	private int employeeCount;
 }

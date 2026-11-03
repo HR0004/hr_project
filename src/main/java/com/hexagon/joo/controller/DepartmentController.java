@@ -24,3 +24,5 @@ public class DepartmentController {
         return "department/edit";
     }
 }
+
+
