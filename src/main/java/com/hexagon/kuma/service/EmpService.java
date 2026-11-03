@@ -44,7 +44,6 @@ public class EmpService {
 				throw new IllegalArgumentException("이미 사용중인 로그인 ID입니다.");
 			}
 			
-			
 		    // 1. Account에서 사원 객체 꺼내기
 		    Emp emp = account.getEmp();
 

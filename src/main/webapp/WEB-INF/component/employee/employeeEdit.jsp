@@ -1,33 +1,9 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-
+    <%@ page import="com.hexagon.kuma.domain.Emp" %>
 <%
-    // DB 연결 전 임시 데이터
-    // 사번, 이름, 부서, 직급, 이메일, 연락처, 입사일, 상태
-    String[][] employees = {
-        {"E1001", "김민지", "백엔드팀", "대리",
-         "minji@hrms.com", "010-1234-5678", "2022-03-14", "재직"},
-
-        {"E1002", "이준호", "경영지원팀", "과장",
-         "junho@hrms.com", "", "2020-07-01", "재직"},
-
-        {"E1003", "박서연", "프론트엔드팀", "사원",
-         "seoyeon@hrms.com", "", "2024-01-08", "휴직"},
-
-        {"E1004", "최유진", "인사팀", "사원",
-         "yujin@hrms.com", "", "2021-09-06", "퇴직"}
-    };
-
-    String empId = (String) request.getAttribute("empId");
-    String[] emp = null;
-
-    for (String[] employee : employees) {
-        if (employee[0].equals(empId)) {
-            emp = employee;
-            break;
-        }
-    }
+    // Controller에서 전달받은 사원 정보
+    Emp emp = (Emp) request.getAttribute("emp");
 
     String contextPath = request.getContextPath();
 %>
@@ -84,7 +60,7 @@
 
             <% if (emp == null) { %>
 
-                <section class="employee-detail-card employee-detail-not-found">
+                String empId = String.valueOf(request.getAttribute("empId"));
                     <h2>사원 정보를 찾을 수 없습니다.</h2>
 
                     <a href="<%=contextPath%>/employees"
