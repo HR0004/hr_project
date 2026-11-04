@@ -20,9 +20,11 @@ public class SalaryControllerTest {
     static class Mapper implements SalaryMapper {
         Salary found;
         int count, inserts;
+        int employeeCount = 1;
         RuntimeException failure;
         public List<Salary> selectAll() { return Collections.emptyList(); }
         public Salary selectById(Long salaryId) { return found; }
+        public int countEmployeeById(Long empId) { return employeeCount; }
         public int countByEmpAndYearMonth(Long empId, String month) { return count; }
         public int insert(Salary salary) {
             inserts++;
@@ -89,6 +91,19 @@ public class SalaryControllerTest {
         assertEquals("abc", errors.getFieldValue("empId"));
         assertEquals(0, mapper.inserts);
         assertTrue(model.containsAttribute("errorMessage"));
+    }
+
+    @Test public void unknownEmployeeReturnsFormAndPreservesEnteredValues() {
+        Mapper mapper = new Mapper(); mapper.employeeCount = 0;
+        SalaryCreateRequest request = request(); request.setEmpId(999999L);
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(request, "salaryCreateRequest");
+        ExtendedModelMap model = new ExtendedModelMap();
+        assertEquals("salary/create", new SalaryController(new SalaryService(mapper)).create(request, errors, model));
+        assertSame(request, errors.getTarget());
+        assertEquals(Long.valueOf(999999L), errors.getFieldValue("empId"));
+        assertEquals(new BigDecimal("3000000"), errors.getFieldValue("baseSalary"));
+        assertEquals("존재하지 않는 사원 번호입니다. 사원 번호를 확인하세요.", model.get("errorMessage"));
+        assertEquals(0, mapper.inserts);
     }
 
     @Test public void duplicateKeepsSameRequestAndErrorMessage() {

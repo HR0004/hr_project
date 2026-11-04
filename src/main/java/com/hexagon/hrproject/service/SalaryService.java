@@ -89,6 +89,10 @@ public class SalaryService {
 
 		Salary salary = prepareSalary(request);
 
+		if (salaryMapper.countEmployeeById(salary.getEmpId()) == 0) {
+			throw new SalaryBusinessException("존재하지 않는 사원 번호입니다. 사원 번호를 확인하세요.");
+		}
+
 		int count = salaryMapper.countByEmpAndYearMonth(salary.getEmpId(), salary.getSalaryYearMonth());
 
 		if (count > 0) {

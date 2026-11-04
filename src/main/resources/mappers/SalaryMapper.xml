@@ -45,6 +45,13 @@
         WHERE salary_id = #{salaryId}
     </select>
 
+    <!-- 급여를 등록할 사원 존재 여부 확인 -->
+    <select id="countEmployeeById" resultType="int">
+        SELECT COUNT(*)
+        FROM emp
+        WHERE emp_id = #{empId}
+    </select>
+
     <!-- 동일 사원·지급 연월의 급여 건수 조회 -->
     <select id="countByEmpAndYearMonth" resultType="int">
         SELECT COUNT(*)

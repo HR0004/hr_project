@@ -16,6 +16,8 @@ import com.hexagon.hrproject.mapper.SalaryMapper;
 public class SalaryServiceTest {
     static class Mapper implements SalaryMapper {
         int count, inserts, result = 1;
+        int employeeCount = 1, employeeReads, duplicateChecks;
+        Long requestedEmployeeId;
         RuntimeException failure;
         Salary inserted, found;
         int detailReads;
@@ -24,7 +26,10 @@ public class SalaryServiceTest {
         public Salary selectById(Long salaryId) {
             detailReads++; requestedId = salaryId; return found;
         }
-        public int countByEmpAndYearMonth(Long empId, String month) { return count; }
+        public int countEmployeeById(Long empId) {
+            employeeReads++; requestedEmployeeId = empId; return employeeCount;
+        }
+        public int countByEmpAndYearMonth(Long empId, String month) { duplicateChecks++; return count; }
         public int insert(Salary salary) {
             inserts++;
             if (failure != null) throw failure;
@@ -51,6 +56,23 @@ public class SalaryServiceTest {
         SalaryBusinessException e = assertThrows(SalaryBusinessException.class,
                 () -> new SalaryService(m).createSalary(request()));
         assertEquals("해당 사원의 같은 지급 연월 급여가 이미 등록되어 있습니다.", e.getMessage());
+        assertEquals(0, m.inserts);
+    }
+    @Test public void unknownEmployeeStopsBeforeDuplicateCheckAndInsert() {
+        Mapper m = new Mapper(); m.employeeCount = 0;
+        SalaryCreateRequest r = request(); r.setEmpId(999999L);
+        SalaryBusinessException e = assertThrows(SalaryBusinessException.class,
+                () -> new SalaryService(m).createSalary(r));
+        assertEquals("존재하지 않는 사원 번호입니다. 사원 번호를 확인하세요.", e.getMessage());
+        assertEquals(Long.valueOf(999999L), m.requestedEmployeeId);
+        assertEquals(0, m.duplicateChecks);
+        assertEquals(0, m.inserts);
+    }
+    @Test public void invalidEmployeeIdDoesNotQueryDatabase() {
+        Mapper m = new Mapper(); SalaryCreateRequest r = request(); r.setEmpId(0L);
+        assertThrows(SalaryBusinessException.class, () -> new SalaryService(m).createSalary(r));
+        assertEquals(0, m.employeeReads);
+        assertEquals(0, m.duplicateChecks);
         assertEquals(0, m.inserts);
     }
     @Test public void duplicateAfterSuccessfulPrecheckIsTranslatedWithCause() {
