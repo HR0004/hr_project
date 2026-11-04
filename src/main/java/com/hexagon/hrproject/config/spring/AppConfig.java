@@ -24,7 +24,7 @@ public class AppConfig {
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/component/");//접두어를 결정 
+		resolver.setPrefix("/WEB-INF/views/");//접두어를 결정 
 		resolver.setSuffix(".jsp");
 		//접미어를 결정
 		return resolver;
