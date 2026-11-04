@@ -1,0 +1,9 @@
+<%@ page pageEncoding="UTF-8" %>
+
+<header class="main-header">
+    <div class="header-path">HRMS / 부서 관리</div>
+
+    <div class="header-user">
+        <span>관리자</span>
+    </div>
+</header>
