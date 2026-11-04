@@ -1,12 +1,14 @@
 package com.hexagon.hrproject.controller;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,7 +55,11 @@ public class SalaryController {
     // 급여 등록 화면
     @PreAuthorize("hasRole('HR_ADMIN')")
     @GetMapping("/create")
-    public String createForm() {
+    public String createForm(Model model) {
+        SalaryCreateRequest request = new SalaryCreateRequest();
+        request.setBonus(BigDecimal.ZERO);
+        request.setDeduction(BigDecimal.ZERO);
+        model.addAttribute("salaryCreateRequest", request);
         return "salary/create";
     }
 
@@ -61,11 +67,23 @@ public class SalaryController {
     @PreAuthorize("hasRole('HR_ADMIN')")
     @PostMapping("/create")
     public String create(
-            @Valid @ModelAttribute SalaryCreateRequest request) {
+            @Valid @ModelAttribute("salaryCreateRequest") SalaryCreateRequest request,
+            BindingResult bindingResult, Model model) {
 
-        Long salaryId = salaryService.createSalary(request);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errorMessage",
+                    "입력값을 확인하세요. 필수 항목과 날짜·금액 형식이 올바르지 않습니다.");
+            return "salary/create";
+        }
 
-        return "redirect:/salary/detail/" + salaryId;
+        try {
+            Long salaryId = salaryService.createSalary(request);
+            return "redirect:/salary/detail/" + salaryId;
+        } catch (SalaryBusinessException e) {
+            // 같은 요청의 DTO와 BindingResult를 유지하여 입력값을 다시 표시한다.
+            model.addAttribute("errorMessage", e.getMessage());
+            return "salary/create";
+        }
     }
 
     // 존재하지 않는 급여 내역
