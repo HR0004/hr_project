@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-	@GetMapping("/loginform")
-	public String getLogin() {
-		return "secure/login";
-	}
-	
-	@GetMapping("/mypage")
-	public String getMypage() {
-		return "mypage"; 
-	}
+    @GetMapping("/login") // /loginform 대신 /login으로 깔끔하게 변경
+    public String getLogin() {
+        return "secure/login";
+    }
+    
+    @GetMapping("/mypage")
+    public String getMypage() {
+        return "Mypage"; 
+    }
 }

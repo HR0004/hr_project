@@ -6,10 +6,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- CSRF 토큰 -->
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -19,36 +15,30 @@
 		const errorMsgDiv = $("#error-message");
 		errorMsgDiv.text("");
 
-		let formData = new URLSearchParams();// accountId=batman&pwd=1234 형식으로 자동 변환
+		let formData = new URLSearchParams();
 		formData.append("accountId", $("input[name='accountId']").val());
 		formData.append("pwd", $("input[name='pwd']").val());
 
-		// 시큐리티는 json 을 인식하지 못하므로 폼 형식으로 전송 + CSRF 토큰을 헤더에 추가
 		const headers = {
 			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
 		};
-		const csrfHeader = $("meta[name='_csrf_header']").attr("content");
-		const csrfToken = $("meta[name='_csrf']").attr("content");
-		if (csrfHeader && csrfToken) {
-			headers[csrfHeader] = csrfToken;
-		}
 
 		try{
 			const response = await fetch("${pageContext.request.contextPath}/login", {
-				method:"POST",
-				headers:headers,
-				body:formData
+				method: "POST",
+				headers: headers,
+				body: formData
 			});
 
 			const json = await response.json();
 			console.log("서버로부터 받은 응답 데이터는", json);
 
-			// 로그인 성공 시 확인 페이지로 이동
+			// 로그인 성공 시 /main 페이지로 이동
 			if (json.success) {
-				location.href = "${pageContext.request.contextPath}/main";
+				location.href = "${pageContext.request.contextPath}/mypage";
 			} else {
-				// 실패 시 알림창 대신 빨간색 글씨로 에러 메시지 출력
-				errorMsgDiv.text(json.message || "로그인에 실패했습니다.");
+				// 실패 시 빨간색 글씨로 에러 메시지 출력
+				errorMsgDiv.text(json.message || "아이디 또는 비밀번호가 일치하지 않습니다.");
 			}
 
 		}catch(error){
@@ -62,7 +52,6 @@
 			login();
 		});
 
-		// 인풋창에서 엔터 쳤을 때도 로그인 실행되도록 추가
 		$("input").keydown((e) => {
 			if (e.key === "Enter") {
 				e.preventDefault();

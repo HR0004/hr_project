@@ -8,9 +8,12 @@
 		</settings>
 		
 		<typeAliases>
-			<typeAlias type="com.hexagon.hrproject.domain.Department" alias="Department"/>
-			<typeAlias type="com.hexagon.hrproject.domain.Job" alias="Job"/>
-			<typeAlias type="com.hexagon.hrproject.domain.Emp" alias="Emp"/>
-			<typeAlias type="com.hexagon.hrproject.domain.Account" alias="Account"/>
+			<typeAlias type="com.hexagon.hrproject.domain.Department" 	alias="Department"/>
+			<typeAlias type="com.hexagon.hrproject.domain.Job" 			alias="Job"/>
+			<typeAlias type="com.hexagon.hrproject.domain.Emp" 			alias="Emp"/>
+			<typeAlias type="com.hexagon.hrproject.domain.Account" 		alias="Account"/>
+			<typeAlias type="com.hexagon.hrproject.domain.Permission" 	alias="Permission"/>
+			<typeAlias type="com.hexagon.hrproject.domain.HrRole" 		alias="HrRole"/>
+			
 		</typeAliases>
 </configuration>

@@ -10,9 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.hexagon.hyunsuk.domain.Account;
-import com.hexagon.hyunsuk.domain.HrRole;
-import com.hexagon.hyunsuk.domain.Permission;
+import com.hexagon.hrproject.domain.Account;
+import com.hexagon.hrproject.domain.HrRole;
+import com.hexagon.hrproject.domain.Permission;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

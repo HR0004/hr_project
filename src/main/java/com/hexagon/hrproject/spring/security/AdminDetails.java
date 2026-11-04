@@ -6,7 +6,7 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.hexagon.hyunsuk.domain.Admin;
+import com.hexagon.hrproject.domain.Admin;
 
 import lombok.Getter;
 

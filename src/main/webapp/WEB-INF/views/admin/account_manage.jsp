@@ -15,9 +15,7 @@
 	Account account = (Account) request.getAttribute("account");
 	if (account != null) {
 	%>
-	<form
-		action="<%=request.getContextPath()%>/admin/account/update-roles"
-		method="post">
+	<form action="<%=request.getContextPath()%>/admin/accounts/<%=account.getAccountId()%>/roles" method="post">
 		<input type="hidden" name="accountId"
 			value="<%=account.getAccountId()%>" />
 
