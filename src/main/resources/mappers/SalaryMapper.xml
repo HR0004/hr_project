@@ -33,6 +33,35 @@
         LEFT JOIN emp e ON e.emp_id = s.emp_id
         ORDER BY s.salary_year_month DESC, s.salary_id DESC
     </select>
+    <!-- 검색어는 모두 바인딩한다. LOCATE로 %, _도 입력한 문자 그대로 검색한다. -->
+    <select id="selectByFilters" resultMap="salaryMap">
+        SELECT
+            s.salary_id,
+            s.emp_id,
+            e.ename AS employee_name,
+            s.salary_year_month,
+            s.base_salary,
+            s.bonus,
+            s.deduction,
+            s.net_salary,
+            s.payment_date
+        FROM salary s
+        LEFT JOIN emp e ON e.emp_id = s.emp_id
+        <where>
+            <if test="salaryYearMonth != null and salaryYearMonth != ''">
+                AND s.salary_year_month = #{salaryYearMonth}
+            </if>
+            <if test="employeeKeyword != null and employeeKeyword != ''">
+                AND (LOCATE(#{employeeKeyword}, e.ename) > 0
+                    <if test="employeeId != null">
+                        OR s.emp_id = #{employeeId}
+                    </if>
+                )
+            </if>
+        </where>
+        ORDER BY s.salary_year_month DESC, s.salary_id DESC
+    </select>
+
     <!-- 급여 번호로 상세 조회 -->
     <select id="selectById" resultMap="salaryMap">
         SELECT

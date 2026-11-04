@@ -14,6 +14,12 @@ public interface SalaryMapper {
     // 급여 목록 조회
     List<Salary> selectAll();
 
+    // 지급 연월과 사원 이름 일부 또는 번호로 검색
+    List<Salary> selectByFilters(
+            @Param("salaryYearMonth") String salaryYearMonth,
+            @Param("employeeKeyword") String employeeKeyword,
+            @Param("employeeId") Long employeeId);
+
     // 급여 번호로 상세 조회
     Salary selectById(@Param("salaryId") Long salaryId);
 

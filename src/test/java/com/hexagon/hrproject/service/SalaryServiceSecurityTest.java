@@ -61,6 +61,24 @@ public class SalaryServiceSecurityTest {
         assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).inserts);
     }
     @Test public void hrAdminCanList() { as("ROLE_HR_ADMIN"); assertTrue(service.getSalaryList().isEmpty()); }
+    @Test public void noAuthenticationCannotSearchSalaryRecords() {
+        assertThrows(AuthenticationCredentialsNotFoundException.class, () -> service.getSalaryList("2027-01", "박"));
+        assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).filterReads);
+    }
+    @Test public void employeeCannotSearchSalaryRecords() {
+        as("ROLE_EMPLOYEE");
+        assertThrows(AccessDeniedException.class, () -> service.getSalaryList("2027-01", "박"));
+        assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).filterReads);
+    }
+    @Test public void teamApproverCannotSearchSalaryRecords() {
+        as("ROLE_TEAM_APPROVER");
+        assertThrows(AccessDeniedException.class, () -> service.getSalaryList("2027-01", "박"));
+        assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).filterReads);
+    }
+    @Test public void hrAdminCanSearchSalaryRecords() {
+        as("ROLE_HR_ADMIN"); assertTrue(service.getSalaryList("2027-01", "박").isEmpty());
+        assertEquals(1, context.getBean(SalaryServiceTest.Mapper.class).filterReads);
+    }
     @Test public void noAuthenticationCannotReadEmployeeOptions() {
         assertThrows(AuthenticationCredentialsNotFoundException.class, () -> service.getEmployeeOptions());
         assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).employeeOptionReads);

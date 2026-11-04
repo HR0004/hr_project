@@ -34,6 +34,32 @@ public class SalaryService {
 		return salaryMapper.selectAll();
 	}
 
+	// 지급 연월과 사원 이름 일부 또는 번호로 검색한다.
+	@PreAuthorize("hasRole('HR_ADMIN')")
+	public List<Salary> getSalaryList(String salaryYearMonth, String employeeKeyword) {
+		String month = salaryYearMonth == null ? "" : salaryYearMonth.trim();
+		String keyword = employeeKeyword == null ? "" : employeeKeyword.trim();
+		if (!month.isEmpty() && !month.matches("[0-9]{4}-(0[1-9]|1[0-2])")) {
+			throw new SalaryBusinessException("지급 연월은 yyyy-MM 형식으로 입력하세요.");
+		}
+		if (keyword.length() > 50) {
+			throw new SalaryBusinessException("사원 검색어는 50자 이내로 입력하세요.");
+		}
+		if (month.isEmpty() && keyword.isEmpty()) {
+			return salaryMapper.selectAll();
+		}
+		Long employeeId = null;
+		if (keyword.matches("[0-9]+")) {
+			try {
+				long number = Long.parseLong(keyword);
+				if (number > 0) employeeId = number;
+			} catch (NumberFormatException ignored) {
+				// 번호 범위를 넘는 숫자도 이름 검색어로 처리한다.
+			}
+		}
+		return salaryMapper.selectByFilters(month, keyword, employeeId);
+	}
+
 	// 인사 관리자용 급여 상세 조회
 	@PreAuthorize("hasRole('HR_ADMIN')")
 	public Salary getSalaryDetail(Long salaryId) {

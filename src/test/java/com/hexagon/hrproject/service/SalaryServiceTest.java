@@ -21,11 +21,19 @@ public class SalaryServiceTest {
         Long requestedEmployeeId;
         int employeeOptionReads;
         List<SalaryEmployeeOption> employeeOptions = Collections.emptyList();
+        int allReads, filterReads;
+        String searchedMonth, searchedKeyword;
+        Long searchedEmployeeId;
+        List<Salary> filteredSalaries = Collections.emptyList();
         RuntimeException failure;
         Salary inserted, found;
         int detailReads;
         Long requestedId;
-        public List<Salary> selectAll() { return Collections.emptyList(); }
+        public List<Salary> selectAll() { allReads++; return Collections.emptyList(); }
+        public List<Salary> selectByFilters(String month, String keyword, Long employeeId) {
+            filterReads++; searchedMonth = month; searchedKeyword = keyword;
+            searchedEmployeeId = employeeId; return filteredSalaries;
+        }
         public Salary selectById(Long salaryId) {
             detailReads++; requestedId = salaryId; return found;
         }
@@ -51,6 +59,57 @@ public class SalaryServiceTest {
         r.setBonus(new BigDecimal("200000")); r.setDeduction(new BigDecimal("150000"));
         return r;
     }
+    @Test public void missingFiltersReturnTheFullList() {
+        Mapper m = new Mapper();
+        assertTrue(new SalaryService(m).getSalaryList(null, null).isEmpty());
+        assertEquals(1, m.allReads); assertEquals(0, m.filterReads);
+    }
+    @Test public void blankFiltersResetToTheFullList() {
+        Mapper m = new Mapper();
+        new SalaryService(m).getSalaryList("  ", " \t ");
+        assertEquals(1, m.allReads); assertEquals(0, m.filterReads);
+    }
+    @Test public void monthCanBeSearchedWithoutAnEmployeeKeyword() {
+        Mapper m = new Mapper(); new SalaryService(m).getSalaryList("2027-01", null);
+        assertEquals("2027-01", m.searchedMonth); assertEquals("", m.searchedKeyword);
+        assertNull(m.searchedEmployeeId); assertEquals(1, m.filterReads);
+    }
+    @Test public void combinedSearchTrimsFiltersAndReturnsFilteredRecords() {
+        Mapper m = new Mapper(); m.filteredSalaries = Collections.singletonList(new Salary());
+        assertSame(m.filteredSalaries, new SalaryService(m).getSalaryList(" 2027-01 ", " 박상 "));
+        assertEquals("2027-01", m.searchedMonth); assertEquals("박상", m.searchedKeyword);
+        assertNull(m.searchedEmployeeId); assertEquals(0, m.allReads);
+    }
+    @Test public void numericKeywordAlsoSearchesTheExactEmployeeId() {
+        Mapper m = new Mapper(); new SalaryService(m).getSalaryList("", "001");
+        assertEquals(Long.valueOf(1L), m.searchedEmployeeId);
+        assertEquals("001", m.searchedKeyword); assertEquals(1, m.filterReads);
+    }
+    @Test public void veryLargeNumericKeywordDoesNotOverflow() {
+        Mapper m = new Mapper(); String keyword = "999999999999999999999999999999";
+        new SalaryService(m).getSalaryList(null, keyword);
+        assertNull(m.searchedEmployeeId); assertEquals(keyword, m.searchedKeyword);
+    }
+    @Test public void specialCharactersArePassedAsLiteralSearchData() {
+        Mapper m = new Mapper(); String keyword = "%_' OR 1=1 --";
+        new SalaryService(m).getSalaryList(null, keyword);
+        assertEquals(keyword, m.searchedKeyword); assertNull(m.searchedEmployeeId);
+    }
+    @Test public void invalidMonthDoesNotQuerySalaryRecords() {
+        Mapper m = new Mapper(); SalaryService service = new SalaryService(m);
+        for (String month : new String[] {"2027-13", "2027-00", "2027-1", "invalid"}) {
+            assertEquals("지급 연월은 yyyy-MM 형식으로 입력하세요.",
+                    assertThrows(SalaryBusinessException.class, () -> service.getSalaryList(month, "박")).getMessage());
+        }
+        assertEquals(0, m.allReads); assertEquals(0, m.filterReads);
+    }
+    @Test public void oversizedKeywordDoesNotQuerySalaryRecords() {
+        Mapper m = new Mapper(); String keyword = String.join("", Collections.nCopies(51, "가"));
+        assertEquals("사원 검색어는 50자 이내로 입력하세요.", assertThrows(SalaryBusinessException.class,
+                () -> new SalaryService(m).getSalaryList(null, keyword)).getMessage());
+        assertEquals(0, m.allReads); assertEquals(0, m.filterReads);
+    }
+
     @Test public void employeeOptionsReturnOnlyTheSelectionDataFromMapper() {
         Mapper m = new Mapper(); SalaryEmployeeOption employee = new SalaryEmployeeOption();
         employee.setEmpId(7L); employee.setEmployeeName("박상우");

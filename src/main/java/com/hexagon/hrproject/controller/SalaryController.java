@@ -2,6 +2,7 @@ package com.hexagon.hrproject.controller;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Collections;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.hexagon.hrproject.dto.request.SalaryCreateRequest;
@@ -34,13 +36,21 @@ public class SalaryController {
     // 급여 목록
     @PreAuthorize("hasRole('HR_ADMIN')")
     @GetMapping("/list")
-    public String list(Model model) {
-
-        model.addAttribute(
-                "salaries",
-                salaryService.getSalaryList()
-        );
-
+    public String list(
+            @RequestParam(value = "salaryYearMonth", required = false) String salaryYearMonth,
+            @RequestParam(value = "employeeKeyword", required = false) String employeeKeyword,
+            Model model) {
+        String month = salaryYearMonth == null ? "" : salaryYearMonth.trim();
+        String keyword = employeeKeyword == null ? "" : employeeKeyword.trim();
+        model.addAttribute("salaryYearMonth", month);
+        model.addAttribute("employeeKeyword", keyword);
+        model.addAttribute("searchApplied", !month.isEmpty() || !keyword.isEmpty());
+        try {
+            model.addAttribute("salaries", salaryService.getSalaryList(month, keyword));
+        } catch (SalaryBusinessException e) {
+            model.addAttribute("salaries", Collections.emptyList());
+            model.addAttribute("salarySearchError", e.getMessage());
+        }
         return "salary/list";
     }
 

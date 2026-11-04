@@ -5,6 +5,7 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="com.hexagon.hrproject.domain.Salary" %>
 <%@ page import="org.springframework.web.util.HtmlUtils" %>
+<%@ page import="java.net.URLEncoder" %>
 
 <%!
     private String text(Object value) {
@@ -23,6 +24,15 @@
         response.sendError(404);
         return;
     }
+    String returnMonth = request.getParameter("salaryYearMonth");
+    String returnKeyword = request.getParameter("employeeKeyword");
+    String listQuery = "";
+    if (returnMonth != null && !returnMonth.trim().isEmpty())
+        listQuery = "?salaryYearMonth=" + URLEncoder.encode(returnMonth.trim(), "UTF-8");
+    if (returnKeyword != null && !returnKeyword.trim().isEmpty())
+        listQuery += (listQuery.isEmpty() ? "?" : "&")
+                + "employeeKeyword=" + URLEncoder.encode(returnKeyword.trim(), "UTF-8");
+    String listUrl = request.getContextPath() + "/salary/list" + listQuery;
 %>
 
 <!DOCTYPE html>
@@ -73,7 +83,7 @@
             <div class="field"><dt>지급일</dt><dd><%= salary.getPaymentDate() == null ? "미정" : text(salary.getPaymentDate()) %></dd></div>
         </dl>
         <nav aria-label="급여 화면 이동">
-            <a class="primary" href="<%= text(request.getContextPath()) %>/salary/list">목록으로</a>
+            <a class="primary" href="<%= text(listUrl) %>">목록으로</a>
             <a href="<%= text(request.getContextPath()) %>/salary/create">급여 등록</a>
         </nav>
     </main>

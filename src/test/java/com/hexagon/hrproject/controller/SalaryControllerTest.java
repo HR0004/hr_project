@@ -24,8 +24,17 @@ public class SalaryControllerTest {
         int employeeCount = 1;
         int employeeOptionReads;
         List<SalaryEmployeeOption> employeeOptions = Collections.singletonList(employee());
+        int allReads, filterReads;
+        String searchedMonth, searchedKeyword;
+        List<Salary> filteredSalaries = Collections.emptyList();
+        RuntimeException searchFailure;
         RuntimeException failure;
-        public List<Salary> selectAll() { return Collections.emptyList(); }
+        public List<Salary> selectAll() { allReads++; return Collections.emptyList(); }
+        public List<Salary> selectByFilters(String month, String keyword, Long employeeId) {
+            filterReads++; searchedMonth = month; searchedKeyword = keyword;
+            if (searchFailure != null) throw searchFailure;
+            return filteredSalaries;
+        }
         public Salary selectById(Long salaryId) { return found; }
         public List<SalaryEmployeeOption> selectEmployeeOptions() {
             employeeOptionReads++; return employeeOptions;
@@ -51,6 +60,44 @@ public class SalaryControllerTest {
         request.setBonus(new BigDecimal("200000"));
         request.setDeduction(new BigDecimal("150000"));
         return request;
+    }
+
+    @Test public void filteredListRetainsConditionsAndRecords() {
+        Mapper mapper = new Mapper(); mapper.filteredSalaries = Collections.singletonList(new Salary());
+        ExtendedModelMap model = new ExtendedModelMap();
+        assertEquals("salary/list", new SalaryController(new SalaryService(mapper)).list(" 2027-01 ", " 박상 ", model));
+        assertEquals("2027-01", model.get("salaryYearMonth"));
+        assertEquals("박상", model.get("employeeKeyword"));
+        assertEquals(Boolean.TRUE, model.get("searchApplied"));
+        assertSame(mapper.filteredSalaries, model.get("salaries"));
+        assertFalse(model.containsAttribute("salarySearchError"));
+    }
+    @Test public void resetReturnsFullListWithoutSearchConditions() {
+        Mapper mapper = new Mapper(); ExtendedModelMap model = new ExtendedModelMap();
+        assertEquals("salary/list", new SalaryController(new SalaryService(mapper)).list(null, null, model));
+        assertEquals("", model.get("salaryYearMonth")); assertEquals("", model.get("employeeKeyword"));
+        assertEquals(Boolean.FALSE, model.get("searchApplied")); assertEquals(1, mapper.allReads);
+    }
+    @Test public void invalidSearchReturnsListWithErrorAndNoRecords() {
+        Mapper mapper = new Mapper(); ExtendedModelMap model = new ExtendedModelMap();
+        assertEquals("salary/list", new SalaryController(new SalaryService(mapper)).list("2027-13", "박상", model));
+        assertEquals("2027-13", model.get("salaryYearMonth"));
+        assertEquals("박상", model.get("employeeKeyword"));
+        assertEquals("지급 연월은 yyyy-MM 형식으로 입력하세요.", model.get("salarySearchError"));
+        assertTrue(((List<?>) model.get("salaries")).isEmpty());
+        assertEquals(0, mapper.allReads); assertEquals(0, mapper.filterReads);
+    }
+    @Test public void emptySearchResultsStillKeepTheSearchForm() {
+        Mapper mapper = new Mapper(); ExtendedModelMap model = new ExtendedModelMap();
+        assertEquals("salary/list", new SalaryController(new SalaryService(mapper)).list("2027-01", "없는사원", model));
+        assertTrue(((List<?>) model.get("salaries")).isEmpty());
+        assertEquals("없는사원", model.get("employeeKeyword"));
+        assertFalse(model.containsAttribute("salarySearchError"));
+    }
+    @Test public void unrelatedSearchDatabaseFailureIsNotHidden() {
+        Mapper mapper = new Mapper(); mapper.searchFailure = new DataIntegrityViolationException("test-only database error");
+        assertSame(mapper.searchFailure, assertThrows(DataIntegrityViolationException.class,
+                () -> new SalaryController(new SalaryService(mapper)).list("2027-01", null, new ExtendedModelMap())));
     }
 
     @Test public void detailAddsStoredRecordToModel() {
