@@ -92,6 +92,33 @@
     .field-error { color: #a51d13; margin: 6px 0 0; font-size: 14px; }
     .field-error:empty { display: none; }
     input[aria-invalid="true"] { border: 2px solid #b42318; }
+    dialog {
+        box-sizing: border-box;
+        width: calc(100% - 32px);
+        max-width: 540px;
+        max-height: calc(100% - 32px);
+        padding: 24px;
+        border: 0;
+        border-radius: 12px;
+        overflow-y: auto;
+    }
+    dialog::backdrop { background: rgba(20, 30, 45, 0.5); }
+    dialog h2 { margin-top: 0; }
+    .review-description { color: #536173; line-height: 1.5; }
+    .review-row {
+        display: grid;
+        grid-template-columns: 110px minmax(0, 1fr);
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid #e1e5ea;
+    }
+    .review-row dt { font-weight: bold; }
+    .review-row dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+    .review-net { background: #eef3fb; color: #194380; font-weight: bold; }
+    .review-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+    .confirm-button { border: 1px solid #2457a7; background: #2457a7; color: white; border-radius: 6px; }
+    button:focus-visible { outline: 3px solid #2457a7; outline-offset: 3px; }
+    button:disabled { cursor: wait; opacity: 0.6; }
     @media (max-width: 600px) {
         body { margin: 0; padding: 16px; }
         main { padding: 20px 16px; }
@@ -166,12 +193,30 @@
             예상 실수령액: —
         </output>
 
-        <button type="submit">등록</button>
+        <button id="reviewButton" type="submit">등록 내용 확인</button>
         <a href="${pageContext.request.contextPath}/salary/list">
             목록으로
         </a>
     </form>
 </main>
+
+<dialog id="salaryReview" aria-labelledby="reviewTitle" aria-describedby="reviewDescription">
+    <h2 id="reviewTitle">급여 등록 내용 확인</h2>
+    <p class="review-description" id="reviewDescription">아래 내역을 확인한 뒤 등록을 확정하세요.</p>
+    <dl>
+        <div class="review-row"><dt>사원 번호</dt><dd id="reviewEmpId"></dd></div>
+        <div class="review-row"><dt>지급 연월</dt><dd id="reviewMonth"></dd></div>
+        <div class="review-row"><dt>기본급</dt><dd id="reviewBase"></dd></div>
+        <div class="review-row"><dt>수당</dt><dd id="reviewBonus"></dd></div>
+        <div class="review-row"><dt>공제액</dt><dd id="reviewDeduction"></dd></div>
+        <div class="review-row review-net"><dt>예상 실수령액</dt><dd id="reviewNet"></dd></div>
+        <div class="review-row"><dt>지급일</dt><dd id="reviewDate"></dd></div>
+    </dl>
+    <div class="review-actions">
+        <button id="reviewBack" type="button" autofocus>입력 수정</button>
+        <button id="reviewConfirm" type="button" class="confirm-button">등록 확정</button>
+    </div>
+</dialog>
 
 <script>
 const form = document.getElementById("salaryForm");
@@ -206,6 +251,82 @@ form.addEventListener("input", updateNetSalary);
 updateNetSalary();
 const errors = document.getElementById("formErrors");
 if (errors) errors.focus();
+
+const review = document.getElementById("salaryReview");
+const reviewButton = document.getElementById("reviewButton");
+const confirmButton = document.getElementById("reviewConfirm");
+let submitting = false;
+
+function reviewAmount(id) {
+    const raw = document.getElementById(id).value;
+    const number = Number(raw);
+    return raw !== "" && Number.isFinite(number)
+        ? number.toLocaleString("ko-KR") + "원" : raw || "미입력";
+}
+
+function fillReview() {
+    // 입력 문자열을 HTML로 해석하지 않고 텍스트로만 표시한다.
+    const values = {
+        reviewEmpId: document.getElementById("empId").value,
+        reviewMonth: document.getElementById("salaryYearMonth").value,
+        reviewBase: reviewAmount("baseSalary"),
+        reviewBonus: reviewAmount("bonus"),
+        reviewDeduction: reviewAmount("deduction"),
+        reviewNet: output.textContent.replace("예상 실수령액: ", "").trim(),
+        reviewDate: document.getElementById("paymentDate").value || "미정"
+    };
+    Object.entries(values).forEach(([id, text]) => {
+        document.getElementById(id).textContent = text;
+    });
+    return values;
+}
+
+function confirmRegistration() {
+    if (submitting) return;
+    if (!form.reportValidity()) {
+        if (review.open) review.close();
+        return;
+    }
+    submitting = true;
+    reviewButton.disabled = true;
+    confirmButton.disabled = true;
+    if (review.open) review.close();
+    // 기존 POST로 입력값과 CSRF 토큰을 전송한다. 저장 시 검증과 금액 계산은 그대로 수행한다.
+    HTMLFormElement.prototype.submit.call(form);
+}
+
+form.addEventListener("submit", event => {
+    event.preventDefault();
+    if (submitting || !form.reportValidity()) return;
+    updateNetSalary();
+    const values = fillReview();
+    if (typeof review.showModal === "function") {
+        if (!review.open) review.showModal();
+    } else {
+        const summary = [
+            "사원 번호: " + values.reviewEmpId,
+            "지급 연월: " + values.reviewMonth,
+            "기본급: " + values.reviewBase,
+            "수당: " + values.reviewBonus,
+            "공제액: " + values.reviewDeduction,
+            "예상 실수령액: " + values.reviewNet,
+            "지급일: " + values.reviewDate,
+            "이 내용으로 등록하시겠습니까?"
+        ].join("\n");
+        if (window.confirm(summary)) confirmRegistration();
+    }
+});
+
+document.getElementById("reviewBack").addEventListener("click", () => review.close());
+confirmButton.addEventListener("click", confirmRegistration);
+review.addEventListener("close", () => {
+    if (!submitting) reviewButton.focus();
+});
+window.addEventListener("pageshow", () => {
+    submitting = false;
+    reviewButton.disabled = false;
+    confirmButton.disabled = false;
+});
 </script>
 </body>
 </html>
