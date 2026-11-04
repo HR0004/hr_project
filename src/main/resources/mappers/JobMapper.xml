@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hexagon.hrproject.mappers.JobMapper">
+<mapper namespace="com.hexagon.hrproject.mapper.JobMapper">
 
 	<!-- MySQL이 ID를 자동 생성 -->
 	<insert id="insert" parameterType="Job"
@@ -41,7 +41,7 @@
 	</select>
 
 	<!-- 생성된 ID로 부서 코드 저장 -->
-	<update id="updateCode" parameterType="Department">
+	<update id="updateCode" parameterType="Job">
 		UPDATE job
 		SET job_code = #{jobCode}
 		WHERE job_id = #{jobId}
