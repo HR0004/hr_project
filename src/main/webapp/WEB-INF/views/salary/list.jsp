@@ -44,7 +44,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 980px;
+            min-width: 1100px;
         }
         th, td {
             border: 1px solid #ddd;
@@ -58,6 +58,11 @@
         .money {
             text-align: right;
             font-variant-numeric: tabular-nums;
+        }
+        .employee-name {
+            min-width: 100px;
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
         .salary-actions {
             display: flex;
@@ -106,6 +111,7 @@
             <tr>
                 <th scope="col">급여 번호</th>
                 <th scope="col">사원 번호</th>
+                <th scope="col">사원 이름</th>
                 <th scope="col">지급 연월</th>
                 <th scope="col">기본급</th>
                 <th scope="col">수당</th>
@@ -117,7 +123,7 @@
         <tbody>
             <% if (salaries == null || salaries.isEmpty()) { %>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         등록된 급여 내역이 없습니다.
                     </td>
                 </tr>
@@ -129,6 +135,9 @@
                                aria-label="급여 <%= text(salary.getSalaryId()) %>번 상세 보기"><%= text(salary.getSalaryId()) %></a>
                         </td>
                         <td><%= text(salary.getEmpId()) %></td>
+                        <td class="employee-name"><%= text(salary.getEmployeeName() == null
+                                || salary.getEmployeeName().trim().isEmpty()
+                                ? "이름 미등록" : salary.getEmployeeName()) %></td>
                         <td><%= text(salary.getSalaryYearMonth()) %></td>
                         <td class="money">
                             <%= amount(salary.getBaseSalary()) %>

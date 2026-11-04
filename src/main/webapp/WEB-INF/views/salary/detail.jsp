@@ -62,6 +62,9 @@
         <dl>
             <div class="field"><dt>급여 번호</dt><dd><%= text(salary.getSalaryId()) %></dd></div>
             <div class="field"><dt>사원 번호</dt><dd><%= text(salary.getEmpId()) %></dd></div>
+            <div class="field"><dt>사원 이름</dt><dd><%= text(salary.getEmployeeName() == null
+                    || salary.getEmployeeName().trim().isEmpty()
+                    ? "이름 미등록" : salary.getEmployeeName()) %></dd></div>
             <div class="field"><dt>지급 연월</dt><dd><%= text(salary.getSalaryYearMonth()) %></dd></div>
             <div class="field"><dt>기본급</dt><dd class="money"><%= amount(salary.getBaseSalary()) %></dd></div>
             <div class="field"><dt>수당</dt><dd class="money"><%= amount(salary.getBonus()) %></dd></div>

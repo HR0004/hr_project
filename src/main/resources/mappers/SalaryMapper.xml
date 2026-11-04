@@ -9,6 +9,7 @@
                type="com.hexagon.hrproject.domain.Salary">
         <id column="salary_id" property="salaryId"/>
         <result column="emp_id" property="empId"/>
+        <result column="employee_name" property="employeeName"/>
         <result column="salary_year_month" property="salaryYearMonth"/>
         <result column="base_salary" property="baseSalary"/>
         <result column="bonus" property="bonus"/>
@@ -19,30 +20,34 @@
 
     <select id="selectAll" resultMap="salaryMap">
         SELECT
-            salary_id,
-            emp_id,
-            salary_year_month,
-            base_salary,
-            bonus,
-            deduction,
-            net_salary,
-            payment_date
-        FROM salary
-        ORDER BY salary_year_month DESC, salary_id DESC
+            s.salary_id,
+            s.emp_id,
+            e.ename AS employee_name,
+            s.salary_year_month,
+            s.base_salary,
+            s.bonus,
+            s.deduction,
+            s.net_salary,
+            s.payment_date
+        FROM salary s
+        LEFT JOIN emp e ON e.emp_id = s.emp_id
+        ORDER BY s.salary_year_month DESC, s.salary_id DESC
     </select>
     <!-- 급여 번호로 상세 조회 -->
     <select id="selectById" resultMap="salaryMap">
         SELECT
-            salary_id,
-            emp_id,
-            salary_year_month,
-            base_salary,
-            bonus,
-            deduction,
-            net_salary,
-            payment_date
-        FROM salary
-        WHERE salary_id = #{salaryId}
+            s.salary_id,
+            s.emp_id,
+            e.ename AS employee_name,
+            s.salary_year_month,
+            s.base_salary,
+            s.bonus,
+            s.deduction,
+            s.net_salary,
+            s.payment_date
+        FROM salary s
+        LEFT JOIN emp e ON e.emp_id = s.emp_id
+        WHERE s.salary_id = #{salaryId}
     </select>
 
     <!-- 급여 등록용 선택 목록: 이름과 번호만 조회한다. -->
