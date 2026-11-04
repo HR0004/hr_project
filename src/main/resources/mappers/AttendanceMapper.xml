@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hexagon.hrproject.mapper.AttendanceMapper">
+	<select id="findByEmpId"
+		resultType="com.hexagon.hrproject.domain.Attendance">
+		
+		SELECT
+        DATE_FORMAT(work_date, '%Y-%m-%d') AS workDate,
+        DATE_FORMAT(clock_in, '%H:%i') AS clockIn,
+        DATE_FORMAT(clock_out, '%H:%i') AS clockOut,
+        status
+    	FROM tb_attendance
+    	WHERE emp_id = #{empId}
+    	ORDER BY work_date DESC
+	</select>
+</mapper>

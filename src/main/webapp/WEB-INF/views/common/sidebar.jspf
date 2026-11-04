@@ -1,0 +1,24 @@
+<%@ page pageEncoding="UTF-8" %>
+
+<aside class="main-sidebar">
+
+    <div class="sidebar-logo">HRMS Admin</div>
+
+    <div class="sidebar-title">인사관리 시스템</div>
+
+    <nav class="sidebar-menu">
+
+        <a href="${pageContext.request.contextPath}/departments"
+           class="menu-item active">
+            01 부서 관리
+        </a>
+
+        <a href="#" class="menu-item">02 직급 관리</a>
+        <a href="#" class="menu-item">03 사원 관리</a>
+        <a href="#" class="menu-item">04 근태 관리</a>
+        <a href="#" class="menu-item">05 휴가 관리</a>
+        <a href="#" class="menu-item">06 급여 관리</a>
+
+    </nav>
+
+</aside>
