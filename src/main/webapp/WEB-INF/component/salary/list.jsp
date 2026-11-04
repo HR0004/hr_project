@@ -34,6 +34,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>급여 대장</title>
     <style>
         body {
@@ -43,17 +44,49 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 980px;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: center;
+            white-space: nowrap;
         }
         th {
             background: #f3f5f7;
         }
         .money {
             text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .salary-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin: 20px 0 12px;
+        }
+        .create-link {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 6px;
+            background: #2457a7;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .create-link:hover {
+            background: #194380;
+        }
+        .create-link:focus-visible, .table-scroll:focus-visible {
+            outline: 3px solid #2457a7;
+            outline-offset: 3px;
+        }
+        .table-scroll {
+            overflow-x: auto;
+        }
+        @media (max-width: 600px) {
+            body {
+                margin: 16px;
+            }
         }
     </style>
 </head>
@@ -61,6 +94,12 @@
     <h1>급여 대장</h1>
     <p>인사 관리자용 급여 목록입니다. 금액 단위: 원</p>
 
+    <nav class="salary-actions" aria-label="급여 작업">
+        <a class="create-link"
+           href="${pageContext.request.contextPath}/salary/create">급여 등록</a>
+    </nav>
+
+    <div class="table-scroll" role="region" aria-label="급여 목록" tabindex="0">
     <table>
         <thead>
             <tr>
@@ -109,5 +148,6 @@
             <% } %>
         </tbody>
     </table>
+    </div>
 </body>
 </html>
