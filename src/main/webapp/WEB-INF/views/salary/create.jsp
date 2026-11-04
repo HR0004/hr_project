@@ -6,6 +6,9 @@
 <%@ page import="org.springframework.validation.FieldError" %>
 <%@ page import="org.springframework.web.util.HtmlUtils" %>
 <%@ page import="com.hexagon.hrproject.dto.request.SalaryCreateRequest" %>
+<%@ page import="com.hexagon.hrproject.dto.response.SalaryEmployeeOption" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Collections" %>
 <%!
     private String text(Object value) {
         return value == null ? "" : HtmlUtils.htmlEscape(value.toString());
@@ -26,7 +29,7 @@
         if (error == null) return "";
         if (error.isBindingFailure()) {
             if ("paymentDate".equals(name)) return "지급일을 yyyy-MM-dd 형식의 올바른 날짜로 입력하세요.";
-            if ("empId".equals(name)) return "사원 번호는 1 이상의 정수로 입력하세요.";
+            if ("empId".equals(name)) return "목록에서 올바른 사원을 선택하세요.";
             return "금액은 15자리 이내의 정수로 입력하세요.";
         }
         return text(error.getDefaultMessage());
@@ -39,6 +42,21 @@
             BindingResult.MODEL_KEY_PREFIX + "salaryCreateRequest");
     if (fields == null) fields = new BeanPropertyBindingResult(formValue, "salaryCreateRequest");
     Object errorMessage = request.getAttribute("errorMessage");
+    @SuppressWarnings("unchecked")
+    List<SalaryEmployeeOption> employees =
+            (List<SalaryEmployeeOption>) request.getAttribute("salaryEmployees");
+    if (employees == null) employees = Collections.emptyList();
+    Object selectedValue = fields.getFieldValue("empId");
+    String selectedEmpId = selectedValue == null ? "" : selectedValue.toString();
+    boolean selectedEmployeeExists = false;
+    for (SalaryEmployeeOption employee : employees) {
+        if (String.valueOf(employee.getEmpId()).equals(selectedEmpId)) {
+            selectedEmployeeExists = true;
+            break;
+        }
+    }
+    boolean invalidEmployee = fields.hasFieldErrors("empId")
+            || (!selectedEmpId.isEmpty() && !selectedEmployeeExists);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -64,7 +82,7 @@
         margin-top: 18px;
         font-weight: bold;
     }
-    input {
+    input, select {
         box-sizing: border-box;
         width: 100%;
         margin-top: 6px;
@@ -91,7 +109,8 @@
     .error-summary:focus { outline: 2px solid #b42318; outline-offset: 3px; }
     .field-error { color: #a51d13; margin: 6px 0 0; font-size: 14px; }
     .field-error:empty { display: none; }
-    input[aria-invalid="true"] { border: 2px solid #b42318; }
+    input[aria-invalid="true"], select[aria-invalid="true"] { border: 2px solid #b42318; }
+    .field-help { margin: 6px 0 0; color: #536173; font-size: 14px; line-height: 1.5; }
     dialog {
         box-sizing: border-box;
         width: calc(100% - 32px);
@@ -118,7 +137,7 @@
     .review-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-top: 24px; }
     .confirm-button { border: 1px solid #2457a7; background: #2457a7; color: white; border-radius: 6px; }
     button:focus-visible { outline: 3px solid #2457a7; outline-offset: 3px; }
-    button:disabled { cursor: wait; opacity: 0.6; }
+    button:disabled { cursor: not-allowed; opacity: 0.6; }
     @media (max-width: 600px) {
         body { margin: 0; padding: 16px; }
         main { padding: 20px 16px; }
@@ -147,11 +166,21 @@
                value="${_csrf.token}">
         <% } %>
 
-        <label for="empId">사원 번호</label>
-        <input id="empId" name="empId"
-               type="<%= inputType(fields, "empId", "number") %>" min="1" step="1" inputmode="numeric"
-               value="<%= value(fields, "empId") %>" required
-               aria-invalid="<%= fields.hasFieldErrors("empId") %>" aria-describedby="empIdError">
+        <label for="empId">사원</label>
+        <select id="empId" name="empId" required <%= employees.isEmpty() ? "disabled" : "" %>
+                aria-invalid="<%= invalidEmployee %>" aria-describedby="empIdHelp empIdError">
+            <option value="">사원을 선택하세요</option>
+            <% if (!selectedEmpId.isEmpty() && !selectedEmployeeExists) { %>
+            <option value="" selected>선택할 수 없는 사원 (입력값: <%= text(selectedEmpId) %>)</option>
+            <% } %>
+            <% for (SalaryEmployeeOption employee : employees) { %>
+            <option value="<%= text(employee.getEmpId()) %>"
+                    <%= String.valueOf(employee.getEmpId()).equals(selectedEmpId) ? "selected" : "" %>><%= text(employee.getEmployeeName() == null || employee.getEmployeeName().trim().isEmpty() ? "이름 미등록" : employee.getEmployeeName()) %> (사원 번호: <%= text(employee.getEmpId()) %>)</option>
+            <% } %>
+        </select>
+        <p class="field-help" id="empIdHelp"><%= employees.isEmpty()
+                ? "등록된 사원이 없습니다. 사원 등록 후 다시 시도하세요."
+                : "이름과 사원 번호를 확인하고 선택하세요." %></p>
         <p class="field-error" id="empIdError"><%= fieldMessage(fields, "empId") %></p>
 
         <label for="salaryYearMonth">지급 연월</label>
@@ -193,7 +222,7 @@
             예상 실수령액: —
         </output>
 
-        <button id="reviewButton" type="submit">등록 내용 확인</button>
+        <button id="reviewButton" type="submit" <%= employees.isEmpty() ? "disabled" : "" %>>등록 내용 확인</button>
         <a href="${pageContext.request.contextPath}/salary/list">
             목록으로
         </a>
@@ -204,7 +233,7 @@
     <h2 id="reviewTitle">급여 등록 내용 확인</h2>
     <p class="review-description" id="reviewDescription">아래 내역을 확인한 뒤 등록을 확정하세요.</p>
     <dl>
-        <div class="review-row"><dt>사원 번호</dt><dd id="reviewEmpId"></dd></div>
+        <div class="review-row"><dt>사원</dt><dd id="reviewEmpId"></dd></div>
         <div class="review-row"><dt>지급 연월</dt><dd id="reviewMonth"></dd></div>
         <div class="review-row"><dt>기본급</dt><dd id="reviewBase"></dd></div>
         <div class="review-row"><dt>수당</dt><dd id="reviewBonus"></dd></div>
@@ -220,6 +249,7 @@
 
 <script>
 const form = document.getElementById("salaryForm");
+const employeeSelect = document.getElementById("empId");
 const output = document.getElementById("netSalary");
 const amountIds = ["baseSalary", "bonus", "deduction"];
 
@@ -267,7 +297,7 @@ function reviewAmount(id) {
 function fillReview() {
     // 입력 문자열을 HTML로 해석하지 않고 텍스트로만 표시한다.
     const values = {
-        reviewEmpId: document.getElementById("empId").value,
+        reviewEmpId: employeeSelect.options[employeeSelect.selectedIndex].textContent.trim(),
         reviewMonth: document.getElementById("salaryYearMonth").value,
         reviewBase: reviewAmount("baseSalary"),
         reviewBonus: reviewAmount("bonus"),
@@ -282,7 +312,7 @@ function fillReview() {
 }
 
 function confirmRegistration() {
-    if (submitting) return;
+    if (submitting || employeeSelect.disabled) return;
     if (!form.reportValidity()) {
         if (review.open) review.close();
         return;
@@ -297,14 +327,14 @@ function confirmRegistration() {
 
 form.addEventListener("submit", event => {
     event.preventDefault();
-    if (submitting || !form.reportValidity()) return;
+    if (submitting || employeeSelect.disabled || !form.reportValidity()) return;
     updateNetSalary();
     const values = fillReview();
     if (typeof review.showModal === "function") {
         if (!review.open) review.showModal();
     } else {
         const summary = [
-            "사원 번호: " + values.reviewEmpId,
+            "사원: " + values.reviewEmpId,
             "지급 연월: " + values.reviewMonth,
             "기본급: " + values.reviewBase,
             "수당: " + values.reviewBonus,
@@ -324,8 +354,8 @@ review.addEventListener("close", () => {
 });
 window.addEventListener("pageshow", () => {
     submitting = false;
-    reviewButton.disabled = false;
-    confirmButton.disabled = false;
+    reviewButton.disabled = employeeSelect.disabled;
+    confirmButton.disabled = employeeSelect.disabled;
 });
 </script>
 </body>

@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import com.hexagon.hrproject.domain.Salary;
+import com.hexagon.hrproject.dto.response.SalaryEmployeeOption;
 import com.hexagon.hrproject.dto.request.SalaryCreateRequest;
 import com.hexagon.hrproject.exception.SalaryNotFoundException;
 import com.hexagon.hrproject.mapper.SalaryMapper;
@@ -21,9 +22,14 @@ public class SalaryControllerTest {
         Salary found;
         int count, inserts;
         int employeeCount = 1;
+        int employeeOptionReads;
+        List<SalaryEmployeeOption> employeeOptions = Collections.singletonList(employee());
         RuntimeException failure;
         public List<Salary> selectAll() { return Collections.emptyList(); }
         public Salary selectById(Long salaryId) { return found; }
+        public List<SalaryEmployeeOption> selectEmployeeOptions() {
+            employeeOptionReads++; return employeeOptions;
+        }
         public int countEmployeeById(Long empId) { return employeeCount; }
         public int countByEmpAndYearMonth(Long empId, String month) { return count; }
         public int insert(Salary salary) {
@@ -31,6 +37,11 @@ public class SalaryControllerTest {
             if (failure != null) throw failure;
             salary.setSalaryId(42L); return 1;
         }
+    }
+
+    static SalaryEmployeeOption employee() {
+        SalaryEmployeeOption employee = new SalaryEmployeeOption();
+        employee.setEmpId(1L); employee.setEmployeeName("박상우"); return employee;
     }
 
     static SalaryCreateRequest request() {
@@ -57,9 +68,11 @@ public class SalaryControllerTest {
         request.setBaseSalary(new BigDecimal("3000000"));
         request.setBonus(new BigDecimal("200000"));
         request.setDeduction(new BigDecimal("150000"));
-        SalaryController controller = new SalaryController(new SalaryService(new Mapper()));
+        Mapper mapper = new Mapper();
+        SalaryController controller = new SalaryController(new SalaryService(mapper));
         assertEquals("redirect:/salary/detail/42", controller.create(request,
                 new BeanPropertyBindingResult(request, "salaryCreateRequest"), new ExtendedModelMap()));
+        assertEquals(0, mapper.employeeOptionReads);
     }
 
     @Test public void missingSalaryDoesNotReturnAnEmptyDetail() {
@@ -73,12 +86,15 @@ public class SalaryControllerTest {
 
     @Test public void initialFormDefaultsDoNotRequireHardcodedJspValues() {
         ExtendedModelMap model = new ExtendedModelMap();
-        SalaryController controller = new SalaryController(new SalaryService(new Mapper()));
+        Mapper mapper = new Mapper();
+        SalaryController controller = new SalaryController(new SalaryService(mapper));
         assertEquals("salary/create", controller.createForm(model));
         SalaryCreateRequest form = (SalaryCreateRequest) model.get("salaryCreateRequest");
         assertEquals(BigDecimal.ZERO, form.getBonus());
         assertEquals(BigDecimal.ZERO, form.getDeduction());
         assertNull(form.getBaseSalary());
+        assertSame(mapper.employeeOptions, model.get("salaryEmployees"));
+        assertEquals(1, mapper.employeeOptionReads);
     }
 
     @Test public void bindingFailurePreservesRejectedStringAndSkipsInsert() {
@@ -91,6 +107,7 @@ public class SalaryControllerTest {
         assertEquals("abc", errors.getFieldValue("empId"));
         assertEquals(0, mapper.inserts);
         assertTrue(model.containsAttribute("errorMessage"));
+        assertSame(mapper.employeeOptions, model.get("salaryEmployees"));
     }
 
     @Test public void unknownEmployeeReturnsFormAndPreservesEnteredValues() {
@@ -103,6 +120,7 @@ public class SalaryControllerTest {
         assertEquals(Long.valueOf(999999L), errors.getFieldValue("empId"));
         assertEquals(new BigDecimal("3000000"), errors.getFieldValue("baseSalary"));
         assertEquals("존재하지 않는 사원 번호입니다. 사원 번호를 확인하세요.", model.get("errorMessage"));
+        assertSame(mapper.employeeOptions, model.get("salaryEmployees"));
         assertEquals(0, mapper.inserts);
     }
 
@@ -115,6 +133,7 @@ public class SalaryControllerTest {
         assertSame(request, errors.getTarget());
         assertEquals(new BigDecimal("200000"), request.getBonus());
         assertEquals("해당 사원의 같은 지급 연월 급여가 이미 등록되어 있습니다.", model.get("errorMessage"));
+        assertSame(mapper.employeeOptions, model.get("salaryEmployees"));
         assertEquals(0, mapper.inserts);
     }
 

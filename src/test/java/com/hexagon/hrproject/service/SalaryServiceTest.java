@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import com.hexagon.hrproject.domain.Salary;
+import com.hexagon.hrproject.dto.response.SalaryEmployeeOption;
 import com.hexagon.hrproject.dto.request.SalaryCreateRequest;
 import com.hexagon.hrproject.exception.SalaryBusinessException;
 import com.hexagon.hrproject.exception.SalaryNotFoundException;
@@ -18,6 +19,8 @@ public class SalaryServiceTest {
         int count, inserts, result = 1;
         int employeeCount = 1, employeeReads, duplicateChecks;
         Long requestedEmployeeId;
+        int employeeOptionReads;
+        List<SalaryEmployeeOption> employeeOptions = Collections.emptyList();
         RuntimeException failure;
         Salary inserted, found;
         int detailReads;
@@ -25,6 +28,9 @@ public class SalaryServiceTest {
         public List<Salary> selectAll() { return Collections.emptyList(); }
         public Salary selectById(Long salaryId) {
             detailReads++; requestedId = salaryId; return found;
+        }
+        public List<SalaryEmployeeOption> selectEmployeeOptions() {
+            employeeOptionReads++; return employeeOptions;
         }
         public int countEmployeeById(Long empId) {
             employeeReads++; requestedEmployeeId = empId; return employeeCount;
@@ -45,6 +51,17 @@ public class SalaryServiceTest {
         r.setBonus(new BigDecimal("200000")); r.setDeduction(new BigDecimal("150000"));
         return r;
     }
+    @Test public void employeeOptionsReturnOnlyTheSelectionDataFromMapper() {
+        Mapper m = new Mapper(); SalaryEmployeeOption employee = new SalaryEmployeeOption();
+        employee.setEmpId(7L); employee.setEmployeeName("박상우");
+        m.employeeOptions = Collections.singletonList(employee);
+        assertSame(m.employeeOptions, new SalaryService(m).getEmployeeOptions());
+        assertEquals(Long.valueOf(7L), m.employeeOptions.get(0).getEmpId());
+        assertEquals("박상우", m.employeeOptions.get(0).getEmployeeName());
+        assertEquals(1, m.employeeOptionReads);
+        assertEquals(0, m.inserts);
+    }
+
     @Test public void successfulInsertReturnsGeneratedIdAndCalculatedAmount() {
         Mapper m = new Mapper();
         assertEquals(Long.valueOf(42), new SalaryService(m).createSalary(request()));

@@ -60,7 +60,7 @@ public class SalaryController {
         request.setBonus(BigDecimal.ZERO);
         request.setDeduction(BigDecimal.ZERO);
         model.addAttribute("salaryCreateRequest", request);
-        return "salary/create";
+        return createView(model);
     }
 
     // 급여 등록 처리
@@ -73,7 +73,7 @@ public class SalaryController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errorMessage",
                     "입력값을 확인하세요. 필수 항목과 날짜·금액 형식이 올바르지 않습니다.");
-            return "salary/create";
+            return createView(model);
         }
 
         try {
@@ -82,8 +82,14 @@ public class SalaryController {
         } catch (SalaryBusinessException e) {
             // 같은 요청의 DTO와 BindingResult를 유지하여 입력값을 다시 표시한다.
             model.addAttribute("errorMessage", e.getMessage());
-            return "salary/create";
+            return createView(model);
         }
+    }
+
+    // 최초 진입과 입력 오류 모두 최신 사원 목록을 제공한다.
+    private String createView(Model model) {
+        model.addAttribute("salaryEmployees", salaryService.getEmployeeOptions());
+        return "salary/create";
     }
 
     // 존재하지 않는 급여 내역

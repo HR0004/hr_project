@@ -45,6 +45,14 @@
         WHERE salary_id = #{salaryId}
     </select>
 
+    <!-- 급여 등록용 선택 목록: 이름과 번호만 조회한다. -->
+    <select id="selectEmployeeOptions"
+            resultType="com.hexagon.hrproject.dto.response.SalaryEmployeeOption">
+        SELECT emp_id AS empId, ename AS employeeName
+        FROM emp
+        ORDER BY ename, emp_id
+    </select>
+
     <!-- 급여를 등록할 사원 존재 여부 확인 -->
     <select id="countEmployeeById" resultType="int">
         SELECT COUNT(*)

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.hexagon.hrproject.domain.Salary;
 import com.hexagon.hrproject.dto.request.SalaryCreateRequest;
+import com.hexagon.hrproject.dto.response.SalaryEmployeeOption;
 import com.hexagon.hrproject.mapper.SalaryMapper;
 
 @Service
@@ -20,6 +21,12 @@ import com.hexagon.hrproject.mapper.SalaryMapper;
 public class SalaryService {
 
 	private final SalaryMapper salaryMapper;
+
+	// 급여 등록 화면의 사원 선택 목록
+	@PreAuthorize("hasRole('HR_ADMIN')")
+	public List<SalaryEmployeeOption> getEmployeeOptions() {
+		return salaryMapper.selectEmployeeOptions();
+	}
 
 	// 인사 관리자용 급여 목록 조회
 	@PreAuthorize("hasRole('HR_ADMIN')")
