@@ -20,4 +20,10 @@ public class Emp {
 	
 	private String status;
 	private int annualLeaveDays;
+	
+	//부서정보 
+	private Department department;
+	
+	//직급 정보 
+	private Job job;
 }

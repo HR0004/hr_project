@@ -1,99 +1,119 @@
-<%@ page contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <title>부서 관리</title>
+<meta charset="UTF-8">
+<title>부서 관리</title>
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/static/css/department.css">
+<!-- AdminLTE 3 -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- 부서 관리 CSS -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/department.css">
 </head>
 
-<body>
+<body class="hold-transition sidebar-mini">
 
-<div class="layout">
+	<div class="wrapper">
 
-    <%@ include file="../common/sidebar.jspf" %>
+		<!-- 공통 헤더 -->
+		<%@ include file="../common/header.jspf"%>
 
-    <div class="main-area">
+		<!-- 공통 사이드바 -->
+		<%@ include file="../common/sidebar.jspf"%>
 
-        <%@ include file="../common/header.jspf" %>
+		<!-- 메인 콘텐츠 -->
+		<div class="content-wrapper">
 
-        <main class="content">
+			<section class="content-header">
+				<div class="container-fluid">
+					<h2 class="page-title">부서 관리</h2>
+					<p class="page-path">HRMS / 부서 관리</p>
+				</div>
+			</section>
 
-            <h2 class="page-title">부서 관리</h2>
+			<section class="content">
+				<div class="container-fluid">
 
-            <!-- 부서 통계 -->
-            <section class="summary-row">
+					<!-- 부서 통계 -->
+					<section class="summary-row">
 
-                <div class="summary-card">
-                    <p>전체 부서</p>
-                    <h3 id="totalCount">0</h3>
-                </div>
+						<div class="summary-card">
+							<p>전체 부서</p>
+							<h3 id="totalCount">0</h3>
+						</div>
 
-                <div class="summary-card">
-                    <p>활성 부서</p>
-                    <h3 id="activeCount">0</h3>
-                </div>
+						<div class="summary-card">
+							<p>활성 부서</p>
+							<h3 id="activeCount">0</h3>
+						</div>
 
-                <div class="summary-card">
-                    <p>비활성 부서</p>
-                    <h3 id="inactiveCount">0</h3>
-                </div>
+						<div class="summary-card">
+							<p>비활성 부서</p>
+							<h3 id="inactiveCount">0</h3>
+						</div>
 
-            </section>
+					</section>
 
-            <!-- 검색 및 등록 -->
-            <section class="table-top">
+					<!-- 검색 및 등록 -->
+					<section class="table-top">
 
-                <h3>목록 조회</h3>
+						<h3>목록 조회</h3>
 
-                <div class="table-actions">
-                    <input type="text"
-                           id="keyword"
-                           placeholder="부서명 검색">
+						<div class="table-actions">
 
-                    <button type="button"
-                            id="openRegisterBtn"
-                            class="primary-btn">
-                        + 부서 등록
-                    </button>
-                </div>
+							<input type="text" id="keyword" placeholder="부서명 검색">
 
-            </section>
+							<button type="button" id="openRegisterBtn" class="primary-btn">
+								+ 부서 등록</button>
 
-            <!-- 부서 목록 -->
-            <table class="department-table">
+						</div>
 
-                <thead>
-                    <tr>
-                        <th>부서 코드</th>
-                        <th>부서명</th>
-                        <th>상태</th>
-                        <th>관리</th>
-                    </tr>
-                </thead>
+					</section>
 
-                <tbody id="departmentBody"></tbody>
+					<!-- 부서 목록 -->
+					<table class="department-table">
 
-            </table>
+						<thead>
+							<tr>
+								<th>부서 코드</th>
+								<th>부서명</th>
+								<th>인원</th>
+								<th>상태</th>
+								<th>관리</th>
+							</tr>
+						</thead>
 
-        </main>
+						<tbody id="departmentBody"></tbody>
 
-    </div>
+					</table>
 
-</div>
+				</div>
+			</section>
 
-<script>
+		</div>
+
+	</div>
+
+
+	<!-- 부서 관리 JavaScript -->
+	<script>
 
 const contextPath = '${pageContext.request.contextPath}';
 
 let departmentList = [];
 
-// 부서 목록 조회
+
+// 1. 부서 목록 조회
 const getList = async () => {
 
     try {
@@ -121,15 +141,13 @@ const getList = async () => {
 };
 
 
-// 화면에 부서 목록 표시
+// 2. 부서 목록 출력
 const renderList = (list) => {
 
     const tbody = document.getElementById("departmentBody");
 
-    // 기존 목록 초기화
     tbody.replaceChildren();
 
-    // 조회된 부서 수만큼 반복
     list.forEach(dept => {
 
         const tr = document.createElement("tr");
@@ -141,14 +159,18 @@ const renderList = (list) => {
         // 부서명
         const name = document.createElement("td");
         name.textContent = dept.departmentName;
+        
+        // 부서별 사원 수
+        const employeeCount = document.createElement("td");
+        employeeCount.textContent = (dept.employeeCount ?? 0) + "명";
 
-        // 활성 상태
+        // 상태
         const active = Number(dept.isActive) === 1;
 
         const status = document.createElement("td");
         status.textContent = active ? "활성" : "비활성";
 
-        // 관리 버튼 영역
+        // 관리 버튼
         const action = document.createElement("td");
 
         // 수정 버튼
@@ -157,6 +179,7 @@ const renderList = (list) => {
         editBtn.textContent = "수정";
 
         editBtn.onclick = () => {
+
             window.open(
                 contextPath + "/departments/edit?departmentId="
                     + dept.departmentId,
@@ -174,22 +197,19 @@ const renderList = (list) => {
             deactivate(dept.departmentId);
         };
 
-        // 비활성 부서는 버튼 사용 불가
         editBtn.disabled = !active;
         deleteBtn.disabled = !active;
 
-        // 관리 버튼 추가
         action.append(editBtn, deleteBtn);
 
-        // 테이블 행 완성
-        tr.append(code, name, status, action);
+        tr.append(code, name, employeeCount, status, action);
 
-        // 화면에 추가
         tbody.appendChild(tr);
     });
 };
 
-//부서 비활성화
+
+// 3. 부서 비활성화
 const deactivate = async (departmentId) => {
 
     if (!confirm("해당 부서를 비활성화하시겠습니까?")) {
@@ -211,7 +231,6 @@ const deactivate = async (departmentId) => {
 
         alert(result.message);
 
-        // 목록 새로고침
         location.reload();
 
     } catch (error) {
@@ -220,7 +239,8 @@ const deactivate = async (departmentId) => {
     }
 };
 
-// 통계 표시
+
+// 4. 부서 통계
 const updateSummary = () => {
 
     const activeCount = departmentList.filter(
@@ -238,7 +258,7 @@ const updateSummary = () => {
 };
 
 
-// 검색
+// 5. 부서명 검색
 document.getElementById("keyword").addEventListener("input", function() {
 
     const keyword = this.value.trim().toLowerCase();
@@ -251,7 +271,7 @@ document.getElementById("keyword").addEventListener("input", function() {
 });
 
 
-// 부서 등록 팝업 열기
+// 6. 등록 팝업
 document.getElementById("openRegisterBtn").addEventListener("click", () => {
 
     window.open(
@@ -259,14 +279,23 @@ document.getElementById("openRegisterBtn").addEventListener("click", () => {
         "departmentRegisterPopup",
         "width=650,height=400"
     );
-
 });
 
 
-// 페이지 실행
+// 7. 목록 자동 조회
 getList();
 
 </script>
+
+
+	<!-- AdminLTE 동작에 필요한 JS -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
 </body>
 </html>
