@@ -207,36 +207,53 @@
 				
 				const employees = await response.json();
 				
-				//입력한 검색어
+				// 입력한 검색 조건
 				const keyword = $("#searchKeyword").val().trim().toLowerCase();
+				const dept = $("#searchDept").val();
+				const job = $("#searchJob").val();
 				const status = $("#searchStatus").val();
 				const startDate = $("#startDate").val();
 				const endDate = $("#endDate").val();
 				
-				const result = employees.filter(emp=>{
-					
-				//사번 또는 이름 검색
-				const keywordMatch = String(emp.empId).includes(keyword) ||
-										emp.ename.toLowerCase().includes(keyword);
-				
-				//재직 상태 일치 검색
-				const statusMatch = status ==="" || emp.status === status;
-				
-				return keywordMatch && statusMatch;
-				
-				//입사일 검색
-				const hireDate = emp.hiredate
-					? new Date(emp.hiredate) : null;
-					
-				const dateMatch = (!startDate && !endDate) ||
-					(hireDate && 
-						(!startDate || hireDate >= new Date(startDate + "T00:00:00")) &&
-						(!endDate || hireDate <= new Date(endDate + "T23:59:59.999"))
-					);
-				
-				//모든 검색 조건 만족 여부
-				return keywordMatch && statusMatch && dateMatch;
-				
+				const result = employees.filter(emp => {
+
+				    // 사번 또는 이름 검색
+				    const keywordMatch =
+				        String(emp.empId).includes(keyword) ||
+				        (emp.ename ?? "").toLowerCase().includes(keyword);
+
+				    // 재직 상태 검색
+				    const statusMatch =
+				        !status || emp.status === status;
+
+				    // 입사일 검색
+				    const hireDate = emp.hiredate
+				        ? new Date(emp.hiredate)
+				        : null;
+
+				    const startMatch =
+				        !startDate ||
+				        (hireDate && hireDate >= new Date(startDate + "T00:00:00"));
+
+				    const endMatch =
+				        !endDate ||
+				        (hireDate && hireDate <= new Date(endDate + "T23:59:59.999"));
+				    
+					 // 부서 검색
+				    const deptMatch =
+				        !dept || String(emp.departmentId) === dept;
+
+				    // 직급 검색
+				    const jobMatch =
+				        !job || String(emp.jobId) === job;
+
+				    // 모든 조건을 만족하는 사원만 검색
+				    return keywordMatch && deptMatch && jobMatch
+				    && statusMatch && startMatch && endMatch;
+				    
+				    
+				    
+
 				});
 				
 				//검색 결과 출력
@@ -267,8 +284,8 @@
 				
 				$("<td>").text(emp.empId).appendTo(tr);
 				$("<td>").text(emp.ename).appendTo(tr);
-				$("<td>").text(emp.departmentId).appendTo(tr);
-				$("<td>").text(emp.jobId).appendTo(tr);
+				$("<td>").text(emp.department?.departmentName ?? "-").appendTo(tr);
+				$("<td>").text(emp.job?.jobName ?? "-").appendTo(tr);
 				$("<td>").text(emp.email ?? "-").appendTo(tr);
 			
 				const hiredate = emp.hiredate
@@ -318,6 +335,8 @@
 				'검색 조건을 입력하고 검색 버튼을 눌러주세요.' +
 				'</td></tr>');
 		});
+		
+		
 	</script>
 
 </body>

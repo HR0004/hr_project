@@ -63,4 +63,10 @@ public class EmpService {
 		public int update(Emp emp) {
 			return empMapper.update(emp);
 		}
+		
+		//사원 퇴사 처리
+		@Transactional
+		public int retire(int empId) {
+			return empMapper.retire(empId);
+		}
 }
