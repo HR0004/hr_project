@@ -11,40 +11,48 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <style>
-	/* 피그마 기획안 디자인 반영 스타일 */
 	body {
 		background-color: #f8f9fa;
 	}
-	/* 사이드바 스타일 */
-	.sidenav {
+	
+	/* 만드신 사이드바 클래스(.main-sidebar) 기준 스타일 설정 */
+	.main-sidebar {
 		height: 100vh;
 		background-color: #1a2332;
 		color: #fff;
 		position: fixed;
 		width: 240px;
+		top: 0;
+		left: 0;
 		padding-top: 20px;
 	}
-	.sidenav .brand {
-		font-size: 16px;
+	.sidebar-logo {
+		font-size: 18px;
 		font-weight: bold;
 		padding: 10px 20px;
+		color: #fff;
+		margin-bottom: 5px;
+	}
+	.sidebar-title {
+		font-size: 13px;
+		padding: 0 20px 20px 20px;
 		color: #adb5bd;
-		margin-bottom: 20px;
+		border-bottom: 1px solid rgba(255,255,255,0.1);
+		margin-bottom: 15px;
 	}
-	.sidenav ul.nav {
-		padding: 0;
-	}
-	.sidenav ul.nav li a {
+	.sidebar-menu .menu-item {
 		color: #adb5bd;
 		padding: 12px 20px;
 		display: block;
 		text-decoration: none;
 	}
-	.sidenav ul.nav li.active a, .sidenav ul.nav li a:hover {
+	.sidebar-menu .menu-item.active, .sidebar-menu .menu-item:hover {
 		color: #fff;
 		background-color: #0d6efd;
+		text-decoration: none;
 	}
-	/* 메인 컨텐츠 영역 */
+
+	/* 우측 메인 컨텐츠 영역 (사이드바 너비 240px 만큼 여백 확보) */
 	.main-content {
 		margin-left: 240px;
 		padding: 30px;
@@ -89,20 +97,8 @@
 </head>
 <body>
 
-	<!-- 좌측 네비게이션 사이드바 -->
-	<div class="sidenav">
-		<div class="brand">HRMS_02 관리자</div>
-		<ul class="nav">
-			<li><a href="${pageContext.request.contextPath}/main">대시보드</a></li>
-			<li><a href="${pageContext.request.contextPath}/department/list">직급 관리</a></li>
-			<li><a href="${pageContext.request.contextPath}/employee/list">직원 관리</a></li>
-			<li><a href="${pageContext.request.contextPath}/attendance/list">근태 관리</a></li>
-			<li><a href="${pageContext.request.contextPath}/leave/view">휴가 관리</a></li>
-			<li><a href="${pageContext.request.contextPath}/admin/accounts/1">권한 관리</a></li>
-			<li class="active"><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
-			<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
-		</ul>
-	</div>
+	<!-- 좌측 사이드바 공통 파일 포함 -->
+	<%@ include file="/WEB-INF/views/common/sidebar.jspf" %>
 
 	<!-- 우측 메인 컨텐츠 -->
 	<div class="main-content">
@@ -145,14 +141,6 @@
 					<div class="info-label">최종 로그인</div>
 					<div class="info-value">${sessionScope.loginUser.lastLoginAt != null ? sessionScope.loginUser.lastLoginAt : '방금 전'}</div>
 				</div>
-			</div>
-
-			<!-- 관리자 전용 기능 영역 (오류 방지형 버튼) -->
-			<div style="margin-top: 30px; padding-top: 20px; border-top: 1px dashed #dee2e6;">
-				<h4 style="font-weight: bold; margin-bottom: 15px;">관리자 전용 기능</h4>
-				<a href="${pageContext.request.contextPath}/admin/accounts/1" class="btn btn-warning">
-					 사원 계정 및 권한 설정 바로가기
-				</a>
 			</div>
 		</div>
 	</div>
