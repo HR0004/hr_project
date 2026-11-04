@@ -13,6 +13,9 @@ public interface SalaryMapper {
     // 급여 목록 조회
     List<Salary> selectAll();
 
+    // 급여 번호로 상세 조회
+    Salary selectById(@Param("salaryId") Long salaryId);
+
     // 동일 사원·지급 연월의 급여 건수 조회
     int countByEmpAndYearMonth(
             @Param("empId") Long empId,

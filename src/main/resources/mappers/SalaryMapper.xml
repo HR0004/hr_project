@@ -30,6 +30,21 @@
         FROM salary
         ORDER BY salary_year_month DESC, salary_id DESC
     </select>
+    <!-- 급여 번호로 상세 조회 -->
+    <select id="selectById" resultMap="salaryMap">
+        SELECT
+            salary_id,
+            emp_id,
+            salary_year_month,
+            base_salary,
+            bonus,
+            deduction,
+            net_salary,
+            payment_date
+        FROM salary
+        WHERE salary_id = #{salaryId}
+    </select>
+
     <!-- 동일 사원·지급 연월의 급여 건수 조회 -->
     <select id="countByEmpAndYearMonth" resultType="int">
         SELECT COUNT(*)

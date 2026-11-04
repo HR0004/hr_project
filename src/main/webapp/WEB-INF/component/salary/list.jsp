@@ -93,6 +93,7 @@
 <body>
     <h1>급여 대장</h1>
     <p>인사 관리자용 급여 목록입니다. 금액 단위: 원</p>
+    <p>급여 번호를 누르면 상세 내역을 볼 수 있습니다.</p>
 
     <nav class="salary-actions" aria-label="급여 작업">
         <a class="create-link"
@@ -123,7 +124,10 @@
             <% } else { %>
                 <% for (Salary salary : salaries) { %>
                     <tr>
-                        <td><%= text(salary.getSalaryId()) %></td>
+                        <td>
+                            <a href="<%= text(request.getContextPath()) %>/salary/detail/<%= text(salary.getSalaryId()) %>"
+                               aria-label="급여 <%= text(salary.getSalaryId()) %>번 상세 보기"><%= text(salary.getSalaryId()) %></a>
+                        </td>
                         <td><%= text(salary.getEmpId()) %></td>
                         <td><%= text(salary.getSalaryYearMonth()) %></td>
                         <td class="money">

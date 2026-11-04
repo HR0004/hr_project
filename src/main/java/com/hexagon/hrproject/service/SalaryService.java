@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import org.springframework.dao.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
 import com.hexagon.hrproject.exception.SalaryBusinessException;
+import com.hexagon.hrproject.exception.SalaryNotFoundException;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,19 @@ public class SalaryService {
 	@PreAuthorize("hasRole('HR_ADMIN')")
 	public List<Salary> getSalaryList() {
 		return salaryMapper.selectAll();
+	}
+
+	// 인사 관리자용 급여 상세 조회
+	@PreAuthorize("hasRole('HR_ADMIN')")
+	public Salary getSalaryDetail(Long salaryId) {
+		if (salaryId == null || salaryId <= 0) {
+			throw new SalaryNotFoundException();
+		}
+		Salary salary = salaryMapper.selectById(salaryId);
+		if (salary == null) {
+			throw new SalaryNotFoundException();
+		}
+		return salary;
 	}
 
 	// 등록할 급여 정보 검사 및 실수령액 계산

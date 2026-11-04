@@ -10,14 +10,20 @@ import org.springframework.dao.DuplicateKeyException;
 import com.hexagon.hrproject.domain.Salary;
 import com.hexagon.hrproject.dto.request.SalaryCreateRequest;
 import com.hexagon.hrproject.exception.SalaryBusinessException;
+import com.hexagon.hrproject.exception.SalaryNotFoundException;
 import com.hexagon.hrproject.mapper.SalaryMapper;
 
 public class SalaryServiceTest {
     static class Mapper implements SalaryMapper {
         int count, inserts, result = 1;
         RuntimeException failure;
-        Salary inserted;
+        Salary inserted, found;
+        int detailReads;
+        Long requestedId;
         public List<Salary> selectAll() { return Collections.emptyList(); }
+        public Salary selectById(Long salaryId) {
+            detailReads++; requestedId = salaryId; return found;
+        }
         public int countByEmpAndYearMonth(Long empId, String month) { return count; }
         public int insert(Salary salary) {
             inserts++;
@@ -80,5 +86,26 @@ public class SalaryServiceTest {
     }
     @Test public void missingRequestStillRejected() {
         assertThrows(SalaryBusinessException.class, () -> new SalaryService(new Mapper()).createSalary(null));
+    }
+    @Test public void detailReturnsStoredSalaryWithoutRecalculating() {
+        Mapper m = new Mapper(); m.found = new Salary();
+        m.found.setSalaryId(42L); m.found.setNetSalary(new BigDecimal("1234567"));
+        Salary actual = new SalaryService(m).getSalaryDetail(42L);
+        assertSame(m.found, actual);
+        assertEquals(Long.valueOf(42L), m.requestedId);
+        assertEquals(new BigDecimal("1234567"), actual.getNetSalary());
+        assertEquals(0, m.inserts);
+    }
+    @Test public void unknownSalaryIsNotFound() {
+        Mapper m = new Mapper();
+        assertThrows(SalaryNotFoundException.class, () -> new SalaryService(m).getSalaryDetail(999L));
+        assertEquals(1, m.detailReads);
+    }
+    @Test public void invalidIdsDoNotQueryDatabase() {
+        Mapper m = new Mapper(); SalaryService service = new SalaryService(m);
+        for (Long id : new Long[] {null, 0L, -1L}) {
+            assertThrows(SalaryNotFoundException.class, () -> service.getSalaryDetail(id));
+        }
+        assertEquals(0, m.detailReads);
     }
 }

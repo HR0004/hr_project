@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.*;
 import org.springframework.dao.DuplicateKeyException;
 import com.hexagon.hrproject.exception.SalaryBusinessException;
+import com.hexagon.hrproject.domain.Salary;
 
 public class SalaryServiceSecurityTest {
     // 이 프로필은 아래 setup()의 테스트 컨테이너에서만 활성화한다.
@@ -60,6 +61,27 @@ public class SalaryServiceSecurityTest {
         assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).inserts);
     }
     @Test public void hrAdminCanList() { as("ROLE_HR_ADMIN"); assertTrue(service.getSalaryList().isEmpty()); }
+    @Test public void noAuthenticationCannotReadDetail() {
+        assertThrows(AuthenticationCredentialsNotFoundException.class, () -> service.getSalaryDetail(42L));
+        assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).detailReads);
+    }
+    @Test public void employeeCannotReadDetail() {
+        as("ROLE_EMPLOYEE");
+        assertThrows(AccessDeniedException.class, () -> service.getSalaryDetail(42L));
+        assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).detailReads);
+    }
+    @Test public void teamApproverCannotReadDetail() {
+        as("ROLE_TEAM_APPROVER");
+        assertThrows(AccessDeniedException.class, () -> service.getSalaryDetail(42L));
+        assertEquals(0, context.getBean(SalaryServiceTest.Mapper.class).detailReads);
+    }
+    @Test public void hrAdminCanReadDetail() {
+        as("ROLE_HR_ADMIN");
+        SalaryServiceTest.Mapper m = context.getBean(SalaryServiceTest.Mapper.class);
+        m.found = new Salary(); m.found.setSalaryId(42L);
+        assertSame(m.found, service.getSalaryDetail(42L));
+        assertEquals(1, m.detailReads);
+    }
     @Test public void hrAdminCreateCommits() {
         as("ROLE_HR_ADMIN"); service.createSalary(SalaryServiceTest.request());
         assertEquals(1, context.getBean(Tx.class).commits);
