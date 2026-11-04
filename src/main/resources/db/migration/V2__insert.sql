@@ -113,7 +113,7 @@ WHERE d.department_code = 'DEV'
 INSERT INTO `account` (emp_id, login_id, `password`)
 SELECT e.emp_id,
        'hexagon',
-       '$2a$10$nlJH.ZQwi/6uietcO9en3OMYSgypqOC5nnl0IeMM1q0qn..Jjl2wq'
+       '$2a$10$spvniMWIKiRCH9Qh.hdAVejVMTA6NkYjwdUy1JmeQS2hthQM9tv4W'
 FROM emp AS e
 WHERE e.email = 'hexa@naver.com'
   AND e.ename = '사고니';
