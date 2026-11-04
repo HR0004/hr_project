@@ -1,6 +1,7 @@
 package com.hexagon.hrproject.service;
 
 import java.math.BigDecimal;
+import org.springframework.dao.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
 import com.hexagon.hrproject.exception.SalaryBusinessException;
 import java.util.List;
@@ -80,7 +81,14 @@ public class SalaryService {
 			throw new SalaryBusinessException("해당 사원의 같은 지급 연월 급여가 이미 등록되어 있습니다.");
 		}
 
-		int result = salaryMapper.insert(salary);
+		int result;
+		try {
+			result = salaryMapper.insert(salary);
+		} catch (DuplicateKeyException ex) {
+			// UNIQUE(emp_id, salary_year_month) 적용 시 동시 등록 충돌도 안내한다.
+			throw new SalaryBusinessException(
+					"해당 사원의 같은 지급 연월 급여가 이미 등록되어 있습니다.", ex);
+		}
 
 		if (result != 1) {
 			throw new SalaryBusinessException("급여 등록에 실패했습니다.");
