@@ -1,15 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8" %>
 
-<%
-String sidebarUri = request.getRequestURI();
-String sidebarContextPath = request.getContextPath();
+<aside class="main-sidebar">
 
-boolean sidebarDepartmentActive = sidebarUri.startsWith(sidebarContextPath + "/departments");
+    <div class="sidebar-logo">HRMS Admin</div>
 
-boolean sidebarJobActive = sidebarUri.startsWith(sidebarContextPath + "/jobs");
+    <div class="sidebar-title">인사관리 시스템</div>
 
-boolean sidebarEmployeeActive = sidebarUri.startsWith(sidebarContextPath + "/employees");
+    <nav class="sidebar-menu">
 
         <!-- 부서 관리 -->
         <a href="${pageContext.request.contextPath}/departments" class="menu-item">01 부서 관리</a>
@@ -35,48 +32,6 @@ boolean sidebarEmployeeActive = sidebarUri.startsWith(sidebarContextPath + "/emp
         <!-- 로그아웃 -->
         <a href="${pageContext.request.contextPath}/logout" class="menu-item" style="color: #ff6b6b;">로그아웃</a>
 
-	<!-- 로고 -->
-	<a href="#" class="brand-link"> <span class="brand-text">
-			HRMS Admin </span>
-	</a>
+    </nav>
 
-	<div class="sidebar">
-
-		<div class="sidebar-title">인사관리 시스템</div>
-
-		<!-- 메뉴 -->
-		<nav class="mt-2">
-
-			<ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-
-				<li class="nav-item"><a
-					href="<%=sidebarContextPath%>/departments"
-					class="nav-link <%=sidebarDepartmentActive ? "active" : ""%>">
-						<p>01 부서 관리</p>
-				</a> <a href="<%=sidebarContextPath%>/jobs"
-					class="nav-link <%=sidebarJobActive ? "active" : ""%>">
-						<p>02 직급 관리</p>
-				</a> <a href="<%=sidebarContextPath%>/employees"
-					class="nav-link <%=sidebarEmployeeActive ? "active" : ""%>">
-						<p>03 사원 관리</p>
-				</a></li>
-
-				<li class="nav-item"><a
-					href="<%=sidebarContextPath%>/test/attendance.jsp"
-					class="nav-link <%=sidebarAttendanceActive ? "active" : ""%>">
-						<p>04 근태 관리</p>
-				</a></li>
-
-				<li class="nav-item"><a href="#" class="nav-link">
-						<p>05 휴가 관리</p>
-				</a></li>
-
-				<li class="nav-item"><a href="#" class="nav-link">
-						<p>06 급여 관리</p>
-				</a></li>
-
-			</ul>
-		</nav>
-
-	</div>
 </aside>
