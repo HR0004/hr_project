@@ -9,7 +9,7 @@ import com.hexagon.hrproject.domain.Department;
 import com.hexagon.hrproject.dto.DepartmentDTO;
 import com.hexagon.hrproject.exception.BusinessException;
 import com.hexagon.hrproject.exception.ErrorCode;
-import com.hexagon.hrproject.mapper.DepartmentMapper;
+import com.hexagon.hrproject.mappers.DepartmentMapper;
 
 import lombok.RequiredArgsConstructor;
 

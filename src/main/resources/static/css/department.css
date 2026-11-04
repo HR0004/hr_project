@@ -1,4 +1,9 @@
+
 @charset "UTF-8";
+
+/* =========================
+   1. 기본 설정
+========================= */
 
 * {
     box-sizing: border-box;
@@ -7,8 +12,9 @@
 body {
     margin: 0;
     font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    color: #172033;
     background: #ffffff;
-    color: #1c2738;
 }
 
 button, input {
@@ -19,99 +25,140 @@ button {
     cursor: pointer;
 }
 
-/* 전체 레이아웃 */
-.layout {
-    display: flex;
-    min-height: 100vh;
-}
 
-/* 사이드바 */
-.main-sidebar {
-    width: 230px;
-    flex-shrink: 0;
-    background: #fff;
-    border-right: 1px solid #edf0f4;
-    padding: 35px 18px;
-}
+/* =========================
+   2. AdminLTE 헤더
+========================= */
 
-.sidebar-logo {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 35px;
-}
-
-.sidebar-title {
-    font-size: 13px;
-    margin-bottom: 45px;
-}
-
-.sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.menu-item {
-    display: block;
-    padding: 15px 18px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #263347;
-    font-size: 13px;
-}
-
-.menu-item.active {
-    background: #edf2f8;
-}
-
-/* 메인 영역 */
-.main-area {
-    flex: 1;
-    min-width: 0;
-}
-
-/* 상단 헤더 */
 .main-header {
-    height: 90px;
-    padding: 30px 40px;
+    min-height: 90px;
+    background: #ffffff;
+    padding: 0 32px;
+    border-bottom: none !important;
+}
+
+.user-role {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    width: 188px;
+    height: 52px;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+    background: #ffffff;
 }
 
-.header-path {
+
+/* =========================
+   3. AdminLTE 사이드바
+========================= */
+
+.main-sidebar {
+    width: 290px;
+    background: #ffffff;
+    box-shadow: none !important;
+}
+
+.brand-link {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    padding-left: 45px;
+    border-bottom: none !important;
+}
+
+.brand-text {
+    color: #172033;
     font-size: 13px;
-    color: #667085;
-}
-
-.header-user {
-    background: #fff;
-    border: 1px solid #e3e8ef;
-    border-radius: 8px;
-    padding: 12px 35px;
-    font-size: 13px;
-}
-
-/* 부서 관리 콘텐츠 */
-.content {
-    padding: 15px 40px 50px;
-}
-
-.page-title {
-    font-size: 20px;
-    margin: 0 0 24px;
     font-weight: 600;
 }
 
-/* 요약 카드 */
+.sidebar {
+    padding: 0 20px;
+}
+
+.sidebar-title {
+    margin: 10px 0 32px 27px;
+    color: #172033;
+}
+
+.nav-sidebar .nav-item {
+    margin-bottom: 18px;
+}
+
+.nav-sidebar .nav-link {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 32px;
+    border-radius: 10px;
+    color: #172033 !important;
+}
+
+.nav-sidebar .nav-link p {
+    font-size: 13px;
+}
+
+/* 현재 선택된 메뉴 */
+.main-sidebar .nav-sidebar .nav-item > .nav-link.active {
+    background-color: #eef3f9 !important;
+    color: #172033 !important;
+    box-shadow: none !important;
+}
+
+/* 기존 사원 관리 스타일 호환 */
+.employee-page-active {
+    background: #eef3f9 !important;
+    color: #172033 !important;
+}
+
+
+/* =========================
+   4. AdminLTE 메인 레이아웃
+========================= */
+
+.content-wrapper {
+    background: #f5f7fb;
+    min-height: calc(100vh - 90px);
+}
+
+/* 제목 및 경로 */
+.content-header {
+    padding: 32px 28px 20px;
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #14213b;
+}
+
+.page-path {
+    margin: 0;
+    font-size: 13px;
+    color: #8293b1;
+}
+
+/* 본문 */
+.content-wrapper .content {
+    padding: 0 28px 40px;
+}
+
+
+/* =========================
+   5. 부서 통계 카드
+========================= */
+
 .summary-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: 50px;
 }
 
 .summary-card {
+    background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 24px;
@@ -128,7 +175,11 @@ button {
     margin: 0;
 }
 
-/* 목록 상단 */
+
+/* =========================
+   6. 검색 및 등록 버튼
+========================= */
+
 .table-top {
     display: flex;
     justify-content: space-between;
@@ -140,6 +191,7 @@ button {
 .table-top h3 {
     font-size: 14px;
     font-weight: 500;
+    margin: 0;
 }
 
 .table-actions {
@@ -152,22 +204,27 @@ button {
     padding: 12px 15px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    background: #ffffff;
 }
 
-/* 버튼 */
 .primary-btn {
     padding: 12px 22px;
     background: #10192e;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
 }
 
 .primary-btn:hover {
     background: #263754;
+    color: #ffffff;
 }
 
-/* 부서 테이블 */
+
+/* =========================
+   7. 부서 목록 테이블
+========================= */
+
 .department-table {
     width: 100%;
     border-collapse: separate;
@@ -183,7 +240,7 @@ button {
 }
 
 .department-table td {
-    background: #fff;
+    background: #ffffff;
     border-top: 1px solid #e2e8f0;
     border-bottom: 1px solid #e2e8f0;
     padding: 18px 22px;
@@ -200,17 +257,29 @@ button {
     border-radius: 0 8px 8px 0;
 }
 
-.department-table button {
-    background: white;
-    border: none;
+.department-table td:last-child button {
+    margin-right: 8px;
+    padding: 7px 12px;
+    border: 1px solid #dce3ec;
+    border-radius: 6px;
+    background: #ffffff;
 }
 
-.department-table button:disabled {
+.department-table td:last-child button:hover:not(:disabled) {
+    background: #edf2f8;
+}
+
+.department-table td:last-child button:disabled {
+    opacity: 0.45;
     color: #9ca3af;
     cursor: not-allowed;
 }
 
-/* 등록 팝업 */
+
+/* =========================
+   8. 등록·수정 팝업
+========================= */
+
 .popup-body {
     min-height: 100vh;
     margin: 0;
@@ -221,12 +290,12 @@ button {
     background: #f4f6f9;
 }
 
-/* 등록카드 */
 .popup-card {
     width: 100%;
     max-width: 500px;
     padding: 30px;
-    background: white;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
 }
 
@@ -254,6 +323,16 @@ button {
     border-radius: 8px;
 }
 
+.popup-card .form-group + .form-group {
+    margin-top: 20px;
+}
+
+.popup-card input[readonly] {
+    background: #f4f6f9;
+    color: #667085;
+    cursor: not-allowed;
+}
+
 .button-group {
     display: flex;
     justify-content: flex-end;
@@ -263,24 +342,47 @@ button {
 
 .button-group button:not(.primary-btn) {
     padding: 12px 22px;
-    background: white;
+    background: #ffffff;
     border: 1px solid #dce3ec;
     border-radius: 8px;
 }
 
-/* 작은 화면 */
+
+/* =========================
+   9. AdminLTE 사이드바 여백
+========================= */
+
+/* AdminLTE 사이드바와 본문 위치 통일 */
+@media (min-width: 992px) {
+
+    body:not(.sidebar-collapse) .main-sidebar {
+        width: 290px;
+    }
+
+    body:not(.sidebar-collapse) .main-header,
+    body:not(.sidebar-collapse) .content-wrapper {
+        margin-left: 290px !important;
+    }
+
+    body.sidebar-collapse .main-header,
+    body.sidebar-collapse .content-wrapper {
+        margin-left: 4.6rem !important;
+    }
+}
+
+
+/* =========================
+   10. 작은 화면
+========================= */
+
 @media (max-width: 800px) {
-    .main-sidebar {
-        width: 170px;
-        padding: 20px 10px;
-    }
 
-    .main-header {
+    .content-header {
         padding: 20px;
     }
 
-    .content {
-        padding: 20px;
+    .content-wrapper .content {
+        padding: 0 20px 30px;
     }
 
     .summary-row {
@@ -293,36 +395,21 @@ button {
         align-items: stretch;
     }
 
-    .table-actions input {
-        width: 100%;
+    .table-actions {
+        flex-wrap: wrap;
     }
-}
 
-/* 비활성화 버튼 */
-.department-table td:last-child button {
-    margin-right: 8px;
-    padding: 7px 12px;
-    border: 1px solid #dce3ec;
-    border-radius: 6px;
-    background: white;
-}
+    .table-actions input {
+        flex: 1;
+        min-width: 0;
+    }
 
-.department-table td:last-child button:hover:not(:disabled) {
-    background: #edf2f8;
-}
+    .department-table {
+        font-size: 12px;
+    }
 
-.department-table td:last-child button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-/* 수정 화면 입력칸 간격 */
-.popup-card .form-group + .form-group {
-    margin-top: 20px;
-}
-
-.popup-card input[readonly] {
-    background: #f4f6f9;
-    color: #667085;
-    cursor: not-allowed;
+    .department-table th,
+    .department-table td {
+        padding: 12px;
+    }
 }
