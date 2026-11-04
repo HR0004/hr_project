@@ -1,0 +1,415 @@
+
+@charset "UTF-8";
+
+/* =========================
+   1. 기본 설정
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    color: #172033;
+    background: #ffffff;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================
+   2. AdminLTE 헤더
+========================= */
+
+.main-header {
+    min-height: 90px;
+    background: #ffffff;
+    padding: 0 32px;
+    border-bottom: none !important;
+}
+
+.user-role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 188px;
+    height: 52px;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+    background: #ffffff;
+}
+
+
+/* =========================
+   3. AdminLTE 사이드바
+========================= */
+
+.main-sidebar {
+    width: 290px;
+    background: #ffffff;
+    box-shadow: none !important;
+}
+
+.brand-link {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    padding-left: 45px;
+    border-bottom: none !important;
+}
+
+.brand-text {
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sidebar {
+    padding: 0 20px;
+}
+
+.sidebar-title {
+    margin: 10px 0 32px 27px;
+    color: #172033;
+}
+
+.nav-sidebar .nav-item {
+    margin-bottom: 18px;
+}
+
+.nav-sidebar .nav-link {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 32px;
+    border-radius: 10px;
+    color: #172033 !important;
+}
+
+.nav-sidebar .nav-link p {
+    font-size: 13px;
+}
+
+/* 현재 선택된 메뉴 */
+.main-sidebar .nav-sidebar .nav-item > .nav-link.active {
+    background-color: #eef3f9 !important;
+    color: #172033 !important;
+    box-shadow: none !important;
+}
+
+/* 기존 사원 관리 스타일 호환 */
+.employee-page-active {
+    background: #eef3f9 !important;
+    color: #172033 !important;
+}
+
+
+/* =========================
+   4. AdminLTE 메인 레이아웃
+========================= */
+
+.content-wrapper {
+    background: #f5f7fb;
+    min-height: calc(100vh - 90px);
+}
+
+/* 제목 및 경로 */
+.content-header {
+    padding: 32px 28px 20px;
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #14213b;
+}
+
+.page-path {
+    margin: 0;
+    font-size: 13px;
+    color: #8293b1;
+}
+
+/* 본문 */
+.content-wrapper .content {
+    padding: 0 28px 40px;
+}
+
+
+/* =========================
+   5. 부서 통계 카드
+========================= */
+
+.summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 50px;
+}
+
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 24px;
+    min-height: 115px;
+}
+
+.summary-card p {
+    font-size: 13px;
+    margin: 0 0 20px;
+}
+
+.summary-card h3 {
+    font-size: 22px;
+    margin: 0;
+}
+
+
+/* =========================
+   6. 검색 및 등록 버튼
+========================= */
+
+.table-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 15px;
+}
+
+.table-top h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.table-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.table-actions input {
+    width: 260px;
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.primary-btn {
+    padding: 12px 22px;
+    background: #10192e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+}
+
+.primary-btn:hover {
+    background: #263754;
+    color: #ffffff;
+}
+
+
+/* =========================
+   7. 부서 목록 테이블
+========================= */
+
+.department-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 5px;
+}
+
+.department-table th {
+    background: #edf2f8;
+    text-align: left;
+    padding: 18px 22px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.department-table td {
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 18px 22px;
+    font-size: 13px;
+}
+
+.department-table td:first-child {
+    border-left: 1px solid #e2e8f0;
+    border-radius: 8px 0 0 8px;
+}
+
+.department-table td:last-child {
+    border-right: 1px solid #e2e8f0;
+    border-radius: 0 8px 8px 0;
+}
+
+.department-table td:last-child button {
+    margin-right: 8px;
+    padding: 7px 12px;
+    border: 1px solid #dce3ec;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.department-table td:last-child button:hover:not(:disabled) {
+    background: #edf2f8;
+}
+
+.department-table td:last-child button:disabled {
+    opacity: 0.45;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   8. 등록·수정 팝업
+========================= */
+
+.popup-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f6f9;
+}
+
+.popup-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.popup-card h2 {
+    font-size: 20px;
+    margin: 0 0 12px;
+}
+
+.popup-description {
+    color: #667085;
+    font-size: 13px;
+    margin-bottom: 28px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+}
+
+.popup-card .form-group + .form-group {
+    margin-top: 20px;
+}
+
+.popup-card input[readonly] {
+    background: #f4f6f9;
+    color: #667085;
+    cursor: not-allowed;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.button-group button:not(.primary-btn) {
+    padding: 12px 22px;
+    background: #ffffff;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+}
+
+
+/* =========================
+   9. AdminLTE 사이드바 여백
+========================= */
+
+/* AdminLTE 사이드바와 본문 위치 통일 */
+@media (min-width: 992px) {
+
+    body:not(.sidebar-collapse) .main-sidebar {
+        width: 290px;
+    }
+
+    body:not(.sidebar-collapse) .main-header,
+    body:not(.sidebar-collapse) .content-wrapper {
+        margin-left: 290px !important;
+    }
+
+    body.sidebar-collapse .main-header,
+    body.sidebar-collapse .content-wrapper {
+        margin-left: 4.6rem !important;
+    }
+}
+
+
+/* =========================
+   10. 작은 화면
+========================= */
+
+@media (max-width: 800px) {
+
+    .content-header {
+        padding: 20px;
+    }
+
+    .content-wrapper .content {
+        padding: 0 20px 30px;
+    }
+
+    .summary-row {
+        grid-template-columns: 1fr;
+        margin-bottom: 25px;
+    }
+
+    .table-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .table-actions {
+        flex-wrap: wrap;
+    }
+
+    .table-actions input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .department-table {
+        font-size: 12px;
+    }
+
+    .department-table th,
+    .department-table td {
+        padding: 12px;
+    }
+}
