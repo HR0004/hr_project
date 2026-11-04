@@ -16,22 +16,32 @@
 		<!-- 이 계정이 보유한 다수의 권한 가져오기, 이 계정이 여러 권한을 보유하므로, collection으로 가져오기 -->
 		<collection column="account_id" property="roles"
 			javaType="java.util.List" ofType="HrRole"
-			select="com.hexagon.hrproject.mapper.HrRoleMapper.selectByAccountId" />			
+			select="com.hexagon.hrproject.mapper.HrRoleMapper.selectByAccountId" />
 	</resultMap>
 
-	<!-- 1. 로그인 계정 등록 (MySQL AUTO_INCREMENT 적용: account_id 제외 또는 null 처리) -->
+
+	<!-- 로그인 계정 등록 -->
 	<insert id="insert" parameterType="Account"
 		useGeneratedKeys="true" keyProperty="accountId">
-		INSERT INTO account (emp_id, login_id, password, enabled)
-		VALUES (#{emp.empId}, #{loginId}, NULL, 1)
-	</insert>
 
-	<!-- 2. 로그인 ID 중복 확인 -->
-	<select id="countByLoginId" resultType="int">
-		SELECT COUNT(*)
-		FROM account
-		WHERE login_id = #{loginId}
-	</select>
+		INSERT INTO account (
+		emp_id,
+		login_id,
+		password,
+		enabled
+		)
+		VALUES (
+		#{emp.empId},
+		#{loginId},
+		NULL,
+		1
+		)
+
+
+	</insert>
+	<!-- 로그인 ID 중복 확인 -->
+	<select id="countByLoginId" resultType="int"> SELECT COUNT(*) FROM
+		account WHERE login_id = #{loginId} </select>
 
 	<!-- login_id 가 일치하는 회원 가져오기 -->
 	<select id="selectById" parameterType="String"

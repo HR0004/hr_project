@@ -388,8 +388,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 부서, 직급, 이메일, 입사일
             [
-                emp.departmentId,
-                emp.jobId,
+            	emp.department?.departmentName ?? "-",
+            	emp.job?.jobName ?? "-",
                 emp.email,
                 emp.hiredate
                     ? new Date(emp.hiredate).toLocaleDateString("ko-KR")

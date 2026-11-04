@@ -18,4 +18,7 @@ public interface EmpMapper {
 	//사원 정보 수정
 	int update(Emp emp);
 	
+	//사원 퇴사 처리
+	int retire(@Param("empId") int empId);
+	
 }

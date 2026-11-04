@@ -8,16 +8,29 @@
 
     <nav class="sidebar-menu">
 
-        <a href="${pageContext.request.contextPath}/departments"
-           class="menu-item active">
-            01 부서 관리
-        </a>
+        <!-- 부서 관리 -->
+        <a href="${pageContext.request.contextPath}/departments" class="menu-item">01 부서 관리</a>
 
-        <a href="#" class="menu-item">02 직급 관리</a>
-        <a href="#" class="menu-item">03 사원 관리</a>
-        <a href="#" class="menu-item">04 근태 관리</a>
-        <a href="#" class="menu-item">05 휴가 관리</a>
-        <a href="#" class="menu-item">06 급여 관리</a>
+        <!-- 직급 관리 -->
+        <a href="${pageContext.request.contextPath}/job/list" class="menu-item">02 직급 관리</a>
+
+        <!-- 사원 관리 (employeeList.jsp 등과 연동) -->
+        <a href="${pageContext.request.contextPath}/employees" class="menu-item">03 사원 관리</a>
+
+        <!-- 근태 관리 (attendview.jsp 등과 연동) -->
+        <a href="${pageContext.request.contextPath}/attendance" class="menu-item">04 근태 관리</a>
+
+        <!-- 휴가 관리 (leaveview.jsp 등과 연동) -->
+        <a href="${pageContext.request.contextPath}/leave" class="menu-item">05 휴가 관리</a>
+
+        <!-- 권한 관리 (account_manage.jsp 등과 연동) -->
+        <a href="${pageContext.request.contextPath}/admin/accounts/1" class="menu-item">06 권한 관리</a>
+
+        <!-- 마이페이지 -->
+        <a href="${pageContext.request.contextPath}/mypage" class="menu-item">07 마이페이지</a>
+
+        <!-- 로그아웃 -->
+        <a href="${pageContext.request.contextPath}/logout" class="menu-item" style="color: #ff6b6b;">로그아웃</a>
 
     </nav>
 
