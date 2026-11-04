@@ -93,12 +93,12 @@
 	<div class="sidenav">
 		<div class="brand">HRMS_02 관리자</div>
 		<ul class="nav">
-			<li><a href="#">대시보드</a></li>
-			<li><a href="#">직급 관리</a></li>
-			<li><a href="#">직원 관리</a></li>
-			<li><a href="#">근태 관리</a></li>
-			<li><a href="#">휴가 관리</a></li>
-			<li><a href="#">급여 관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/main">대시보드</a></li>
+			<li><a href="${pageContext.request.contextPath}/department/list">직급 관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/employee/list">직원 관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/attendance/list">근태 관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/leave/view">휴가 관리</a></li>
+			<li><a href="${pageContext.request.contextPath}/admin/accounts/1">권한 관리</a></li>
 			<li class="active"><a href="${pageContext.request.contextPath}/mypage">마이페이지</a></li>
 			<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
 		</ul>
@@ -145,6 +145,14 @@
 					<div class="info-label">최종 로그인</div>
 					<div class="info-value">${sessionScope.loginUser.lastLoginAt != null ? sessionScope.loginUser.lastLoginAt : '방금 전'}</div>
 				</div>
+			</div>
+
+			<!-- 관리자 전용 기능 영역 (오류 방지형 버튼) -->
+			<div style="margin-top: 30px; padding-top: 20px; border-top: 1px dashed #dee2e6;">
+				<h4 style="font-weight: bold; margin-bottom: 15px;">관리자 전용 기능</h4>
+				<a href="${pageContext.request.contextPath}/admin/accounts/1" class="btn btn-warning">
+					 사원 계정 및 권한 설정 바로가기
+				</a>
 			</div>
 		</div>
 	</div>
