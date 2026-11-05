@@ -60,7 +60,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		//스프링 시큐리티 필터 프록시 생성 및 등록(이때 빈의 이름은 반드시 "SpringSecurityFilterChain" 으로 해야함)
 		DelegatingFilterProxy securityFilter = new DelegatingFilterProxy("springSecurityFilterChain");
 		return new Filter[] {
-			encodingFilter , securityFilter
+			encodingFilter //, securityFilter
 		};
 	}
 }

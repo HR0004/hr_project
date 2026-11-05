@@ -14,98 +14,108 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JobService {
-	
+
 	private final JobMapper jobMapper;
-	
+
 	// 직급 등록
+	@Transactional
 	public int regist(JobDTO jobDTO) {
-        String name = jobDTO == null
-                ? null : jobDTO.getJobName();
+		String name = jobDTO == null ? null : jobDTO.getJobName();
 
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("직급명을 입력하세요.");
-        }
+		if (name == null || name.trim().isEmpty()) {
+			throw new IllegalArgumentException("직급명을 입력하세요.");
+		}
 
-        Job job = new Job();
-        job.setJobName(name.trim());
+		Job job = new Job();
+		job.setJobName(name.trim());
 
-        // MySQL에서 ID 자동 생성
-        int result = jobMapper.insert(job);
+		// MySQL에서 ID 자동 생성
+		int result = jobMapper.insert(job);
 
-        if (result != 1) {
-            throw new IllegalStateException("직급 등록 실패");
-        }
+		if (result != 1) {
+			throw new IllegalStateException("직급 등록 실패");
+		}
 
-        // 최초 등록 시 코드 생성
-        String code = String.format("JOB%04d", job.getJobId());
+		// 최초 등록 시 코드 생성
+		String code = String.format("JOB%04d", job.getJobId());
 
-        job.setJobCode(code);
+		job.setJobCode(code);
 
-        if (jobMapper.updateCode(job) != 1) {
-            throw new IllegalStateException("직급 코드 저장 실패");
-        }
+		if (jobMapper.updateCode(job) != 1) {
+			throw new IllegalStateException("직급 코드 저장 실패");
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    // 직급 목록 조회
-    public List<Job> getList() {
-        return jobMapper.selectAll();
-    }
+	// 직급 목록 조회
+	public List<Job> getList() {
+		return jobMapper.selectAll();
+	}
 
-    // 직급 상세 조회
-    public Job getDetail(int jobId) {
+	// 직급 상세 조회
+	public Job getDetail(int jobId) {
 
-        Job job = jobMapper.select(jobId);
+		Job job = jobMapper.select(jobId);
 
-        if (job == null) {
-            throw new IllegalArgumentException("직급을 찾을 수 없습니다.");
-        }
+		if (job == null) {
+			throw new IllegalArgumentException("직급을 찾을 수 없습니다.");
+		}
 
-        return job;
-    }
+		return job;
+	}
 
-    // 직급 수정
-    @Transactional
-    public int update(int jobId, JobDTO dto) {
+	// 직급 검색
+	public List<Job> search(String jobName) {
 
-        Job job = getDetail(jobId);
+		if (jobName == null || jobName.trim().isEmpty()) {
+			return jobMapper.selectAll();
+		}
 
-        if (job.getIsActive() != 1) {
-            throw new IllegalStateException("비활성 직급은 수정할 수 없습니다.");
-        }
+		return jobMapper.search(jobName.trim());
+	}
 
-        String name = dto == null ? null : dto.getJobName();
+	// 직급 수정
+	@Transactional
+	public int update(int jobId, JobDTO dto) {
 
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("직급명을 입력하세요.");
-        }
+		Job job = getDetail(jobId);
 
-        int result = jobMapper.updateName(jobId, name.trim());
+		if (job.getIsActive() != 1) {
+			throw new IllegalStateException("비활성 직급은 수정할 수 없습니다.");
+		}
 
-        if (result != 1) {
-            throw new IllegalStateException("직급 수정 실패");
-        }
+		String name = dto == null ? null : dto.getJobName();
 
-        return result;
-    }
+		if (name == null || name.trim().isEmpty()) {
+			throw new IllegalArgumentException("직급명을 입력하세요.");
+		}
 
-    // 직급 비활성화
-    @Transactional
-    public int deactivate(int jobId) {
+		int result = jobMapper.updateName(jobId, name.trim());
 
-        Job job = getDetail(jobId);
+		if (result != 1) {
+			throw new IllegalStateException("직급 수정 실패");
+		}
 
-        if (job.getIsActive() != 1) {
-            throw new IllegalStateException("이미 비활성화된 직급입니다.");
-        }
+		return result;
+	}
 
-        int result = jobMapper.deactivate(jobId);
+	// 직급 비활성화
+	@Transactional
+	public int deactivity(int jobId) {
 
-        if (result != 1) {
-            throw new IllegalStateException("직급 비활성화 실패");
-        }
+		Job job = getDetail(jobId);
 
-        return result;
+		if (job.getIsActive() != 1) {
+			throw new IllegalStateException("이미 비활성화된 직급입니다.");
+		}
+
+		int result = jobMapper.deactivate(jobId);
+
+		if (result != 1) {
+			throw new IllegalStateException("직급 비활성화 실패");
+		}
+
+		return result;
 	}
 }

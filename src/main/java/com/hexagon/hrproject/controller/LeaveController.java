@@ -9,4 +9,14 @@ public class LeaveController {
 	public String leavePage() {
 		return "leave/leaveview";
 	}
+	
+	@GetMapping("/leave/history")
+	public String leaveHistoryPage() {
+		return "leave/leaveHistory";
+	}
+	
+	@GetMapping("/leave/apply")
+	public String leaveApplyPage() {
+		return "leave/leaveApply";
+	}
 }

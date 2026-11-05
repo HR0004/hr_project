@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexagon.hrproject.common.response.ApiResponse;
@@ -48,8 +49,7 @@ public class RestDepartmentController {
 	
 	// 부서 상세 조회
 	@GetMapping("/api/departments/{departmentId}")
-	public ResponseEntity<ApiResponse<Department>> getDetail(
-	        @PathVariable int departmentId) {
+	public ResponseEntity<ApiResponse<Department>> getDetail(@PathVariable int departmentId) {
 
 	    Department dept = departmentService.getDetail(departmentId);
 
@@ -57,6 +57,12 @@ public class RestDepartmentController {
 	            ApiResponse.success("부서 상세 조회 성공", dept);
 
 	    return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	@GetMapping("/api/departments/search")
+	public List<Department> search(
+			@RequestParam(value="departmentName", required = false) String departmentName){
+		return departmentService.search(departmentName);
 	}
 	
 	// 부서명 수정

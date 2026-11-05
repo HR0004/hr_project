@@ -26,4 +26,7 @@ public interface JobMapper {
 
 	// 직급 비활성화 (보통 삭제는 하지 않기에 그냥 비활성화로 해둠)
 	int deactivate(@Param("jobId") int jobId);
+	
+	// 특정 직급 검색기능
+	List<Job> search(@Param("jobName") String jobname);
 }
