@@ -1,4 +1,4 @@
-package com.hexagon.hrproject.mappers;
+package com.hexagon.hrproject.mapper;
 
 import java.util.List;
 
@@ -19,6 +19,9 @@ public interface DepartmentMapper {
     Department select(@Param("departmentId") int departmentId);
 
     List<Department> selectAll();
+    
+    // 부서 검색기능으로 부서조회
+    List<Department> search(@Param("departmentName") String departmentName);
     
     // 수정
     int updateName(@Param("departmentId") int departmentId,

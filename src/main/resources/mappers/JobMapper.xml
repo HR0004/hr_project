@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hexagon.hrproject.mappers.JobMapper">
+<mapper namespace="com.hexagon.hrproject.mapper.JobMapper">
 
 	<!-- MySQL이 ID를 자동 생성 -->
-	<insert id="insert" parameterType="Job"
-		useGeneratedKeys="true" keyProperty="jobId">
+	<insert id="insert" parameterType="Job" useGeneratedKeys="true"
+		keyProperty="jobId">
 
 		INSERT INTO job (
 		job_name, is_active
@@ -17,11 +17,28 @@
 	<select id="select" resultMap="joinMap">
 		SELECT
 		job_id,
-		job_code, job_name, is_active
+		job_code, job_name,
+		is_active
 		FROM
 		job
 		WHERE
 		job_id = #{jobId}
+	</select>
+
+	<!-- 직급명 또는 직급 코드 검색 -->
+	<select id="search" resultMap="joinMap">
+		SELECT j.job_id, j.job_code,
+		j.job_name, j.is_active,
+		COUNT(e.emp_id) AS employee_count
+		FROM job j
+		LEFT JOIN emp e
+		ON j.job_id = e.job_id
+		WHERE j.job_name LIKE CONCAT('%',
+		#{jobName}, '%')
+		OR j.job_code LIKE CONCAT('%', #{jobName}, '%')
+		GROUP
+		BY j.job_id, j.job_code, j.job_name, j.is_active
+		ORDER BY j.job_id DESC
 	</select>
 
 	<resultMap type="Job" id="joinMap">
@@ -33,17 +50,17 @@
 	</resultMap>
 
 	<select id="selectAll" resultMap="joinMap">
-		SELECT job_id,
-		job_code, job_name, is_active
+		SELECT job_id, job_code,
+		job_name, is_active
 		FROM job
-		ORDER BY
-		job_id DESC
+		ORDER BY job_id DESC
 	</select>
 
 	<!-- 생성된 ID로 부서 코드 저장 -->
-	<update id="updateCode" parameterType="Department">
+	<update id="updateCode" parameterType="Job">
 		UPDATE job
-		SET job_code = #{jobCode}
+		SET job_code =
+		#{jobCode}
 		WHERE job_id = #{jobId}
 		AND job_code IS NULL
 	</update>
@@ -52,8 +69,9 @@
 	<update id="updateName">
 		UPDATE job
 		SET job_name = #{jobName}
-		WHERE job_id = #{jobId}
-		AND is_active =	1
+		WHERE job_id =
+		#{jobId}
+		AND is_active = 1
 	</update>
 
 	<!-- 부서 비활성화 -->
