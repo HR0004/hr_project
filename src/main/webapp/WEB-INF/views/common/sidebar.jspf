@@ -2,21 +2,21 @@
     pageEncoding="UTF-8" %>
 
 <%
-    String uri = request.getRequestURI();
-    String contextPath = request.getContextPath();
+    String sidebarUri = request.getRequestURI();
+    String sidebarContextPath = request.getContextPath();
 
-    boolean departmentActive =
-        uri.startsWith(contextPath + "/departments");
+    boolean sidebarDepartmentActive =
+        sidebarUri.startsWith(sidebarContextPath + "/departments");
 
-    boolean jobActive =
-        uri.startsWith(contextPath + "/jobs");
+    boolean sidebarJobActive =
+        sidebarUri.startsWith(sidebarContextPath + "/jobs");
 
-    boolean employeeActive =
-        uri.startsWith(contextPath + "/employees");
+    boolean sidebarEmployeeActive =
+        sidebarUri.startsWith(sidebarContextPath + "/employees");
 
-    boolean attendanceActive =
-        uri.startsWith(contextPath + "/attendance")
-        || uri.startsWith(contextPath + "/test/attendance");
+    boolean sidebarAttendanceActive =
+        sidebarUri.startsWith(sidebarContextPath + "/attendance")
+        || sidebarUri.startsWith(sidebarContextPath + "/test/attendance");
 %>
 
 <!-- 사이드바 -->
@@ -42,29 +42,29 @@
                 role="menu">
 
                 <li class="nav-item">
-                    <a href="<%=contextPath%>/departments"
-                       class="nav-link <%=departmentActive ? "active" : ""%>">
+                    <a href="<%=sidebarContextPath%>/departments"
+                       class="nav-link <%=sidebarDepartmentActive ? "active" : ""%>">
                         <p>01 부서 관리</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="<%=contextPath%>/jobs"
-                       class="nav-link <%=jobActive ? "active" : ""%>">
+                    <a href="<%=sidebarContextPath%>/jobs"
+                       class="nav-link <%=sidebarJobActive ? "active" : ""%>">
                         <p>02 직급 관리</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="<%=contextPath%>/employees"
-                       class="nav-link <%=employeeActive ? "active" : ""%>">
+                    <a href="<%=sidebarContextPath%>/employees"
+                       class="nav-link <%=sidebarEmployeeActive ? "active" : ""%>">
                         <p>03 사원 관리</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="<%=contextPath%>/test/attendance.jsp"
-                       class="nav-link <%=attendanceActive ? "active" : ""%>">
+                    <a href="<%=sidebarContextPath%>/test/attendance.jsp"
+                       class="nav-link <%=sidebarAttendanceActive ? "active" : ""%>">
                         <p>04 근태 관리</p>
                     </a>
                 </li>

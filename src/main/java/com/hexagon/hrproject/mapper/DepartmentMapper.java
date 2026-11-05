@@ -1,4 +1,4 @@
-package com.hexagon.hrproject.mappers;
+package com.hexagon.hrproject.mapper;
 
 import java.util.List;
 

@@ -30,4 +30,10 @@ public interface AccountMapper {
 
 	// 4. 특정 계정에 새로운 권한 부여
 	void insertAccountRole(@Param("accountId") Long accountId, @Param("hrRoleId") Long hrRoleId);
+	
+	// 로그인한 계정의 비밀번호 변경
+	int updatePassword(
+	    @Param("accountId") int accountId,
+	    @Param("password") String password
+	);
 }
