@@ -18,40 +18,46 @@ import lombok.RequiredArgsConstructor;
 public class DepartmentService {
 	private final DepartmentMapper departmentMapper;
 
-	@Transactional
-	public int regist(DepartmentDTO departmentDTO) {
-		
-		String name = departmentDTO.getDepartmentName();
-		
-		if (name == null || name.trim().isEmpty()) {
-			throw new BusinessException(ErrorCode.INVALID_INPUT);
-        }
-		
-		Department dept = new Department();
-		
-		// 1. 부서명 설정
-		dept.setDepartmentName(name.trim()); // 해당 trim은 사용자가 부서명을 공백있지 입력하면 그때 공백을 없애고 받아오기 위함
 
-		// 2. mysql seq id 발급 
-		int result = departmentMapper.insert(dept);
-		
-	    
-		// 3. 부서코드 자동 생성
-        String code = String.format("DEPT%04d", dept.getDepartmentId());
-        
-        // 4. 도메인 객체 생성해서 news에 받은 데이터를 담는다
-        dept.setDepartmentCode(code);
+@Transactional
+public int regist(DepartmentDTO departmentDTO) {
 
-        if (departmentMapper.updateCode(dept) != 1) {
-        		throw new IllegalStateException("부서코드 생성 실패");
-        }
-        
-        if (departmentMapper.countByName(name.trim()) > 0) {
-            throw new BusinessException(ErrorCode.DEPARTMENT_ALREADY_EXISTS);
-        }
+    // 1. 부서명 가져오기
+    String name = departmentDTO.getDepartmentName();
 
-        return result;	
-	}
+    // 2. 입력값 검사
+    if (name == null || name.trim().isEmpty()) {
+        throw new BusinessException(ErrorCode.INVALID_INPUT);
+    }
+
+    name = name.trim();
+
+    // 3. 중복 검사 (INSERT 전에 실행!)
+    if (departmentMapper.countByName(name) > 0) {
+        throw new BusinessException(
+            ErrorCode.DEPARTMENT_ALREADY_EXISTS
+        );
+    }
+
+    // 4. 부서 객체 생성
+    Department dept = new Department();
+    dept.setDepartmentName(name);
+
+    // 5. 부서 등록
+    int result = departmentMapper.insert(dept);
+
+    // 6. 부서 코드 자동 생성
+    String code = String.format("DEPT%04d", dept.getDepartmentId());
+    dept.setDepartmentCode(code);
+
+    // 7. 부서 코드 저장
+    if (departmentMapper.updateCode(dept) != 1) {
+        throw new IllegalStateException("부서코드 생성 실패");
+    }
+
+    return result;
+}
+
 	
 	public List<Department> getList(){
 		return departmentMapper.selectAll();

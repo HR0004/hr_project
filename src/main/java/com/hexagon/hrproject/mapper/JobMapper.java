@@ -37,4 +37,13 @@ public interface JobMapper {
 		    @Param("jobName") String jobName,
 		    @Param("jobId") int jobId
 		);
+	
+	// 페이징 - 전체 직급 수
+	int countAll();
+
+	// 페이징 - 현재 페이지의 직급 목록
+	List<Job> selectPage(
+	    @Param("offset") int offset,
+	    @Param("pageSize") int pageSize
+	);
 }

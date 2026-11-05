@@ -95,4 +95,32 @@
 		WHERE job_name = #{jobName}
 		AND job_id != #{jobId}
 	</select>
+	
+	
+<!-- 페이징 - 전체 직급 수 -->
+<select id="countAll" resultType="int">
+    SELECT COUNT(*)
+    FROM job
+</select>
+
+<!-- 페이징 - 페이지별 직급 조회 -->
+<select id="selectPage" resultMap="joinMap">
+    SELECT
+        j.job_id,
+        j.job_code,
+        j.job_name,
+        j.is_active,
+        COUNT(e.emp_id) AS employee_count
+    FROM job j
+    LEFT JOIN emp e
+        ON j.job_id = e.job_id
+    GROUP BY
+        j.job_id,
+        j.job_code,
+        j.job_name,
+        j.is_active
+    ORDER BY j.job_id DESC
+    LIMIT #{offset}, #{pageSize}
+</select>
+	
 </mapper>

@@ -3,9 +3,12 @@ package com.hexagon.hrproject.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hexagon.hrproject.common.web.Pager;
 import com.hexagon.hrproject.domain.Job;
 import com.hexagon.hrproject.dto.JobDTO;
 import com.hexagon.hrproject.exception.BusinessException;
@@ -66,6 +69,30 @@ public class JobService {
     public List<Job> getList() {
         return jobMapper.selectAll();
     }
+    
+
+ // 직급 페이징 목록 조회
+    public Pager getPageList(HttpServletRequest request) {
+
+        Pager pager = new Pager();
+
+        // 전체 직급 수
+        pager.setTotalCount(jobMapper.countAll());
+
+        // 현재 페이지, offset 계산
+        pager.init(request);
+
+        // 현재 페이지 데이터
+        List<Job> jobList = jobMapper.selectPage(
+            pager.getOffset(),
+            pager.getPageSize()
+        );
+
+        pager.setList(jobList);
+
+        return pager;
+    }
+
 
     // 직급 상세 조회
     public Job getDetail(int jobId) {
