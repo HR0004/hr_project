@@ -17,8 +17,11 @@ public enum ErrorCode {
 	DEPARTMENT_REGIST_FAIL(500, "DEPARTMENT_REGIST_FAIL", "부서를 찾을 수 없습니다."),
 	DEPARTMENT_UPDATE_FAIL(500, "DEPARTMENT_UPDATE_FAIL", "부서 수정에 실패했습니다."),
 	DEPARTMENT_DELETE_FAIL(500, "DEPARTMENT_DELETE_FAIL", "부서 비활성화에 실패했습니다."),
-	UNAUTHORIZED_DEPARTMENT_ACCESS(500, "DEPARTMENT_NOT_FOUND", "부서에 대한 권한이 없습니다.");
+	DEPARTMENT_ALREADY_EXISTS(500, "DEPARTMENT_ALREADY_EXISTS", "부서가 이미 존재합니다."),
+	UNAUTHORIZED_DEPARTMENT_ACCESS(500, "DEPARTMENT_NOT_FOUND", "부서에 대한 권한이 없습니다."),
 	
+	INVALID_INPUT(500, "INVALID_INPUT", "접근할 수 없습니다."),
+	JOB_ALREADY_EXISTS (500, "JOB_ALREADY_EXISTS", "직급이 이미 존재합니다.");
 	
 	private final int status; // HTTP Status code 200, 500 등등..
 	private final String code; // 에러코드

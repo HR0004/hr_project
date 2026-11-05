@@ -105,7 +105,6 @@ String contextPath = request.getContextPath();
 							<label>성명</label>
 
 							<div class="employee-detail-value" id="detailName"></div>
-							<span id="detailName"></span>
 
 						</div>
 
@@ -192,9 +191,8 @@ String contextPath = request.getContextPath();
 							onclick="editEmployee()">정보 수정</button>
 
 						<!-- 퇴직 처리 -->
-						<button type="button"
-							class="employee-detail-button employee-detail-button-danger"
-							onclick="retireEmployee()">퇴직 처리</button>
+						<button type="button" class="btn btn-danger px-4 py-2"
+							id="retireBtn">퇴직 처리</button>
 
 					</div>
 
@@ -205,7 +203,44 @@ String contextPath = request.getContextPath();
 		</div>
 
 	</div>
+<!-- 퇴직 처리 팝업 -->
+<div class="modal fade" id="retirePopup" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
+            <div class="modal-body p-4">
+
+                <h4 class="font-weight-bold mb-4">
+                    <span id="retirePopupIcon" class="mr-2"></span>
+                    <span id="retirePopupTitle"></span>
+                </h4>
+
+                <p id="retirePopupMessage"></p>
+
+                <div id="retirePopupDetail"
+                     class="bg-light rounded p-3 my-4"></div>
+
+                <div class="d-flex">
+
+                    <button type="button"
+                            id="retirePopupCancel"
+                            class="btn btn-outline-secondary flex-fill mr-2"
+                            data-dismiss="modal">
+                        취소
+                    </button>
+
+                    <button type="button"
+                            id="retirePopupAction"
+                            class="btn btn-primary flex-fill">
+                        확인
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -218,22 +253,18 @@ String contextPath = request.getContextPath();
 		src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
 	<script>
-		// 사원 정보 수정
-		function editEmployee() {
-		    const empId = window.location.pathname.split("/").pop();
+	// 사원 정보 수정 화면으로 이동
+	function editEmployee() {
 
-		    location.href = "${pageContext.request.contextPath}/employees/"
-		        + empId + "/edit";
-		}
+	    const empId = location.pathname.split("/").filter(Boolean).pop();
 
-		// 사원 퇴직 처리
-function retireEmployee() {
-    const empId = window.location.pathname.split("/").pop();
+	    location.href =
+	        "${pageContext.request.contextPath}/employees/"
+	        + empId + "/edit";
+	}
 
-    alert("퇴직 처리 기능은 아직 구현 전입니다. 사번: " + empId);
-			}		
+
 			
-		}
 		
 
 		// 사이드바의 사원 관리 메뉴 활성화
@@ -272,17 +303,17 @@ function retireEmployee() {
 
 	        const result = await response.json();
 
-	        // 사원 요약 정보
+	    	 // 사원 요약 정보
 	        $("#summaryName").text(result.ename);
 	        $("#summaryEmpId").text(result.empId);
-	        $("#summaryDept").text(result.departmentId);
-	        $("#summaryJob").text(result.jobId);
+	        $("#summaryDept").text(result.department?.departmentName ?? "-");
+	        $("#summaryJob").text(result.job?.jobName ?? "-");
 
 	        // 사원 기본 정보
 	        $("#detailEmpId").text(result.empId);
 	        $("#detailName").text(result.ename);
-	        $("#detailDept").text(result.departmentId);
-	        $("#detailJob").text(result.jobId);
+	        $("#detailDept").text(result.department?.departmentName ?? "-");
+	        $("#detailJob").text(result.job?.jobName ?? "-");
 	        $("#detailEmail").text(result.email ?? "-");
 	        $("#detailPhone").text(result.phone ?? "-");
 
@@ -325,6 +356,159 @@ function retireEmployee() {
 
 	getEmpDetail();
 
+	// 퇴직 처리 팝업
+	const showRetirePopup = (type, emp = {}) => {
+
+	    const popups = {
+
+	        confirm: {
+	            icon: "⚠️",
+	            title: "퇴직 처리 확인",
+	            message: "선택한 사원을 퇴직 처리하시겠습니까?",
+	            detail: "사번 " + emp.empId
+	                  + " · 성명 " + emp.ename
+	                  + " · 현재 상태 재직",
+	            button: "퇴직 처리"
+	        },
+
+	        success: {
+	            icon: "✅",
+	            title: "퇴직 처리 완료",
+	            message: "재직 상태가 퇴직으로 변경되었습니다.",
+	            detail: "사원 기록은 삭제되지 않고 보관됩니다.",
+	            button: "닫기"
+	        },
+
+	        error: {
+	            icon: "❗",
+	            title: "퇴직 처리 불가",
+	            message: "이미 퇴직 처리된 사원입니다.",
+	            detail: "현재 재직 상태를 확인해 주세요.",
+	            button: "확인"
+	        },
+
+	        fail: {
+	            icon: "❗",
+	            title: "퇴직 처리 실패",
+	            message: "퇴직 처리 중 오류가 발생했습니다.",
+	            detail: "잠시 후 다시 시도해 주세요.",
+	            button: "확인"
+	        }
+	    };
+
+	    const popup = popups[type];
+
+	    if (!popup) return;
+
+	    $("#retirePopupIcon").text(popup.icon);
+	    $("#retirePopupTitle").text(popup.title);
+	    $("#retirePopupMessage").text(popup.message);
+	    $("#retirePopupDetail").text(popup.detail);
+	    $("#retirePopupAction").text(popup.button);
+
+	    // 확인 팝업에서만 취소 버튼 표시
+	    $("#retirePopupCancel").toggle(type === "confirm");
+
+	    $("#retirePopupAction").off("click").on("click", () => {
+
+	        if (type === "confirm") {
+
+	            // 팝업이 완전히 닫힌 후 API 요청
+	            $("#retirePopup").one("hidden.bs.modal", () => {
+	                executeRetire(emp.empId);
+	            });
+
+	            $("#retirePopup").modal("hide");
+	            return;
+	        }
+
+	        if (type === "success") {
+	            location.href =
+	                "${pageContext.request.contextPath}/employees";
+	            return;
+	        }
+
+	        $("#retirePopup").modal("hide");
+	    });
+
+	    $("#retirePopup").modal("show");
+	};
+
+
+	// 퇴직 처리 버튼 클릭
+	const retireEmployee = async () => {
+
+	    const empId = location.pathname.split("/").filter(Boolean).pop();
+
+	    try {
+	        // 최신 사원 상태 조회
+	        const response = await fetch(
+	            "${pageContext.request.contextPath}/api/employees/" + empId
+	        );
+
+	        if (!response.ok) {
+	            throw new Error("사원 조회 실패");
+	        }
+
+	        const emp = await response.json();
+
+	        // 이미 퇴직한 사원
+	        if (emp.status === "RETIRED") {
+	            showRetirePopup("error");
+	            return;
+	        }
+
+	        // 퇴직 확인 팝업
+	        showRetirePopup("confirm", emp);
+
+	    } catch (error) {
+	        console.error("사원 조회 오류:", error);
+	        showRetirePopup("fail");
+	    }
+	};
+
+
+	// 실제 퇴직 처리 API 요청
+	const executeRetire = async (empId) => {
+
+	    $("#retireBtn").prop("disabled", true);
+
+	    try {
+	        const response = await fetch(
+	            "${pageContext.request.contextPath}/api/employees/"
+	            + empId + "/retire",
+	            {
+	                method: "PATCH"
+	            }
+	        );
+
+	        // 이미 퇴직한 사원이거나 처리할 수 없는 상태
+	        if (response.status === 409) {
+	            showRetirePopup("error");
+	            return;
+	        }
+
+	        if (!response.ok) {
+	            throw new Error("퇴직 처리 실패");
+	        }
+
+	        // 퇴직 성공 팝업
+	        showRetirePopup("success");
+
+	    } catch (error) {
+	        console.error("퇴직 처리 오류:", error);
+	        showRetirePopup("fail");
+
+	    } finally {
+	        $("#retireBtn").prop("disabled", false);
+	    }
+	};
+
+
+	// 퇴직 처리 버튼 이벤트
+	$(function() {
+	    $("#retireBtn").on("click", retireEmployee);
+	});
 	</script>
 
 

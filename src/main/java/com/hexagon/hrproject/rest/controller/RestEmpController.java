@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -86,5 +87,20 @@ public class RestEmpController {
 		}
 		return ResponseEntity.ok("사원 정보 수정 성공");
 	}
+	
+	//사원 퇴사 처리
+	@PatchMapping("/api/employees/{empId}/retire")
+	public ResponseEntity<String> retire(@PathVariable int empId){
+		
+		//퇴사 처리 실행
+		int result = empService.retire(empId);
+		
+		if(result==0) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("해당 사원이 없거나 이미 퇴사 처리되었습니다.");
+		}
+		
+		return ResponseEntity.ok("퇴사 처리 성공");
+	}
+	
 	
 }

@@ -1,0 +1,695 @@
+
+@charset "UTF-8";
+
+/* =========================================
+   1. 기본 설정
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    color: #172033;
+    background: #ffffff;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================
+   2. 공통 헤더
+========================================= */
+
+.main-header {
+    min-height: 90px;
+    padding: 0 32px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.user-role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 188px;
+    height: 52px;
+    background: #ffffff;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+}
+
+
+/* =========================================
+   3. 공통 사이드바
+========================================= */
+
+.main-sidebar {
+    width: 290px;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 2px 0 8px rgba(15, 23, 42, 0.03) !important;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    height: 90px;
+    padding-left: 45px;
+    border-bottom: 1px solid #edf1f5 !important;
+}
+
+.brand-text {
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sidebar {
+    padding: 0 20px;
+}
+
+.sidebar-title {
+    margin: 10px 0 32px 27px;
+    color: #172033;
+}
+
+/* 메뉴별 구분선 */
+
+.nav-sidebar .nav-item {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.nav-sidebar .nav-item:last-child {
+    border-bottom: none;
+}
+
+/* 메뉴 기본 스타일 */
+
+.nav-sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding-left: 32px;
+    color: #172033 !important;
+    border-radius: 10px;
+}
+
+.nav-sidebar .nav-link p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* 마우스 오버 */
+
+.main-sidebar .nav-sidebar .nav-link:hover {
+    background: #f5f7fb !important;
+}
+
+/* 현재 선택된 메뉴 */
+
+.main-sidebar .nav-sidebar .nav-link.active {
+    background: #eef3f9 !important;
+    color: #172033 !important;
+    font-weight: 600;
+    box-shadow: none !important;
+}
+
+
+/* =========================================
+   4. 메인 콘텐츠 레이아웃
+========================================= */
+
+.content-wrapper {
+    min-height: calc(100vh - 90px);
+    background: #f5f7fb;
+}
+
+.content-header {
+    padding: 32px 28px 20px;
+}
+
+.content-wrapper .content {
+    padding: 0 28px 40px;
+}
+
+/* 페이지 제목 */
+
+.page-title {
+    margin: 0 0 8px;
+    color: #14213b;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.page-path {
+    margin: 0;
+    color: #8293b1;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   5. 직급 통계 카드
+========================================= */
+
+.summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 45px;
+}
+
+.summary-card {
+    min-height: 115px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.summary-card p {
+    margin: 0 0 20px;
+    color: #475569;
+    font-size: 13px;
+}
+
+.summary-card h3 {
+    margin: 0;
+    color: #14213b;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   6. 검색 및 등록 영역
+========================================= */
+
+.table-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 15px;
+}
+
+.table-top h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* 검색창 및 상태 필터 */
+
+.table-actions input,
+.table-actions select {
+    min-height: 42px;
+    padding: 10px 14px;
+    background: #ffffff;
+    color: #172033;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    outline: none;
+}
+
+.table-actions input {
+    width: 260px;
+}
+
+.table-actions select {
+    min-width: 120px;
+}
+
+/* 입력창 포커스 */
+
+.table-actions input:focus,
+.table-actions select:focus {
+    border-color: #8293b1;
+    box-shadow: 0 0 0 3px rgba(130, 147, 177, 0.12);
+}
+
+/* 등록 버튼 */
+
+.primary-btn {
+    min-height: 42px;
+    padding: 10px 22px;
+    background: #10192e;
+    color: #ffffff;
+    border: 1px solid #10192e;
+    border-radius: 8px;
+}
+
+.primary-btn:hover {
+    background: #263754;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   7. 직급 목록 테이블
+========================================= */
+
+.job-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 5px;
+}
+
+/* 테이블 헤더 */
+
+.job-table th {
+    padding: 18px 22px;
+    background: #edf2f8;
+    color: #172033;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 테이블 데이터 */
+
+.job-table td {
+    padding: 18px 22px;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+}
+
+/* 첫 번째 열 */
+
+.job-table td:first-child {
+    border-left: 1px solid #e2e8f0;
+    border-radius: 8px 0 0 8px;
+}
+
+/* 마지막 열 */
+
+.job-table td:last-child {
+    border-right: 1px solid #e2e8f0;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 수정 / 비활성화 버튼 */
+
+.job-table td:last-child button {
+    margin-right: 8px;
+    padding: 7px 12px;
+    background: #ffffff;
+    border: 1px solid #dce3ec;
+    border-radius: 6px;
+}
+
+.job-table td:last-child button:hover:not(:disabled) {
+    background: #edf2f8;
+}
+
+/* 비활성화된 버튼 */
+
+.job-table td:last-child button:disabled {
+    color: #9ca3af;
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   8. 직급 등록 팝업
+========================================= */
+
+.job-popup-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 30px;
+    background: #f5f7fb;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    color: #172033;
+}
+
+.job-popup-card {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+/* 팝업 제목 */
+
+.job-popup-card h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* 입력 항목 */
+
+.job-popup-card label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.job-popup-card input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+}
+
+/* 수정할 수 없는 입력창 */
+
+.job-popup-card input[readonly] {
+    background: #f5f7fb;
+}
+
+/* 팝업 하단 버튼 */
+
+.job-popup-card .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+
+/* =========================================
+   9. AdminLTE 사이드바 위치
+========================================= */
+
+@media (min-width: 992px) {
+
+    body:not(.sidebar-collapse) .main-sidebar {
+        width: 290px;
+    }
+
+    body:not(.sidebar-collapse) .main-header,
+    body:not(.sidebar-collapse) .content-wrapper {
+        margin-left: 290px !important;
+    }
+
+    body.sidebar-collapse .main-header,
+    body.sidebar-collapse .content-wrapper {
+        margin-left: 4.6rem !important;
+    }
+}
+
+
+/* =========================================
+   10. 반응형 디자인
+========================================= */
+
+@media (max-width: 800px) {
+
+    .content-header {
+        padding: 20px;
+    }
+
+    .content-wrapper .content {
+        padding: 0 20px 30px;
+    }
+
+    .summary-row {
+        grid-template-columns: 1fr;
+        margin-bottom: 24px;
+    }
+
+    .table-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .table-actions {
+        align-items: stretch;
+    }
+
+    .table-actions input {
+        width: auto;
+        flex: 1 1 190px;
+    }
+
+    .job-table th,
+    .job-table td {
+        padding: 12px;
+    }
+
+    .job-popup-body {
+        padding: 16px;
+    }
+
+    .job-popup-card {
+        padding: 20px;
+    }
+}
+
+
+/* =========================================
+   11. 직급 등록 팝업 디자인 보완
+========================================= */
+
+/* 팝업 전체 */
+body.job-popup-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 28px;
+    background: #f5f7fb;
+}
+
+/* 팝업 메인 카드 */
+.job-popup-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px 34px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+/* 등록 화면 컨테이너 */
+.job-register-container {
+    width: 100%;
+}
+
+/* 상단 경로 */
+.job-breadcrumb {
+    margin-bottom: 12px;
+    color: #8293b1;
+    font-size: 12px;
+}
+
+/* 페이지 제목 영역 */
+.job-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.job-page-heading h1 {
+    margin: 0 0 8px;
+    color: #14213b;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.job-page-heading p {
+    margin: 0;
+    color: #8293b1;
+    font-size: 13px;
+}
+
+/* 목록으로 버튼 */
+.job-back-btn {
+    padding: 9px 14px;
+    background: #ffffff;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    color: #172033;
+    font-size: 12px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.job-back-btn:hover {
+    background: #f5f7fb;
+    color: #172033;
+    text-decoration: none;
+}
+
+/* 자동 생성 안내 */
+.job-info-box {
+    margin-bottom: 22px;
+    padding: 14px 16px;
+    background: #eef3f9;
+    border: 1px solid #dce5f1;
+    border-radius: 8px;
+    color: #475569;
+    font-size: 12px;
+}
+
+/* 기본 정보 영역 */
+.job-register-card {
+    padding-top: 4px;
+}
+
+.job-card-heading {
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.job-card-heading h2 {
+    margin: 0 0 8px;
+    color: #14213b;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.job-card-heading p {
+    margin: 0;
+    color: #8293b1;
+    font-size: 12px;
+}
+
+/* 입력 항목 */
+.job-form-group {
+    margin-bottom: 20px;
+}
+
+.job-form-group label {
+    display: block;
+    margin-bottom: 9px;
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.job-form-group .required {
+    color: #dc3545;
+}
+
+/* 입력창 */
+.job-form-group input {
+    display: block;
+    width: 100%;
+    height: 44px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    color: #172033;
+    font-size: 13px;
+    outline: none;
+}
+
+.job-form-group input:focus {
+    border-color: #8293b1;
+    box-shadow: 0 0 0 3px rgba(130, 147, 177, 0.12);
+}
+
+/* 자동 생성 입력창 */
+.job-form-group input[readonly] {
+    background: #f5f7fb;
+    color: #64748b;
+}
+
+/* 입력창 안내 문구 */
+.job-form-group small {
+    display: block;
+    margin-top: 8px;
+    color: #8293b1;
+    font-size: 11px;
+}
+
+/* 하단 버튼 영역 */
+.job-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 18px;
+    margin-top: 8px;
+    border-top: 1px solid #edf1f5;
+}
+
+/* 취소 버튼 */
+.job-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 22px;
+    background: #ffffff;
+    color: #172033;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.job-cancel-btn:hover {
+    background: #f5f7fb;
+    color: #172033;
+    text-decoration: none;
+}
+
+/* 직급 등록 버튼 */
+.job-submit-btn {
+    min-height: 42px;
+    padding: 10px 24px;
+    background: #10192e;
+    color: #ffffff;
+    border: 1px solid #10192e;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-submit-btn:hover {
+    background: #263754;
+}
+
+.job-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 작은 팝업 대응 */
+@media (max-width: 600px) {
+    body.job-popup-body {
+        padding: 16px;
+    }
+
+    .job-popup-card {
+        padding: 22px;
+    }
+
+    .job-page-heading h1 {
+        font-size: 21px;
+    }
+}

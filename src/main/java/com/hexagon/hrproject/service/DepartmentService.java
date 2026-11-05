@@ -45,6 +45,10 @@ public class DepartmentService {
         if (departmentMapper.updateCode(dept) != 1) {
         		throw new IllegalStateException("부서코드 생성 실패");
         }
+        
+        if (departmentMapper.countByName(name.trim()) > 0) {
+            throw new BusinessException(ErrorCode.DEPARTMENT_ALREADY_EXISTS);
+        }
 
         return result;	
 	}
@@ -61,6 +65,14 @@ public class DepartmentService {
 			throw new BusinessException(ErrorCode.UNAUTHORIZED_DEPARTMENT_ACCESS);
 		}
 		return dept;
+	}
+	
+	// 검색 기능으로 부서 조회
+	public List<Department> search(String departmentName){
+		if (departmentName == null || departmentName.trim().isEmpty()) {
+			return departmentMapper.selectAll();
+		}
+		return departmentMapper.search(departmentName);
 	}
 	
 	
@@ -106,6 +118,8 @@ public class DepartmentService {
 
 	    return result;
 	}
+	
+	// 예외 처리
 }
 
 

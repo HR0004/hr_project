@@ -150,7 +150,8 @@
                             <option value="">전체 부서</option>
                             <option value="백엔드팀">백엔드팀</option>
                             <option value="경영지원팀">경영지원팀</option>
-                            <option value="프론트엔드팀">프론트엔드팀</option>
+                            <option value="프론트엔드팀">프론
+                            트엔드팀</option>
                             <option value="인사팀">인사팀</option>
 
                         </select>
@@ -388,8 +389,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 부서, 직급, 이메일, 입사일
             [
-                emp.departmentId,
-                emp.jobId,
+            	emp.department?.departmentName ?? "-",
+            	emp.job?.jobName ?? "-",
                 emp.email,
                 emp.hiredate
                     ? new Date(emp.hiredate).toLocaleDateString("ko-KR")
