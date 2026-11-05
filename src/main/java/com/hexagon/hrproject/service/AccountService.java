@@ -146,14 +146,24 @@ public class AccountService {
 
         // 새로운 권한 등록
         if (roleIds != null && !roleIds.isEmpty()) {
-
             for (Long hrRoleId : roleIds) {
-
                 accountMapper.insertAccountRole(
                     accountId,
                     hrRoleId
                 );
             }
         }
+    }
+
+    // ----------------------------------------
+    // 7. 계정 목록 조회 및 검색 ← 새로 추가하는 부분
+    // ----------------------------------------
+    public List<Account> getAccountList(String keyword) {
+
+        if (keyword != null) {
+            keyword = keyword.trim();
+        }
+
+        return accountMapper.selectAccountList(keyword);
     }
 }

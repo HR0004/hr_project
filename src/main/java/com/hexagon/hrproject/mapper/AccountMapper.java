@@ -36,4 +36,9 @@ public interface AccountMapper {
 	    @Param("accountId") int accountId,
 	    @Param("password") String password
 	);
+	
+    // 이름 또는 로그인 아이디로 계정 목록 검색
+    List<Account> selectAccountList(
+        @Param("keyword") String keyword
+    );
 }
