@@ -502,7 +502,7 @@ body {
 
 <script type="text/javascript">
         // 실제 프로젝트의 Context Path: /HR_PROJECT 또는 빈 문자열
-        const contextPath = "";
+        const contextPath = "${pageContext.request.contextPath}";
         let attendanceList = [];
         let listLoaded = false;
 
@@ -628,6 +628,8 @@ body {
         			$("span[name='attendanceStatus']").text("출근 전");
         	    	$("div[name='clockIn']").text("--:--");
         	    	$("div[name='clockOut']").text("--:--");
+        	    	
+        	    	setAttendanceButtons(null);
 
         	    	return;
         		}
@@ -646,12 +648,70 @@ body {
         		} else {
         			$("span[name='attendanceStatus']").text("출근 전");
         		}
-
+				
+        		setAttendanceButtons(record);
+        		
         		} catch (error) {
 
         			console.error("오늘 근태 조회 오류", error);
         	}
         };
+        
+
+     // 출근·퇴근 버튼 상태 제어
+     const setAttendanceButtons = (record) => {
+
+         const checkedIn = !!(record && record.clockIn);
+         const checkedOut = !!(record && record.clockOut);
+
+         $("button[name='clockInButton']")
+             .prop("disabled", checkedIn);
+
+         $("button[name='clockOutButton']")
+             .prop("disabled", !checkedIn || checkedOut);
+     };
+
+     // 요청 진행 중 버튼 비활성화
+     const disableAttendanceButtons = () => {
+
+         $("button[name='clockInButton']").prop("disabled", true);
+         $("button[name='clockOutButton']").prop("disabled", true);
+     };
+
+     // 출근 및 퇴근 요청
+     const submitAttendance = async (action) => {
+
+         disableAttendanceButtons();
+
+         try {
+
+             const response = await fetch(
+                 "${pageContext.request.contextPath}/api/attendance/" + action,
+                 {
+                     method: "POST"
+                 }
+             );
+
+             const message = await response.text();
+
+             if (!response.ok) {
+                 throw new Error(message || "출퇴근 등록 실패");
+             }
+
+             alert(message);
+
+         } catch (error) {
+
+             alert(error.message);
+
+         } finally {
+
+             await getTodayAttendance();
+             getAttendanceList();
+
+         }
+     };
+
 
         // 월 선택에 따라 현재 받아온 JSON 데이터를 필터링
         function filteredList() {
@@ -723,6 +783,20 @@ body {
 				window.location.href = contextPath + "/attendance/monthly";
 			});
             
+
+            $("button[name='clockInButton']").on("click", function() {
+
+                submitAttendance("clock-in");
+
+            });
+
+            $("button[name='clockOutButton']").on("click", function() {
+
+                submitAttendance("clock-out");
+
+            });
+
+            
         });
     </script>
 </head>
@@ -790,9 +864,13 @@ body {
 
 								<div>
 									<div class="att-button-pair">
+
 										<button type="button" class="att-button att-button-primary"
-											disabled>출근하기</button>
-										<button type="button" class="att-button" disabled>퇴근하기</button>
+											name="clockInButton" disabled>출근하기</button>
+
+										<button type="button" class="att-button" name="clockOutButton"
+											disabled>퇴근하기</button>
+
 									</div>
 									<p class="att-help">출퇴근 등록 API 연결 후 사용할 수 있습니다.</p>
 								</div>
@@ -812,13 +890,13 @@ body {
 							<p id="att-message" class="att-reload-hint" aria-live="polite"></p>
 						</div>
 						<div class="att-filter">
-						
+
 							<button type="button" class="att-filter-btn att-dark"
 								name="moveMonthlyView">월별 상세 조회</button>
-								
+
 							<input type="month" class="att-month-input" id="att-month"
 								aria-label="조회할 연월">
-								
+
 							<button type="button" class="att-filter-btn" id="att-search">기간
 								조회</button>
 						</div>
@@ -874,7 +952,7 @@ body {
 						<p class="att-footer-note">현재 조회된 목록을 기준으로 집계합니다.</p>
 					</div>
 				</div>
-				
+
 				<!-- 월별 팝업 창 -->
 			</section>
 

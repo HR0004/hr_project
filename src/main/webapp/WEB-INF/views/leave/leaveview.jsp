@@ -22,12 +22,10 @@
 }
 
 .leave-dashboard {
-	max-width: 1490px;
-	margin: 0 auto;
-	padding: 0 50px 40px;
-	color: #172033;
-	font-family: "Pretendard", "Malgun Gothic", Arial, sans-serif;
-	background: #fff;
+	width: 100%;
+    max-width: 1490px;
+    margin: 0 auto;
+    padding: 20px 50px 40px;
 }
 
 .leave-dashboard h2, .leave-dashboard h3, .leave-dashboard p {
@@ -256,81 +254,220 @@
 
 /* 전체 레이아웃 래퍼 */
 .page-wrapper {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
+	display: flex;
+	width: 100%;
+	min-height: 100vh;
+	position: relative;
 }
 
 /* 사이드바 영역 자체의 고정 너비 확보 (보통 AdminLTE 기반 사이드바는 250px 사용) */
-.page-wrapper > aside {
-    width: 250px;
-    flex-shrink: 0;
+.page-wrapper>aside {
+	width: 250px;
+	flex-shrink: 0;
 }
 
 /* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
 .main-content {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    width: calc(100% - 250px);
+    min-width: 0;
+    width: auto;
     background: #fff;
     overflow-x: hidden;
-    padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+    padding-top: 0;
 }
 </style>
 
-<script type="text/javascript">
-	// 현재는 화면 확인용. 실제 휴가 API를 만들면 여기에서 async/await + fetch로 연결.
-	const getLeaveBalance = async () => {
-		try {
-			const response = await fetch(
-				"${pageContext.request.contextPath}/api/leave/my/balance",
-				{
-					method: "GET"
-				}
-			);
-			
-			if(!response.ok){
-				throw new Error("휴가 현황 조회 실패");
-			}
-			
-			const result = await response.json();
-			
-			console.log("휴가 현황 조회 결과", result);
-			
-			if (result == null) {
-				console.log("휴가 현황 데이터가 없습니다.");
-				return;
-			}
-			
-			$("div[name='totalDays']").text(result.totalDays + "일");
-			$("div[name='usedDays']").text(result.usedDays + "일");
-			$("div[name='remainingDays']").text(result.remainingDays + "일");
-		} catch (error) {
-			console.log("휴가 현황 조회 오류", error);
-		}
-	};
-	
-	$(function() {
-		getLeaveBalance();
-		
-		$("button[name='leaveHistoryButton']").on("click", function() {
-			window.location.href = "${pageContext.request.contextPath}/leave/history";
-		});
 
-		$("button[name='leaveApplyButton']").on("click", function() {
-			window.location.href = "${pageContext.request.contextPath}/leave/apply";
-		});
-	});
+<script type="text/javascript">
+
+    // 나의 휴가 잔액 조회
+    const getLeaveBalance = async () => {
+
+        try {
+
+            const response = await fetch(
+                "${pageContext.request.contextPath}/api/leave/my/balance",
+                {
+                    method: "GET"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("휴가 현황 조회 실패: " + response.status);
+            }
+
+            const result = await response.json();
+
+            console.log("휴가 현황 조회 결과", result);
+
+            if (result == null) {
+
+                $("div[name='totalDays']").text("-");
+                $("div[name='usedDays']").text("-");
+                $("div[name='remainingDays']").text("-");
+
+                return;
+            }
+
+            $("div[name='totalDays']").text(result.totalDays + "일");
+            $("div[name='usedDays']").text(result.usedDays + "일");
+            $("div[name='remainingDays']").text(result.remainingDays + "일");
+
+        } catch (error) {
+
+            console.error("휴가 현황 조회 오류", error);
+
+        }
+    };
+
+
+    // 로그인한 사원의 실제 휴가 사용 내역 조회
+    const getMyUsedLeave = async () => {
+
+        const tbody = $("tbody[name='leaveHistoryRows']");
+        const count = $("div[name='leaveHistoryCount']");
+
+        tbody.empty();
+        count.text("조회 중");
+
+        try {
+
+            const response = await fetch(
+                "${pageContext.request.contextPath}/api/leave/my/used",
+                {
+                    method: "GET"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("휴가 사용 내역 조회 실패: " + response.status);
+            }
+
+            const records = await response.json();
+
+            console.log("휴가 사용 내역 조회 결과", records);
+
+            if (!Array.isArray(records)) {
+                throw new Error("휴가 사용 내역 응답 형식 오류");
+            }
+
+            tbody.empty();
+
+            count.text("총 " + records.length + "건");
+
+            // 휴가 사용 내역이 없는 경우
+            if (records.length === 0) {
+
+                const tr = $("<tr>");
+
+                $("<td>")
+                    .attr("colspan", 5)
+                    .addClass("leave-empty")
+                    .text("사용한 휴가 내역이 없습니다.")
+                    .appendTo(tr);
+
+                tbody.append(tr);
+
+                return;
+            }
+
+            // 휴가 사용 내역을 한 건씩 출력
+            records.forEach(function(row) {
+
+                const startDate = row.startDate || "-";
+                const endDate = row.endDate || "-";
+
+                const period = startDate === endDate
+                    ? startDate
+                    : startDate + " ~ " + endDate;
+
+                const leaveType = row.leaveType || "휴가";
+
+                const days = row.days != null
+                    ? row.days + "일"
+                    : "-";
+
+                const status = row.status === "APPROVED"
+                    ? "사용 완료"
+                    : row.status || "-";
+
+                const tr = $("<tr>");
+
+                $("<td>").text(startDate).appendTo(tr);
+                $("<td>").text(leaveType).appendTo(tr);
+                $("<td>").text(period).appendTo(tr);
+                $("<td>").text(days).appendTo(tr);
+                $("<td>").text(status).appendTo(tr);
+
+                tbody.append(tr);
+
+            });
+
+        } catch (error) {
+
+            console.error("휴가 사용 내역 조회 오류", error);
+
+            tbody.empty();
+            count.text("조회 실패");
+
+            const tr = $("<tr>");
+
+            $("<td>")
+                .attr("colspan", 5)
+                .addClass("leave-empty")
+                .text("휴가 사용 내역을 불러오지 못했습니다.")
+                .appendTo(tr);
+
+            tbody.append(tr);
+
+        }
+    };
+
+
+    // 페이지 로딩 완료
+    $(function() {
+
+        // 휴가 현황 조회
+        getLeaveBalance();
+
+        // 실제 휴가 사용 내역 조회
+        getMyUsedLeave();
+
+        // 휴가 신청 내역 페이지 이동
+        $("button[name='leaveHistoryButton']").on("click", function() {
+
+            window.location.href =
+                "${pageContext.request.contextPath}/leave/history";
+
+        });
+
+        // 휴가 신청 페이지 이동
+        $("button[name='leaveApplyButton']").on("click", function() {
+
+            window.location.href =
+                "${pageContext.request.contextPath}/leave/apply";
+
+        });
+
+    });
+
 </script>
+
 </head>
 <body>
 	<div class="page-wrapper">
-
+		
 		<%@ include file="../common/sidebar.jspf"%>
 
 		<!-- 공통 헤더/사이드바 제외. 휴가 현황 본문만 작성 -->
 
 		<div class="main-content main-area">
+		
+			<%@ include file="../common/header.jspf"%>
+			
+			
 			<section class="leave-dashboard">
 				<header>
 					<h2 class="leave-heading">휴가 현황</h2>
@@ -373,7 +510,7 @@
 				<section class="leave-card leave-history-card">
 					<div class="leave-card-head">
 						<h3 class="leave-card-title">휴가 사용 내역</h3>
-						<div class="leave-card-count" name="leaveHistoryCount">총 4건</div>
+						<div class="leave-card-count" name="leaveHistoryCount">조회 중</div>
 					</div>
 
 					<div class="leave-table-scroll">
@@ -388,36 +525,13 @@
 								</tr>
 							</thead>
 							<!-- 현재는 화면 설계의 예시 데이터 4건 -->
+
 							<tbody name="leaveHistoryRows">
 								<tr>
-									<td>2026-10-05</td>
-									<td>연차</td>
-									<td>2026-10-05 ~ 2026-10-06</td>
-									<td>2일</td>
-									<td>사용 완료</td>
-								</tr>
-								<tr>
-									<td>2026-09-18</td>
-									<td>오전 반차</td>
-									<td>2026-09-18</td>
-									<td>0.5일</td>
-									<td>사용 완료</td>
-								</tr>
-								<tr>
-									<td>2026-08-21</td>
-									<td>연차</td>
-									<td>2026-08-21 ~ 2026-08-22</td>
-									<td>2일</td>
-									<td>사용 완료</td>
-								</tr>
-								<tr>
-									<td>2026-07-10</td>
-									<td>오후 반차</td>
-									<td>2026-07-10</td>
-									<td>0.5일</td>
-									<td>사용 완료</td>
+									<td colspan="5" class="leave-empty">휴가 사용 내역을 불러오는 중입니다.</td>
 								</tr>
 							</tbody>
+
 						</table>
 					</div>
 

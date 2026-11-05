@@ -1,13 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hexagon.hrproject.mapper.LeaveMapper">
-	<select id="findBalanceByEmpId" resultType="com.hexagon.hrproject.domain.LeaveBalance">
+	<select id="findBalanceByEmpId"
+		resultType="com.hexagon.hrproject.domain.LeaveBalance">
 		SELECT
-            total_days AS totalDays,
-            used_days AS usedDays,
-            remaining_days AS remainingDays
-        FROM tb_leave_balance
-        WHERE emp_id = #{empId}
-          AND fiscal_year = #{fiscalYear}
+		balance_id AS balanceId,
+		emp_id AS empId,
+		fiscal_year
+		AS fiscalYear,
+		total_days AS totalDays,
+		used_days AS usedDays,
+		remaining_days AS remainingDays
+
+		FROM tb_leave_balance
+
+		WHERE emp_id =
+		#{empId}
+		AND fiscal_year = #{fiscalYear}
 	</select>
+
+
+	<!-- 로그인한 사원의 휴가 사용 내역 -->
+	<select id="findUsedLeaveByEmpId"
+		resultType="com.hexagon.hrproject.domain.LeaveUsage">
+
+		SELECT
+		DATE_FORMAT(start_date, '%Y-%m-%d') AS startDate,
+		DATE_FORMAT(end_date, '%Y-%m-%d') AS endDate,
+		'휴가' AS leaveType,
+		days,
+		status
+		FROM leave_request
+		WHERE emp_id = #{empId}
+		AND status = 'APPROVED'
+		AND end_date &lt; CURRENT_DATE()
+		ORDER BY end_date DESC
+
+	</select>
+
+
+	<!-- 로그인한 사원의 전체 휴가 신청 내역 -->
+	<select id="findRequestHistoryByEmpId"
+		resultType="com.hexagon.hrproject.domain.LeaveRequestHistory">
+
+		SELECT
+		leave_request_id AS leaveRequestId,
+		DATE_FORMAT(request_date, '%Y-%m-%d') AS submittedDate,
+		DATE_FORMAT(start_date, '%Y-%m-%d') AS startDate,
+		DATE_FORMAT(end_date, '%Y-%m-%d') AS endDate,
+		'휴가' AS leaveType,
+		days,
+		status,
+		reason AS remark
+		FROM leave_request
+		WHERE emp_id = #{empId}
+		ORDER
+		BY request_date DESC, leave_request_id DESC
+
+	</select>
+
+
+	<!-- 휴가 신청 등록 -->
+	<insert id="insertLeaveRequest">
+		INSERT INTO leave_request (
+		emp_id,
+		start_date,
+		end_date,
+		days,
+		reason,
+		status,
+		request_date
+		)
+		VALUES (
+		#{empId},
+		#{startDate},
+		#{endDate},
+		#{days},
+		#{reason},
+		'PENDING',
+		NOW()
+		)
+	</insert>
+
 </mapper>
