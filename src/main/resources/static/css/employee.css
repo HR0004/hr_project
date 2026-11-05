@@ -1321,4 +1321,154 @@ body {
     border-color: #e9ecef;
     cursor: not-allowed;
 }
+/* 페이지 처리 */
+.employee-pagination-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
 
+#pageInfo {
+    font-size: 13px;
+    color: #718096;
+}
+
+.employee-pagination {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.employee-page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    background: white;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    color: #344054;
+    cursor: pointer;
+}
+
+.employee-page-btn.active {
+    background: #151e35;
+    color: white;
+    border-color: #151e35;
+}
+
+.employee-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+/* 검색 결과 테이블 헤더 가운데 정렬 */
+.employee-table thead th {
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+/* 검색 결과 제목 + 버튼 세로 가운데 정렬 */
+.search-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 48px;
+    margin-bottom: 20px;
+}
+
+.search-result-header h2 {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.search-result-header .employee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* 사원 목록 테이블 열 너비 통일 */
+.employee-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+
+/* 헤더와 데이터 가로 정렬 */
+.employee-table th,
+.employee-table td {
+    text-align: center !important;
+    vertical-align: middle !important;
+    box-sizing: border-box;
+    padding: 20px 8px;
+}
+
+/* 열별 너비 지정 */
+.employee-table th:nth-child(1),
+.employee-table td:nth-child(1) {
+    width: 7%;
+}
+
+.employee-table th:nth-child(2),
+.employee-table td:nth-child(2) {
+    width: 12%;
+}
+
+.employee-table th:nth-child(3),
+.employee-table td:nth-child(3) {
+    width: 13%;
+}
+
+.employee-table th:nth-child(4),
+.employee-table td:nth-child(4) {
+    width: 11%;
+}
+
+.employee-table th:nth-child(5),
+.employee-table td:nth-child(5) {
+    width: 23%;
+}
+
+.employee-table th:nth-child(6),
+.employee-table td:nth-child(6) {
+    width: 14%;
+}
+
+.employee-table th:nth-child(7),
+.employee-table td:nth-child(7) {
+    width: 10%;
+}
+
+.employee-table th:nth-child(8),
+.employee-table td:nth-child(8) {
+    width: 10%;
+}
+
+/* 검색/필터, 사원 등록 버튼 세로 정렬 */
+.employee-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* 검색/필터 버튼 */
+.employee-toolbar-actions .employee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 0 12px;
+    margin: 0;
+    line-height: 1;
+    text-decoration: none;
+}
+
+/* 사원 등록 버튼 */
+.employee-toolbar-actions .employee-register-btn {
+    height: 60px;
+    margin: 0;
+}

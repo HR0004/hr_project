@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
+	pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -11,190 +11,218 @@
 
 <!-- Font Awesome -->
 <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <!-- AdminLTE -->
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+	href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
 <!-- 기존 사원 관리 CSS -->
 <link rel="stylesheet"
-    href="${pageContext.request.contextPath}/css/employee.css">
+	href="${pageContext.request.contextPath}/css/employee.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-<div class="wrapper">
+	<div class="wrapper">
 
-    <!-- 공통 헤더 -->
-    <%@ include file="/WEB-INF/views/common/header.jspf" %>
+		<!-- 공통 헤더 -->
+		<%@ include file="/WEB-INF/views/common/header.jspf"%>
 
-    <!-- 공통 사이드바 -->
-    <%@ include file="/WEB-INF/views/common/sidebar.jspf" %>
+		<!-- 공통 사이드바 -->
+		<%@ include file="/WEB-INF/views/common/sidebar.jspf"%>
 
-    <div class="content-wrapper employee-page">
+		<div class="content-wrapper employee-page">
 
-        <!-- 페이지 제목 -->
-        <section class="content-header">
-            <div class="container-fluid">
+			<!-- 페이지 제목 -->
+			<section class="content-header">
+				<div class="container-fluid">
 
-                <h1 class="employee-page-title">
-                    사원 조회 · 검색
-                </h1>
+					<h1 class="employee-page-title">사원 조회 · 검색</h1>
 
-                <p class="employee-page-desc">
-                    사번, 성명, 부서, 직급 및 재직 상태로 사원을 검색합니다.
-                </p>
+					<p class="employee-page-desc">사번, 성명, 부서, 직급 및 재직 상태로 사원을
+						검색합니다.</p>
 
-            </div>
-        </section>
+				</div>
+			</section>
 
-        <!-- 검색 화면 -->
-        <section class="content">
-            <div class="container-fluid">
+			<!-- 검색 화면 -->
+			<section class="content">
+				<div class="container-fluid">
 
 
-<!-- 검색 조건 -->
-<div class="card">
-    <div class="card-body">
+					<!-- 검색 조건 -->
+					<div class="card">
+						<div class="card-body">
 
-        <h5 class="mb-4">검색 조건</h5>
+							<h5 class="mb-4">검색 조건</h5>
 
-        <div class="row">
+							<div class="row">
 
-            <!-- 사번 / 성명 -->
-            <div class="col-md-3 form-group">
-                <label>사번 / 성명</label>
-                <input type="text" id="searchKeyword"
-                       class="form-control"
-                       placeholder="사번 또는 이름">
-            </div>
+								<!-- 사번 / 성명 -->
+								<div class="col-md-3 form-group">
+									<label>사번 / 성명</label> <input type="text" id="searchKeyword"
+										class="form-control" placeholder="사번 또는 이름">
+								</div>
 
-            <!-- 부서 -->
-            <div class="col-md-3 form-group">
-                <label>부서</label>
-                <select id="searchDept" class="form-control">
-                    <option value="">전체 부서</option>
-                </select>
-            </div>
+								<!-- 부서 -->
+								<div class="col-md-3 form-group">
+									<label>부서</label> <select id="searchDept" class="form-control">
+										<option value="">전체 부서</option>
+									</select>
+								</div>
 
-            <!-- 직급 -->
-            <div class="col-md-3 form-group">
-                <label>직급</label>
-                <select id="searchJob" class="form-control">
-                    <option value="">전체 직급</option>
-                </select>
-            </div>
+								<!-- 직급 -->
+								<div class="col-md-3 form-group">
+									<label>직급</label> <select id="searchJob" class="form-control">
+										<option value="">전체 직급</option>
+									</select>
+								</div>
 
-            <!-- 재직 상태 -->
-            <div class="col-md-3 form-group">
-                <label>재직 상태</label>
-                <select id="searchStatus" class="form-control">
-                    <option value="">전체</option>
-                    <option value="ACTIVE">재직</option>
-                    <option value="LEAVE">휴직</option>
-                    <option value="RETIRED">퇴직</option>
-                </select>
-            </div>
+								<!-- 재직 상태 -->
+								<div class="col-md-3 form-group">
+									<label>재직 상태</label> <select id="searchStatus"
+										class="form-control">
+										<option value="">전체</option>
+										<option value="ACTIVE">재직</option>
+										<option value="LEAVE">휴직</option>
+										<option value="RETIRED">퇴직</option>
+									</select>
+								</div>
 
-        </div>
+							</div>
 
-        <div class="row align-items-end">
+							<div class="row align-items-end">
 
-            <!-- 입사일 -->
-            <div class="col-md-6 form-group">
-                <label>입사일</label>
-                <div class="d-flex align-items-center">
-                    <input type="date" id="startDate"
-                           class="form-control">
-                    <span class="mx-2">~</span>
-                    <input type="date" id="endDate"
-                           class="form-control">
-                </div>
-            </div>
+								<!-- 입사일 -->
+								<div class="col-md-6 form-group">
+									<label>입사일</label>
+									<div class="d-flex align-items-center">
+										<input type="date" id="startDate" class="form-control">
+										<span class="mx-2">~</span> <input type="date" id="endDate"
+											class="form-control">
+									</div>
+								</div>
 
-            <!-- 버튼 -->
-            <div class="col-md-6 form-group text-right">
-                <button type="button" id="resetBtn"
-                        class="btn btn-outline-secondary">
-                    초기화
-                </button>
+								<!-- 버튼 -->
+								<div class="col-md-6 form-group text-right">
+									<button type="button" id="resetBtn"
+										class="btn btn-outline-secondary">초기화</button>
 
-                <button type="button" id="searchBtn"
-                        class="btn btn-primary ml-2">
-                    <i class="fas fa-search"></i> 검색
-                </button>
-            </div>
+									<button type="button" id="searchBtn"
+										class="btn btn-primary ml-2">
+										<i class="fas fa-search"></i> 검색
+									</button>
+								</div>
 
-        </div>
+							</div>
 
-    </div>
-</div>
+						</div>
+					</div>
 
 
-               
-<!-- 검색 결과 -->
-<div class="card">
-    <div class="card-body">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">
-                검색 결과
-                <span id="resultCount" class="text-primary ml-2">0명</span>
-            </h5>
+					<!-- 검색 결과 -->
+					<div class="card">
+						<div class="card-body">
 
-            <a href="${pageContext.request.contextPath}/employees"
-               class="btn btn-outline-secondary">
-                전체 사원 보기
-            </a>
-        </div>
+							<div
+								class="d-flex justify-content-between align-items-center mb-3">
+								<h5 class="mb-0">
+									검색 결과 <span id="resultCount" class="text-primary ml-2">0명</span>
+								</h5>
 
-        <div class="table-responsive">
-            <table class="table table-hover employee-table">
-                <thead>
-                    <tr>
-                        <th>사번</th>
-                        <th>성명</th>
-                        <th>부서</th>
-                        <th>직급</th>
-                        <th>이메일</th>
-                        <th>입사일</th>
-                        <th>재직 상태</th>
-                        <th>관리</th>
-                    </tr>
-                </thead>
+								<a href="${pageContext.request.contextPath}/employees"
+									class="btn btn-outline-secondary"> 전체 사원 보기 </a>
+							</div>
 
-                <tbody id="searchResultBody">
-                    <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
-                            검색 조건을 입력하고 검색 버튼을 눌러주세요.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+							<div class="table-responsive">
+								<table class="table table-hover employee-table">
+									<thead>
+										<tr>
+											<th>사번</th>
+											<th>성명</th>
+											<th>부서</th>
+											<th>직급</th>
+											<th>이메일</th>
+											<th>입사일</th>
+											<th>재직 상태</th>
+											<th>관리</th>
+										</tr>
+									</thead>
 
-    </div>
-</div>
+									<tbody id="searchResultBody">
+										<tr>
+											<td colspan="8" class="text-center text-muted py-4">검색
+												조건을 입력하고 검색 버튼을 눌러주세요.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
 
 
-            </div>
-        </section>
+				</div>
+			</section>
 
-    </div>
+		</div>
 
-</div>
+	</div>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Bootstrap -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- AdminLTE -->
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+	<!-- AdminLTE -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
 	<script>
+
+    // 부서 목록 불러오기
+    async function loadDepartments() {
+        try {
+            const response = await fetch(
+                "${pageContext.request.contextPath}/api/departments"
+            );
+
+            if (!response.ok) {
+                throw new Error("부서 목록 조회 실패");
+            }
+
+            const result = await response.json();
+
+            // 배열 또는 ApiResponse 형태 모두 처리
+            const departments = Array.isArray(result)
+                ? result
+                : result.data;
+
+            const select = document.getElementById("searchDept");
+
+            select.innerHTML = '<option value="">전체 부서</option>';
+
+            (departments || []).forEach(dept => {
+                const option = document.createElement("option");
+
+                option.value = dept.departmentId;
+                option.textContent = dept.departmentName;
+
+                select.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error("부서 목록 오류:", error);
+        }
+    }
+
+    // 페이지가 열리면 부서 목록 조회
+    document.addEventListener("DOMContentLoaded", loadDepartments);
+
 		//사원 검색
 		async function searchEmployees(){
 			try{
@@ -239,13 +267,13 @@
 				        !endDate ||
 				        (hireDate && hireDate <= new Date(endDate + "T23:59:59.999"));
 				    
-					 // 부서 검색
+				 // 부서 검색
 				    const deptMatch =
-				        !dept || String(emp.departmentId) === dept;
+				        !dept || String(emp.department?.departmentId) === dept;
 
-				    // 직급 검색
+				 // 직급 검색
 				    const jobMatch =
-				        !job || String(emp.jobId) === job;
+				        !job || String(emp.job?.jobId) === job;
 
 				    // 모든 조건을 만족하는 사원만 검색
 				    return keywordMatch && deptMatch && jobMatch

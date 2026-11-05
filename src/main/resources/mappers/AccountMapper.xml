@@ -2,87 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hexagon.hrproject.mapper.AccountMapper">
 
-	<resultMap type="Account" id="joinMap">
-		<id column="account_id" property="accountId" />
-		<result column="login_id" property="loginId" />
-		<result column="password" property="password" />
-		<result column="createdAt" property="createdAt" />
-		<result column="last_login_at" property="lastLoginAt" />
+   <resultMap type="Account" id="joinMap">
+      <id column="account_id" property="accountId" />
+      <result column="login_id" property="loginId" />
+      <result column="password" property="password" />
+      <result column="createdAt" property="createdAt" />
+      <result column="last_login_at" property="lastLoginAt" />
 
-		<!-- 부모님 정보 가져오기 1:1 대응되는 테이블간 조인 -->
-		<association column="emp_id" property="emp" javaType="Emp"
-			select="com.hexagon.hrproject.mapper.EmpMapper.findById" />
+      <!-- 부모님 정보 가져오기 1:1 대응되는 테이블간 조인 -->
+      <association column="emp_id" property="emp" javaType="Emp"
+         select="com.hexagon.hrproject.mapper.EmpMapper.findById" />
 
-		<!-- 이 계정이 보유한 다수의 권한 가져오기, 이 계정이 여러 권한을 보유하므로, collection으로 가져오기 -->
-		<collection column="account_id" property="roles"
-			javaType="java.util.List" ofType="HrRole"
-			select="com.hexagon.hrproject.mapper.HrRoleMapper.selectByAccountId" />
-	</resultMap>
+      <!-- 이 계정이 보유한 다수의 권한 가져오기, 이 계정이 여러 권한을 보유하므로, collection으로 가져오기 -->
+      <collection column="account_id" property="roles"
+         javaType="java.util.List" ofType="HrRole"
+         select="com.hexagon.hrproject.mapper.HrRoleMapper.selectByAccountId" />         
+   </resultMap>
 
+   <!-- 1. 로그인 계정 등록 (MySQL AUTO_INCREMENT 적용: account_id 제외 또는 null 처리) -->
+   <insert id="insert" parameterType="Account"
+      useGeneratedKeys="true" keyProperty="accountId">
+      INSERT INTO account (emp_id, login_id, password, enabled)
+      VALUES (#{emp.empId}, #{loginId}, NULL, 1)
+   </insert>
 
-	<!-- 로그인 계정 등록 -->
-	<insert id="insert" parameterType="Account"
-		useGeneratedKeys="true" keyProperty="accountId">
+   <!-- 2. 로그인 ID 중복 확인 -->
+   <select id="countByLoginId" resultType="int">
+      SELECT COUNT(*)
+      FROM account
+      WHERE login_id = #{loginId}
+   </select>
 
-		INSERT INTO account (
-		emp_id,
-		login_id,
-		password,
-		enabled
-		)
-		VALUES (
-		#{emp.empId},
-		#{loginId},
-		NULL,
-		1
-		)
+   <!-- login_id 가 일치하는 회원 가져오기 -->
+   <select id="selectById" parameterType="String"
+      resultMap="joinMap">
+      select account_id, emp_id, login_id, password, enabled,
+      created_at,
+      last_login_at
+      from account
+      where login_id=#{loginId}
+   </select>
+   
+<!-- (사원용)로그인한 계정의 비밀번호 변경 -->
+<update id="updatePassword">
+    UPDATE account
+    SET password = #{password}
+    WHERE account_id = #{accountId}
+</update>
+   <!-- ========================================== -->
+   <!-- 관리자 권한/계정 관리를 위해 추가된 쿼리들 -->
+   <!-- ========================================== -->
 
+   <!-- 1. 전체 역할(Role) 목록 조회 -->
+   <select id="selectAllRoles"
+      resultType="com.hexagon.hrproject.domain.HrRole">
+      SELECT hr_role_id AS hrRoleId, role_name AS roleName, role_code AS roleCode
+      FROM hr_role
+   </select>
 
-	</insert>
-	<!-- 로그인 ID 중복 확인 -->
-	<select id="countByLoginId" resultType="int"> SELECT COUNT(*) FROM
-		account WHERE login_id = #{loginId} </select>
+<!-- 특정 계정 상세 정보 조회 -->
+<select id="selectByIdNum"
+        resultType="com.hexagon.hrproject.domain.Account">
 
-	<!-- login_id 가 일치하는 회원 가져오기 -->
-	<select id="selectById" parameterType="String"
-		resultMap="joinMap">
-		select account_id, emp_id, login_id, password, enabled,
-		created_at,
-		last_login_at
-		from account
-		where login_id=#{loginId}
-	</select>
+    SELECT account_id AS accountId,
+           emp_id AS empId,
+           login_id AS loginId,
+           password,
+           enabled
+    FROM account
+    WHERE account_id = #{accountId}
 
-	<!-- ========================================== -->
-	<!-- 관리자 권한/계정 관리를 위해 추가된 쿼리들 -->
-	<!-- ========================================== -->
+</select>
 
-	<!-- 1. 전체 역할(Role) 목록 조회 -->
-	<select id="selectAllRoles"
-		resultType="com.hexagon.hrproject.domain.HrRole">
-		SELECT hr_role_id AS hrRoleId, role_name AS roleName, role_code AS roleCode
-		FROM hr_role
-	</select>
+   <!-- 3. 특정 계정의 기존 권한 전체 삭제 -->
+   <delete id="deleteAccountRolesByAccountId">
+      DELETE FROM account_role
+      WHERE account_id = #{accountId}
+   </delete>
 
-	<!-- 2. 특정 계정 상세 정보 조회 (필요에 따라 권한 목록도 JOIN 또는 별도 조회) -->
-	<select id="selectByIdNum"
-		resultType="com.hexagon.hrproject.domain.Account">
-		SELECT account_id AS accountId, emp_id AS empId, login_id AS loginId,
-		enabled
-		FROM account
-		WHERE account_id = #{accountId}
-	</select>
-
-	<!-- 3. 특정 계정의 기존 권한 전체 삭제 -->
-	<delete id="deleteAccountRolesByAccountId">
-		DELETE FROM account_role
-		WHERE account_id = #{accountId}
-	</delete>
-
-	<!-- 4. 특정 계정에 새로운 권한 부여 -->
-	<insert id="insertAccountRole">
-		INSERT INTO account_role (account_id, hr_role_id)
-		VALUES (#{accountId}, #{hrRoleId})
-	</insert>
+   <!-- 4. 특정 계정에 새로운 권한 부여 -->
+   <insert id="insertAccountRole">
+      INSERT INTO account_role (account_id, hr_role_id)
+      VALUES (#{accountId}, #{hrRoleId})
+   </insert>
+   
+   
 
 </mapper>
