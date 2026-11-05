@@ -32,4 +32,9 @@ public interface JobMapper {
 	
 	// 예외처리
 	int countByName(@Param("jobName") String jobName);
+	
+	int countByNameExcludingId(
+		    @Param("jobName") String jobName,
+		    @Param("jobId") int jobId
+		);
 }

@@ -60,9 +60,16 @@ public class RestDepartmentController {
 	}
 	
 	@GetMapping("/api/departments/search")
-	public List<Department> search(
-			@RequestParam(value="departmentName", required = false) String departmentName){
-		return departmentService.search(departmentName);
+	public ResponseEntity<ApiResponse<List<Department>>> search(
+	        @RequestParam(value = "departmentName", required = false) String departmentName) {
+
+	    List<Department> departmentList =
+	            departmentService.search(departmentName);
+
+	    ApiResponse<List<Department>> response =
+	            ApiResponse.success("부서 검색 성공", departmentList);
+
+	    return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 	// 부서명 수정

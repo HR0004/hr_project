@@ -8,38 +8,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.hexagon.hrproject.common.response.ApiResponse;
 
 // 비동기 요청에 대한 모든 예외를 처리할 수 있는 컨트롤러 어드바이스
-@RestControllerAdvice(basePackages = "com.hexagon.hrproject.controller") // @RestController 에서 발생한 모든 예외를 여기서 잡아준다!!
+@RestControllerAdvice(basePackages = "com.hexagon.hrproject.rest.controller") // @RestController 에서 발생한 모든 예외를 여기서
+																				// 잡아준다!!
 public class RestGlobalExceptionHandler {
-/*-----------------------------------------
-    예외 처리 전략 
-    1) 시스템적인 에외 (SQL문법, DB 문제..) - 스프링은 개발자가 어떠한 DB 기술(Persistence 영역) 을 사용하던
-                                                           JDBC, Mybatis, JPA, Hibernate 등 어떤 기술을 사용하던 시스템으로ㅓ 발생하는 예외를 
-    2) 비즈니스 에외 ( 업무 목적상 우리가 업무상 정해놓은 규칙에 대한 예외 ex) 포인트 초과 사용, 닉네임 중복 불가...
-                                                           DataAccessException 으로 포장해버린다.
-        
-RuntimeException 을 상속받아 우리만의 커스텀 예외르 만들어 사용하자
------------------------------------------*/ 
-@ExceptionHandler(Exception.class)
-public ResponseEntity<ApiResponse<Void>> handleException(Exception e){
+	/*-----------------------------------------
+	예외 처리 전략 
+	1) 시스템적인 에외 (SQL문법, DB 문제..) - 스프링은 개발자가 어떠한 DB 기술(Persistence 영역) 을 사용하던
+	                                                       JDBC, Mybatis, JPA, Hibernate 등 어떤 기술을 사용하던 시스템으로ㅓ 발생하는 예외를 
+	2) 비즈니스 에외 ( 업무 목적상 우리가 업무상 정해놓은 규칙에 대한 예외 ex) 포인트 초과 사용, 닉네임 중복 불가...
+	                                                       DataAccessException 으로 포장해버린다.
+	    
+	RuntimeException 을 상속받아 우리만의 커스텀 예외르 만들어 사용하자
+	-----------------------------------------*/
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<ApiResponse<Void>> handlerException(BusinessException e) {
 
-    // 에외라고 해서 응답 형식이 달라질게 없고, Header + Body 를 유지하자!
-    ApiResponse<Void> response = ApiResponse.error(e.getMessage());
+		System.out.println("REST 예외 처리 실행: " + e.getMessage());
+		
+		ErrorCode errorCode = e.getErrorCode();
 
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-}
+		ApiResponse<Void> response = ApiResponse.error(errorCode.getMessage());
 
-@ExceptionHandler(BusinessException.class)
-public ResponseEntity<ApiResponse<Void>> handlerException(BusinessException e){
+		return ResponseEntity.status(errorCode.getStatus()).body(response);
+	}
 
-//    String message = e.getMessage();
-//    String message = e.getErrorCode().getMessage();
-    ErrorCode errorCode = e.getErrorCode();
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
 
-    ApiResponse<Void> response = ApiResponse.error(errorCode.getMessage());
+		ApiResponse<Void> response = ApiResponse.error("서버 오류가 발생했습니다.");
 
-    return ResponseEntity.status(errorCode.getStatus()).body(response);
-}
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	}
 
-
-
+	
 }

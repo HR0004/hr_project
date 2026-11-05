@@ -111,7 +111,7 @@
 	</update>
 
 	<!-- 예외 처리 -->
-	<select id="countByName">
+	<select id="countByName" resultType="int">
 		SELECT COUNT(*)
 		FROM department
 		WHERE department_name = #{departmentName}

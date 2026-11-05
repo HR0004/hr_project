@@ -17,8 +17,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration//이 클래스는 로직용이 아니라, 빈 설정용이다!
 @ComponentScan(basePackages = {
 		"com.hexagon.hrproject.controller", 
-		"com.hexagon.hrproject.rest.controller"
-		//"com.hexagon.springmvc.common.web"
+		"com.hexagon.hrproject.rest.controller",
+		"com.hexagon.hrproject.exception"
 })
 public class AppConfig implements WebMvcConfigurer {
 	//스프링 컨테이너가 보유할 빈들의 목록을 어노테이션으로 등록하자

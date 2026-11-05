@@ -340,12 +340,12 @@ button {
 ========================================= */
 
 .job-popup-body {
-    min-height: 100vh;
     margin: 0;
-    padding: 30px;
+    padding: 20px;
     background: #f5f7fb;
     font-family: "Malgun Gothic", Arial, sans-serif;
     color: #172033;
+    box-sizing: border-box;
 }
 
 .job-popup-card {
@@ -555,7 +555,7 @@ body.job-popup-body {
 
 /* 기본 정보 영역 */
 .job-register-card {
-    padding-top: 4px;
+    padding-top: 2px;
 }
 
 .job-card-heading {
