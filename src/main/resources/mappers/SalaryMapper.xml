@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hexagon.hrproject.mapper.SalaryMapper">
+
+    <resultMap id="salaryMap"
+               type="com.hexagon.hrproject.domain.Salary">
+        <id column="salary_id" property="salaryId"/>
+        <result column="emp_id" property="empId"/>
+        <result column="employee_name" property="employeeName"/>
+        <result column="salary_year_month" property="salaryYearMonth"/>
+        <result column="base_salary" property="baseSalary"/>
+        <result column="bonus" property="bonus"/>
+        <result column="deduction" property="deduction"/>
+        <result column="net_salary" property="netSalary"/>
+        <result column="payment_date" property="paymentDate"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="salaryMap">
+        SELECT
+            s.salary_id,
+            s.emp_id,
+            e.ename AS employee_name,
+            s.salary_year_month,
+            s.base_salary,
+            s.bonus,
+            s.deduction,
+            s.net_salary,
+            s.payment_date
+        FROM salary s
+        LEFT JOIN emp e ON e.emp_id = s.emp_id
+        ORDER BY s.salary_year_month DESC, s.salary_id DESC
+    </select>
+    <!-- 검색어는 모두 바인딩한다. LOCATE로 %, _도 입력한 문자 그대로 검색한다. -->
+    <select id="selectByFilters" resultMap="salaryMap">
+        SELECT
+            s.salary_id,
+            s.emp_id,
+            e.ename AS employee_name,
+            s.salary_year_month,
+            s.base_salary,
+            s.bonus,
+            s.deduction,
+            s.net_salary,
+            s.payment_date
+        FROM salary s
+        LEFT JOIN emp e ON e.emp_id = s.emp_id
+        <where>
+            <if test="salaryYearMonth != null and salaryYearMonth != ''">
+                AND s.salary_year_month = #{salaryYearMonth}
+            </if>
+            <if test="employeeKeyword != null and employeeKeyword != ''">
+                AND (LOCATE(#{employeeKeyword}, e.ename) > 0
+                    <if test="employeeId != null">
+                        OR s.emp_id = #{employeeId}
+                    </if>
+                )
+            </if>
+        </where>
+        ORDER BY s.salary_year_month DESC, s.salary_id DESC
+    </select>
+
+    <!-- 급여 번호로 상세 조회 -->
+    <select id="selectById" resultMap="salaryMap">
+        SELECT
+            s.salary_id,
+            s.emp_id,
+            e.ename AS employee_name,
+            s.salary_year_month,
+            s.base_salary,
+            s.bonus,
+            s.deduction,
+            s.net_salary,
+            s.payment_date
+        FROM salary s
+        LEFT JOIN emp e ON e.emp_id = s.emp_id
+        WHERE s.salary_id = #{salaryId}
+    </select>
+
+    <!-- 급여 등록용 선택 목록: 이름과 번호만 조회한다. -->
+    <select id="selectEmployeeOptions"
+            resultType="com.hexagon.hrproject.dto.response.SalaryEmployeeOption">
+        SELECT emp_id AS empId, ename AS employeeName
+        FROM emp
+        ORDER BY ename, emp_id
+    </select>
+
+    <!-- 급여를 등록할 사원 존재 여부 확인 -->
+    <select id="countEmployeeById" resultType="int">
+        SELECT COUNT(*)
+        FROM emp
+        WHERE emp_id = #{empId}
+    </select>
+
+    <!-- 동일 사원·지급 연월의 급여 건수 조회 -->
+    <select id="countByEmpAndYearMonth" resultType="int">
+        SELECT COUNT(*)
+        FROM salary
+        WHERE emp_id = #{empId}
+          AND salary_year_month = #{salaryYearMonth}
+    </select>
+
+    <!-- 급여 등록 -->
+    <insert id="insert"
+            parameterType="com.hexagon.hrproject.domain.Salary"
+            useGeneratedKeys="true" keyProperty="salaryId">
+
+
+        INSERT INTO salary (
+            emp_id,
+            salary_year_month,
+            base_salary,
+            bonus,
+            deduction,
+            net_salary,
+            payment_date
+        ) VALUES (
+            #{empId},
+            #{salaryYearMonth},
+            #{baseSalary},
+            #{bonus},
+            #{deduction},
+            #{netSalary},
+            #{paymentDate, jdbcType=DATE}
+        )
+    </insert>
+</mapper>
