@@ -165,14 +165,9 @@
 
                     </div>
 
-                    <!-- 안내 메시지 -->
-                    <div class="register-info">
-                        입력 오류 시 안내 메시지가 표시됩니다.
-                        현재는 사원 기본 정보만 DB에 저장되며,
-                        로그인 계정은 생성되지 않습니다.
-                    </div>
+                 
 
-                    <p id="registerMessage"></p>
+                
 
                     <!-- 버튼 -->
                     <div class="register-actions">

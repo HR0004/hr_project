@@ -11,11 +11,12 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <style>
+	/* 전체 배경 */
 	body {
 		background-color: #f8f9fa;
 	}
 	
-	/* 만드신 사이드바 클래스(.main-sidebar) 기준 스타일 설정 */
+	/* 만드신 사이드바(<aside class="main-sidebar">) 전용 디자인 스타일 */
 	.main-sidebar {
 		height: 100vh;
 		background-color: #1a2332;
@@ -52,7 +53,7 @@
 		text-decoration: none;
 	}
 
-	/* 우측 메인 컨텐츠 영역 (사이드바 너비 240px 만큼 여백 확보) */
+	/* 우측 메인 컨텐츠 영역 (사이드바 너비 240px 만큼 왼쪽 여백 확보) */
 	.main-content {
 		margin-left: 240px;
 		padding: 30px;
@@ -97,10 +98,10 @@
 </head>
 <body>
 
-	<!-- 좌측 사이드바 공통 파일 포함 -->
+	<!-- 따로 분리해 둔 공통 사이드바 조각 파일 불러오기 -->
 	<%@ include file="/WEB-INF/views/common/sidebar.jspf" %>
 
-	<!-- 우측 메인 컨텐츠 -->
+	<!-- 우측 메인 컨텐츠 영역 -->
 	<div class="main-content">
 		<h2>마이페이지</h2>
 		<p style="color: #6c757d; margin-bottom: 25px;">홈 > 마이페이지</p>

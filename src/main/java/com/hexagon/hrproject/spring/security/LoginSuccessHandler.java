@@ -15,7 +15,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
         
-        // AJAX 요청(fetch)에 맞춰 JSON 응답 전송
+        // login.jsp의 fetch가 받을 수 있도록 JSON 형태로 성공 응답 전달
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write("{\"success\":true}");

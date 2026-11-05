@@ -33,9 +33,9 @@
 			const json = await response.json();
 			console.log("서버로부터 받은 응답 데이터는", json);
 
-			// 로그인 성공 시 /main 페이지로 이동
+			// 로그인 성공 시 대시보드 페이지로 이동
 			if (json.success) {
-				location.href = "${pageContext.request.contextPath}/mypage";
+				location.href = "${pageContext.request.contextPath}/dashboard";
 			} else {
 				// 실패 시 빨간색 글씨로 에러 메시지 출력
 				errorMsgDiv.text(json.message || "아이디 또는 비밀번호가 일치하지 않습니다.");
