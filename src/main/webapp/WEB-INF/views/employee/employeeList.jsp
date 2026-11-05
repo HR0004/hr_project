@@ -150,7 +150,8 @@
                             <option value="">전체 부서</option>
                             <option value="백엔드팀">백엔드팀</option>
                             <option value="경영지원팀">경영지원팀</option>
-                            <option value="프론트엔드팀">프론트엔드팀</option>
+                            <option value="프론트엔드팀">프론
+                            트엔드팀</option>
                             <option value="인사팀">인사팀</option>
 
                         </select>
