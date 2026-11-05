@@ -10,7 +10,6 @@ import com.hexagon.hrproject.dto.DepartmentDTO;
 import com.hexagon.hrproject.exception.BusinessException;
 import com.hexagon.hrproject.exception.ErrorCode;
 import com.hexagon.hrproject.mapper.DepartmentMapper;
-import com.hexagon.hrproject.mapper.JobMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,7 @@ public class DepartmentService {
 		String name = departmentDTO.getDepartmentName();
 		
 		if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("부서명을 입력하세요.");
+			throw new BusinessException(ErrorCode.INVALID_INPUT);
         }
 		
 		Department dept = new Department();
@@ -45,6 +44,10 @@ public class DepartmentService {
 
         if (departmentMapper.updateCode(dept) != 1) {
         		throw new IllegalStateException("부서코드 생성 실패");
+        }
+        
+        if (departmentMapper.countByName(name.trim()) > 0) {
+            throw new BusinessException(ErrorCode.DEPARTMENT_ALREADY_EXISTS);
         }
 
         return result;	
@@ -115,6 +118,8 @@ public class DepartmentService {
 
 	    return result;
 	}
+	
+	// 예외 처리
 }
 
 

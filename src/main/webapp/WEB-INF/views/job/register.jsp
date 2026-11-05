@@ -3,8 +3,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<head>
-    <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
@@ -155,8 +153,16 @@ const registJob = async (event) => {
             })
         });
 
-        if (!response.ok) {
-            throw new Error("직급 등록 실패 (HTTP " + response.status + ")");
+        const contentType = response.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+            throw new Error("서버 오류가 발생했습니다. HTTP " + response.status);
+        }
+
+        const result = await response.json();
+
+        if (!response.ok || result.success === false) {
+            throw new Error(result.message || "직급 등록에 실패했습니다.");
         }
 
         alert("직급이 등록되었습니다.");

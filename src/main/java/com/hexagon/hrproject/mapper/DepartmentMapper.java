@@ -29,5 +29,9 @@ public interface DepartmentMapper {
     
     // 삭제
     int deactivate(@Param("departmentId") int departmentId);
+    
+    
+    // 예외 처리
+    int countByName(@Param("departmentName") String departmentName);
 
 }

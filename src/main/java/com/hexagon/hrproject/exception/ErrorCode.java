@@ -17,8 +17,20 @@ public enum ErrorCode {
 	DEPARTMENT_REGIST_FAIL(500, "DEPARTMENT_REGIST_FAIL", "부서를 찾을 수 없습니다."),
 	DEPARTMENT_UPDATE_FAIL(500, "DEPARTMENT_UPDATE_FAIL", "부서 수정에 실패했습니다."),
 	DEPARTMENT_DELETE_FAIL(500, "DEPARTMENT_DELETE_FAIL", "부서 비활성화에 실패했습니다."),
+	DEPARTMENT_ALREADY_EXISTS(409, "DEPARTMENT_ALREADY_EXISTS", "부서가 이미 존재합니다. 등록할 수 없습니다."),
+
+	// 직급 관련 상수
+	JOB_NOT_FOUND(404, "JOB_NOT_FOUND", "직급을 찾을 수 없습니다."), JOB_NAME_REQUIRED(400, "JOB_NAME_REQUIRED", "직급명을 입력하세요."),
+	JOB_REGIST_FAIL(500, "JOB_REGIST_FAIL", "직급 등록에 실패했습니다."),
+	JOB_UPDATE_FAIL(500, "JOB_UPDATE_FAIL", "직급 수정에 실패했습니다."),
+	JOB_DELETE_FAIL(500, "JOB_DELETE_FAIL", "직급 비활성화에 실패했습니다."),
+	JOB_ALREADY_INACTIVE(409, "JOB_ALREADY_INACTIVE", "이미 비활성화된 직급입니다."),
+	JOB_INACTIVE_UPDATE(409, "JOB_INACTIVE_UPDATE", "비활성 직급은 수정할 수 없습니다."),
+	JOB_CODE_GENERATION_FAIL(500, "JOB_CODE_GENERATION_FAIL", "직급 코드 생성에 실패했습니다."),
+	JOB_ALREADY_EXISTS(409, "JOB_ALREADY_EXISTS", "직급이 이미 존재합니다. 등록할 수 없습니다."),
+
 	UNAUTHORIZED_DEPARTMENT_ACCESS(500, "DEPARTMENT_NOT_FOUND", "부서에 대한 권한이 없습니다."),
-	
+
 	// 사원 관련
 	EMPLOYEE_NOT_FOUND(404, "EMPLOYEE_NOT_FOUND", "사원 정보를 찾을 수 없습니다."),
 	EMPLOYEE_NAME_REQUIRED(400, "EMPLOYEE_NAME_REQUIRED", "사원 이름을 입력해 주세요."),
@@ -37,24 +49,21 @@ public enum ErrorCode {
 	PASSWORD_UPDATE_FAIL(500, "PASSWORD_UPDATE_FAIL", "비밀번호 변경에 실패했습니다."),
 	LOGIN_ID_REQUIRED(400, "LOGIN_ID_REQUIRED", "로그인 ID를 입력해 주세요."),
 	LOGIN_ID_DUPLICATED(409, "LOGIN_ID_DUPLICATED", "이미 사용 중인 로그인 ID입니다."),
-	
+
 	// 로그인 상태 관련
 	LOGIN_REQUIRED(401, "LOGIN_REQUIRED", "로그인이 필요합니다."),
-	EMPLOYEE_ACCOUNT_NOT_LINKED(404, "EMPLOYEE_ACCOUNT_NOT_LINKED", "계정에 연결된 사원 정보가 없습니다.");
-	
-	
-	
-	
+	EMPLOYEE_ACCOUNT_NOT_LINKED(404, "EMPLOYEE_ACCOUNT_NOT_LINKED", "계정에 연결된 사원 정보가 없습니다."),
+
+	INVALID_INPUT(500, "INVALID_INPUT", "접근할 수 없습니다.");
+
 	private final int status; // HTTP Status code 200, 500 등등..
 	private final String code; // 에러코드
 	private final String message; // 에러 메시지 ex) "등록 실패입니다."
+
 	private ErrorCode(int status, String code, String message) {
 		this.status = status;
 		this.code = code;
 		this.message = message;
 	}
-	
-	
-	
-}
 
+}

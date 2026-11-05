@@ -29,4 +29,12 @@ public interface JobMapper {
 	
 	// 특정 직급 검색기능
 	List<Job> search(@Param("jobName") String jobname);
+	
+	// 예외처리
+	int countByName(@Param("jobName") String jobName);
+	
+	int countByNameExcludingId(
+		    @Param("jobName") String jobName,
+		    @Param("jobId") int jobId
+		);
 }

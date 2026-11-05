@@ -46,24 +46,30 @@ public class RestJobController {
 		
 	}
 
-	@GetMapping("/api/job/{jodId}")
-	public ResponseEntity<ApiResponse<List<Job>>> getDetail(@PathVariable int jobId) {
+	@GetMapping("/api/jobs/{jobId}")
+	public ResponseEntity<ApiResponse<Job>> getDetail(@PathVariable int jobId) {
 
-		Job job = jobService.getDetail(jobId);
-		
-		ApiResponse<List<Job>> response = ApiResponse.success("직급 목록 가져오기 성공", null);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(response);
-		
+	    Job job = jobService.getDetail(jobId);
+
+	    ApiResponse<Job> response =
+	            ApiResponse.success("직급 상세 조회 성공", job);
+
+	    return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 	@GetMapping("/api/jobs/search")
-	public List<Job> search(
-			@RequestParam(value="jobName", required = false) String jobName) {
-		return jobService.search(jobName);
+	public ResponseEntity<ApiResponse<List<Job>>> search(
+	        @RequestParam(value = "jobName", required = false) String jobName) {
+
+	    List<Job> jobList = jobService.search(jobName);
+
+	    ApiResponse<List<Job>> response =
+	            ApiResponse.success("직급 검색 성공", jobList);
+
+	    return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
-	@PutMapping("/api/job/{jobId}")
+	@PutMapping("/api/jobs/{jobId}")
 	public ResponseEntity<ApiResponse<Void>> update(@PathVariable int jobId, @RequestBody JobDTO jobDTO){
 		jobService.update(jobId, jobDTO);
 		

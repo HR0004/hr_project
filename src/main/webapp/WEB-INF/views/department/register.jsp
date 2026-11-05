@@ -57,6 +57,7 @@ const contextPath = '${pageContext.request.contextPath}';
 
 
 // 부서 등록
+
 const regist = async () => {
 
     const departmentName =
@@ -67,21 +68,36 @@ const regist = async () => {
         return;
     }
 
-    const params = {
-        departmentName: departmentName
-    };
-
     try {
+        const headers = {
+            "Content-Type": "application/json; charset=UTF-8",
+            "Accept": "application/json"
+        };
+
+        // Spring Security CSRF
+        const csrfToken = "${_csrf.token}";
+        const csrfHeader = "${_csrf.headerName}";
+
+        if (csrfToken && csrfHeader) {
+            headers[csrfHeader] = csrfToken;
+        }
 
         const response = await fetch(
             contextPath + "/api/departments", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8"
-                },
-                body: JSON.stringify(params)
+                headers: headers,
+                body: JSON.stringify({ departmentName })
             }
         );
+
+        const contentType =
+            response.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+            throw new Error(
+                "JSON 응답이 아닙니다. HTTP " + response.status
+            );
+        }
 
         const result = await response.json();
 
@@ -91,21 +107,19 @@ const regist = async () => {
 
         alert(result.message);
 
-        // 부모창이 있으면 목록 갱신
         if (window.opener && !window.opener.closed) {
             window.opener.location.reload();
             window.close();
         } else {
-            // 팝업이 아닌 일반 화면으로 열었을 경우
             location.href = contextPath + "/departments";
         }
 
     } catch (error) {
-        console.error(error);
+        console.error("부서 등록 오류:", error);
         alert(error.message);
     }
-
 };
+
 
 
 // 등록 버튼 이벤트

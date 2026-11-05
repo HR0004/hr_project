@@ -9,7 +9,7 @@ public class BusinessException extends RuntimeException {
 
  // 우리가 정의한 예외 객체가 ErrorCode 를 보유함으로써, 개발자는 굳이
  // 모든 비즈니스 예외에 대한 클래스를 1:1로 만들 필요가 없다!
- private ErrorCode errorCode;
+ private final ErrorCode errorCode;
 
  // 예외객체에 넣을 메시지 처리, 원래 예외객체에 원하는 메시지를 심으려면 생성자를 통해서 가능한데, 
  // java 에서는 부모의 생성자는 자식에게 물려지지 않으므로, 
@@ -17,6 +17,7 @@ public class BusinessException extends RuntimeException {
 
  public BusinessException(ErrorCode errorCode) {
      super(errorCode.getMessage());
+     this.errorCode = errorCode;
  }
 
  public BusinessException(String message, ErrorCode errorCode) {
