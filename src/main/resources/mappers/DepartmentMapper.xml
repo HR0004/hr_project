@@ -11,7 +11,7 @@
 		department_name, is_active
 		)
 		VALUES (#{departmentName}, 1
-		)
+		) 
 
 	</insert>
 
