@@ -55,7 +55,7 @@
                     * 표시 항목은 필수 입력입니다.
                 </p>
 
-                <form id="employeeRegisterForm">
+               <form id="employeeRegisterForm" novalidate>
 
                     <div class="employee-register-grid">
 
@@ -165,14 +165,9 @@
 
                     </div>
 
-                    <!-- 안내 메시지 -->
-                    <div class="register-info">
-                        입력 오류 시 안내 메시지가 표시됩니다.
-                        현재는 사원 기본 정보만 DB에 저장되며,
-                        로그인 계정은 생성되지 않습니다.
-                    </div>
+                 
 
-                    <p id="registerMessage"></p>
+                
 
                     <!-- 버튼 -->
                     <div class="register-actions">
@@ -193,6 +188,43 @@
                 </form>
             </section>
         </main>
+    </div>
+</div>
+
+<!-- 사원 등록 안내 팝업 -->
+<div class="modal fade" id="registerPopup" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-body p-4">
+
+                <h4 class="font-weight-bold mb-4">
+                    <span id="popupIcon" class="mr-2"></span>
+                    <span id="popupTitle"></span>
+                </h4>
+
+                <p id="popupMessage" class="mb-3"></p>
+
+                <div id="popupDetail"
+                     class="bg-light rounded p-3 mb-4"></div>
+
+                <div class="d-flex">
+                    <button type="button"
+                            id="popupCancel"
+                            class="btn btn-outline-secondary flex-fill mr-2"
+                            data-dismiss="modal">
+                        취소
+                    </button>
+
+                    <button type="button"
+                            id="popupAction"
+                            class="btn btn-primary flex-fill">
+                        확인
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -246,33 +278,54 @@ const registerEmployee = async () => {
 			throw new Error(message);
         }
 
-        alert("사원 등록 성공!");
-
-        location.href =
-            "${pageContext.request.contextPath}/employees";
-
+        showRegisterPopup("success", {
+            ename: emp.ename
+        });
+        
     } catch (error) {
 
         console.error("사원 등록 오류:", error);
 
-        $("#registerMessage").text(error.message);
+        if (error.message.includes("이미 사용중인 로그인 ID")) {
+            showRegisterPopup("duplicate");
+        } else {
+            $("#registerMessage").text(error.message);
+            alert("사원 등록 중 오류가 발생했습니다.");
+        }
+
+    
        
 
     } finally {
         $("#registerBtn").prop("disabled", false);
     }
 };
-
 /* 등록 버튼 */
 $("#employeeRegisterForm").on("submit", function(event) {
 
     event.preventDefault();
 
-    if (!this.reportValidity()) {
+    // 필수 입력값 검사
+    if (!this.checkValidity()) {
+        showRegisterPopup("required");
         return;
     }
 
-    registerEmployee();
+    // 입력한 사원 정보
+    const ename = $("#ename").val().trim();
+    const loginId = $("#loginId").val().trim();
+
+    if (!ename || !loginId) {
+        showRegisterPopup("required");
+        return;
+    }
+
+    // 등록 확인 팝업
+    showRegisterPopup("confirm", {
+        ename: ename,
+        loginId: loginId,
+        onConfirm: registerEmployee
+    });
 });
 
 /* 사이드바 사원 관리 메뉴 활성화 */
@@ -289,6 +342,91 @@ $(function() {
 
 });
 
+
+//사원 등록 팝업
+const showRegisterPopup = (type, data = {}) => {
+
+    const popups = {
+
+        confirm: {
+            icon: "❔",
+            title: "신규 사원 등록 확인",
+            message: "입력한 사원 정보를 등록하시겠습니까?",
+            detail: "성명 " + (data.ename ?? "-") + " · 로그인 ID " + (data.loginId ?? "-"),
+            button: "등록하기"
+        },
+
+        duplicate: {
+            icon: "❗",
+            title: "로그인 ID 중복 안내",
+            message: "이미 사용 중인 로그인 ID입니다.",
+            detail: "다른 로그인 ID를 입력해 주세요.",
+            button: "닫기"
+        },
+
+        required: {
+            icon: "❗",
+            title: "필수 입력 항목 확인",
+            message: "입력하지 않은 필수 항목이 있습니다.",
+            detail: "필수 입력 항목을 확인해 주세요.",
+            button: "확인"
+        },
+
+        success: {
+            icon: "✅",
+            title: "사원 등록 완료",
+            message: "신규 사원이 정상적으로 등록되었습니다.",
+            detail: "성명 " + (data.ename ?? "-"),
+            button: "사원 목록 보기"
+        }
+    };
+
+    const popup = popups[type];
+
+    if (!popup) return;
+
+    $("#popupIcon").text(popup.icon);
+    $("#popupTitle").text(popup.title);
+    $("#popupMessage").text(popup.message);
+    $("#popupDetail").text(popup.detail);
+    $("#popupAction").text(popup.button);
+
+    // 확인 팝업과 완료 팝업만 보조 버튼 표시
+    $("#popupCancel").toggle(
+        type === "confirm" || type === "success"
+    );
+
+    $("#popupAction").off("click").on("click", () => {
+
+        // 등록 확인 팝업
+        if (type === "confirm") {
+
+            // 팝업이 완전히 닫힌 다음 등록 실행
+            $("#registerPopup").one("hidden.bs.modal", () => {
+                if (data.onConfirm) {
+                    data.onConfirm();
+                }
+            });
+
+            $("#registerPopup").modal("hide");
+            return;
+        }
+
+        // 등록 완료 팝업
+        if (type === "success") {
+            location.href =
+                "${pageContext.request.contextPath}/employees";
+            return;
+        }
+
+        // 중복 오류, 필수값 오류 팝업
+        $("#registerPopup").modal("hide");
+
+    });
+    $("#registerPopup").modal("show");
+};
 </script>
+
+
 </body>
 </html>

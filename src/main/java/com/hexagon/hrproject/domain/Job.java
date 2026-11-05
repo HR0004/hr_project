@@ -10,4 +10,5 @@ public class Job {
 	private String jobCode;
 	private String jobName;
 	private int isActive;
+	private int employeeCount;
 }

@@ -1193,3 +1193,282 @@ body {
     padding: 30px 34px 60px;
     box-sizing: border-box;
 }
+
+
+/* ==============================
+   사원 정보 수정 화면
+============================== */
+
+/* 전체 콘텐츠 너비 */
+.employee-edit-page .employee-detail-container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+}
+
+/* 페이지 제목과 카드 간격 */
+.employee-edit-page .employee-detail-heading {
+    margin-bottom: 24px;
+}
+
+/* 수정 카드 */
+.employee-edit-page .employee-detail-card {
+    padding: 36px 40px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+/* 카드 제목 */
+.employee-edit-page .employee-detail-card > h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #14213d;
+}
+
+/* 카드 설명 */
+.employee-edit-page .employee-detail-card > p {
+    font-size: 14px;
+    color: #8491a5;
+    margin-bottom: 28px;
+}
+
+/* 입력 항목 사이 간격 */
+.employee-edit-page .row > div {
+    margin-bottom: 22px !important;
+}
+
+/* 라벨 */
+.employee-edit-page label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #24344d;
+    margin-bottom: 8px;
+}
+
+/* 입력창 */
+.employee-edit-page .employee-edit-input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 10px 14px;
+    border: 1px solid #dce4f0;
+    border-radius: 9px;
+    background: #fff;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* 입력창 클릭 */
+.employee-edit-page .employee-edit-input:focus {
+    outline: none;
+    border-color: #5988d8;
+    box-shadow: 0 0 0 3px rgba(89, 136, 216, 0.1);
+}
+
+/* 수정 불가능한 항목 */
+.employee-edit-page .employee-edit-input:read-only {
+    background: #f3f6fa;
+}
+
+/* 하단 버튼 영역 */
+.employee-edit-page .employee-detail-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #eef1f5;
+}
+
+/* 버튼 */
+.employee-edit-page .employee-detail-action-buttons
+.employee-detail-button {
+    min-width: 120px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+}
+/* 퇴직 처리 버튼 */
+#retireBtn {
+    background-color: #fff;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* 마우스를 올렸을 때 */
+#retireBtn:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* 퇴직 처리 완료 */
+#retireBtn:disabled {
+    background-color: #e9ecef;
+    color: #94a3b8;
+    border-color: #e9ecef;
+    cursor: not-allowed;
+}
+/* 페이지 처리 */
+.employee-pagination-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#pageInfo {
+    font-size: 13px;
+    color: #718096;
+}
+
+.employee-pagination {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.employee-page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    background: white;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    color: #344054;
+    cursor: pointer;
+}
+
+.employee-page-btn.active {
+    background: #151e35;
+    color: white;
+    border-color: #151e35;
+}
+
+.employee-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+/* 검색 결과 테이블 헤더 가운데 정렬 */
+.employee-table thead th {
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+/* 검색 결과 제목 + 버튼 세로 가운데 정렬 */
+.search-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 48px;
+    margin-bottom: 20px;
+}
+
+.search-result-header h2 {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.search-result-header .employee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* 사원 목록 테이블 열 너비 통일 */
+.employee-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+
+/* 헤더와 데이터 가로 정렬 */
+.employee-table th,
+.employee-table td {
+    text-align: center !important;
+    vertical-align: middle !important;
+    box-sizing: border-box;
+    padding: 20px 8px;
+}
+
+/* 열별 너비 지정 */
+.employee-table th:nth-child(1),
+.employee-table td:nth-child(1) {
+    width: 7%;
+}
+
+.employee-table th:nth-child(2),
+.employee-table td:nth-child(2) {
+    width: 12%;
+}
+
+.employee-table th:nth-child(3),
+.employee-table td:nth-child(3) {
+    width: 13%;
+}
+
+.employee-table th:nth-child(4),
+.employee-table td:nth-child(4) {
+    width: 11%;
+}
+
+.employee-table th:nth-child(5),
+.employee-table td:nth-child(5) {
+    width: 23%;
+}
+
+.employee-table th:nth-child(6),
+.employee-table td:nth-child(6) {
+    width: 14%;
+}
+
+.employee-table th:nth-child(7),
+.employee-table td:nth-child(7) {
+    width: 10%;
+}
+
+.employee-table th:nth-child(8),
+.employee-table td:nth-child(8) {
+    width: 10%;
+}
+
+/* 검색/필터, 사원 등록 버튼 세로 정렬 */
+.employee-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* 검색/필터 버튼 */
+.employee-toolbar-actions .employee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 0 12px;
+    margin: 0;
+    line-height: 1;
+    text-decoration: none;
+}
+
+/* 사원 등록 버튼 */
+.employee-toolbar-actions .employee-register-btn {
+    height: 60px;
+    margin: 0;
+}
