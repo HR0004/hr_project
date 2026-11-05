@@ -253,6 +253,29 @@
 		margin: 30px 17px !important;
 	}
 }
+
+/* 전체 레이아웃 래퍼 */
+.page-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 사이드바 영역 자체의 고정 너비 확보 (보통 AdminLTE 기반 사이드바는 250px 사용) */
+.page-wrapper > aside {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+/* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
+.main-content {
+    flex: 1;
+    width: calc(100% - 250px);
+    background: #fff;
+    overflow-x: hidden;
+    padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+}
 </style>
 
 <script type="text/javascript">
@@ -290,118 +313,131 @@
 	$(function() {
 		getLeaveBalance();
 		
-		$("button[name='leaveHistoryButton']").click(function() {
-			alert("휴가 신청 내역 화면은 아직 연결되지 않았습니다.");
+		$("button[name='leaveHistoryButton']").on("click", function() {
+			window.location.href = "${pageContext.request.contextPath}/leave/history";
 		});
 
-		$("button[name='leaveApplyButton']").click(function() {
-			alert("휴가 신청 화면은 아직 연결되지 않았습니다.");
+		$("button[name='leaveApplyButton']").on("click", function() {
+			window.location.href = "${pageContext.request.contextPath}/leave/apply";
 		});
 	});
 </script>
 </head>
 <body>
-	<!-- 공통 헤더/사이드바 제외. 휴가 현황 본문만 작성 -->
-	<section class="leave-dashboard">
-		<header>
-			<h2 class="leave-heading">휴가 현황</h2>
-			<p class="leave-caption">부여된 휴가와 사용 및 잔여 일수를 확인할 수 있습니다.</p>
-		</header>
+	<div class="page-wrapper">
 
-		<!-- 1. 나의 휴가 현황 -->
-		<section class="leave-card">
-			<div class="leave-card-head">
-				<h3 class="leave-card-title">나의 휴가 현황</h3>
-			</div>
+		<%@ include file="../common/sidebar.jspf"%>
 
-			<div class="leave-summary-grid">
-				<div class="leave-summary-item">
-					<div class="leave-summary-label">총 부여 일수</div>
-					<div class="leave-summary-bottom">
-						<div class="leave-summary-value" name="totalDays">-</div>
+		<!-- 공통 헤더/사이드바 제외. 휴가 현황 본문만 작성 -->
+
+		<div class="main-content main-area">
+			<section class="leave-dashboard">
+				<header>
+					<h2 class="leave-heading">휴가 현황</h2>
+					<p class="leave-caption">부여된 휴가와 사용 및 잔여 일수를 확인할 수 있습니다.</p>
+				</header>
+
+				<!-- 1. 나의 휴가 현황 -->
+				<section class="leave-card">
+					<div class="leave-card-head">
+						<h3 class="leave-card-title">나의 휴가 현황</h3>
 					</div>
-				</div>
 
-				<div class="leave-summary-item">
-					<div class="leave-summary-label">사용 일수</div>
-					<div class="leave-summary-bottom">
-						<div class="leave-summary-value" name="usedDays">-</div>
+					<div class="leave-summary-grid">
+						<div class="leave-summary-item">
+							<div class="leave-summary-label">총 부여 일수</div>
+							<div class="leave-summary-bottom">
+								<div class="leave-summary-value" name="totalDays">-</div>
+							</div>
+						</div>
+
+						<div class="leave-summary-item">
+							<div class="leave-summary-label">사용 일수</div>
+							<div class="leave-summary-bottom">
+								<div class="leave-summary-value" name="usedDays">-</div>
+							</div>
+						</div>
+
+						<div class="leave-summary-item">
+							<div class="leave-summary-label">잔여 일수</div>
+							<div class="leave-summary-bottom">
+								<div class="leave-summary-value" name="remainingDays">-</div>
+							</div>
+						</div>
+
+
 					</div>
-				</div>
+				</section>
 
-				<div class="leave-summary-item">
-					<div class="leave-summary-label">잔여 일수</div>
-					<div class="leave-summary-bottom">
-						<div class="leave-summary-value" name="remainingDays">-</div>
+				<!-- 2. 휴가 사용 내역 -->
+				<section class="leave-card leave-history-card">
+					<div class="leave-card-head">
+						<h3 class="leave-card-title">휴가 사용 내역</h3>
+						<div class="leave-card-count" name="leaveHistoryCount">총 4건</div>
 					</div>
+
+					<div class="leave-table-scroll">
+						<table class="leave-table">
+							<thead>
+								<tr>
+									<th>사용일</th>
+									<th>휴가 종류</th>
+									<th>사용 기간</th>
+									<th>사용 일수</th>
+									<th>처리 상태</th>
+								</tr>
+							</thead>
+							<!-- 현재는 화면 설계의 예시 데이터 4건 -->
+							<tbody name="leaveHistoryRows">
+								<tr>
+									<td>2026-10-05</td>
+									<td>연차</td>
+									<td>2026-10-05 ~ 2026-10-06</td>
+									<td>2일</td>
+									<td>사용 완료</td>
+								</tr>
+								<tr>
+									<td>2026-09-18</td>
+									<td>오전 반차</td>
+									<td>2026-09-18</td>
+									<td>0.5일</td>
+									<td>사용 완료</td>
+								</tr>
+								<tr>
+									<td>2026-08-21</td>
+									<td>연차</td>
+									<td>2026-08-21 ~ 2026-08-22</td>
+									<td>2일</td>
+									<td>사용 완료</td>
+								</tr>
+								<tr>
+									<td>2026-07-10</td>
+									<td>오후 반차</td>
+									<td>2026-07-10</td>
+									<td>0.5일</td>
+									<td>사용 완료</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<p class="leave-note">※ 휴가 일수는 회사 휴가 정책에 따라 산정됩니다.</p>
+				</section>
+
+				<!-- 3. 화면 이동 버튼 (기능은 나중에 연결) -->
+				<div class="leave-actions">
+
+					<button type="button" class="leave-button"
+						name="leaveHistoryButton">휴가 신청 내역</button>
+
+					<button type="button" class="leave-button leave-button-primary"
+						name="leaveApplyButton">휴가 신청</button>
+
+
 				</div>
-
-				
-			</div>
-		</section>
-
-		<!-- 2. 휴가 사용 내역 -->
-		<section class="leave-card leave-history-card">
-			<div class="leave-card-head">
-				<h3 class="leave-card-title">휴가 사용 내역</h3>
-				<div class="leave-card-count" name="leaveHistoryCount">총 4건</div>
-			</div>
-
-			<div class="leave-table-scroll">
-				<table class="leave-table">
-					<thead>
-						<tr>
-							<th>사용일</th>
-							<th>휴가 종류</th>
-							<th>사용 기간</th>
-							<th>사용 일수</th>
-							<th>처리 상태</th>
-						</tr>
-					</thead>
-					<!-- 현재는 화면 설계의 예시 데이터 4건 -->
-					<tbody name="leaveHistoryRows">
-						<tr>
-							<td>2026-10-05</td>
-							<td>연차</td>
-							<td>2026-10-05 ~ 2026-10-06</td>
-							<td>2일</td>
-							<td>사용 완료</td>
-						</tr>
-						<tr>
-							<td>2026-09-18</td>
-							<td>오전 반차</td>
-							<td>2026-09-18</td>
-							<td>0.5일</td>
-							<td>사용 완료</td>
-						</tr>
-						<tr>
-							<td>2026-08-21</td>
-							<td>연차</td>
-							<td>2026-08-21 ~ 2026-08-22</td>
-							<td>2일</td>
-							<td>사용 완료</td>
-						</tr>
-						<tr>
-							<td>2026-07-10</td>
-							<td>오후 반차</td>
-							<td>2026-07-10</td>
-							<td>0.5일</td>
-							<td>사용 완료</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<p class="leave-note">※ 휴가 일수는 회사 휴가 정책에 따라 산정됩니다.</p>
-		</section>
-
-		<!-- 3. 화면 이동 버튼 (기능은 나중에 연결) -->
-		<div class="leave-actions">
-			<button type="button" class="leave-button" name="leaveHistoryButton">휴가
-				신청 내역</button>
-			<button type="button" class="leave-button leave-button-primary"
-				name="leaveApplyButton">휴가 신청</button>
+			</section>
 		</div>
-	</section>
+
+	</div>
 </body>
 </html>
