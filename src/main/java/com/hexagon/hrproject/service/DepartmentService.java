@@ -24,7 +24,7 @@ public class DepartmentService {
 		String name = departmentDTO.getDepartmentName();
 		
 		if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("부서명을 입력하세요.");
+			throw new BusinessException(ErrorCode.INVALID_INPUT);
         }
 		
 		Department dept = new Department();

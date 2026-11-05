@@ -1,3 +1,4 @@
+
 package com.hexagon.hrproject.service;
 
 import java.util.List;
@@ -17,115 +18,129 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JobService {
 
-	private final JobMapper jobMapper;
+    private final JobMapper jobMapper;
 
-	// 직급 등록
-	@Transactional
-	public int regist(JobDTO jobDTO) {
-		String name = jobDTO == null ? null : jobDTO.getJobName();
+    // 직급 등록
+    @Transactional
+    public int regist(JobDTO jobDTO) {
 
-		if (name == null || name.trim().isEmpty()) {
-			throw new IllegalArgumentException("직급명을 입력하세요.");
-		}
+        String name = jobDTO == null ? null : jobDTO.getJobName();
 
-		Job job = new Job();
-		job.setJobName(name.trim());
+        // 1. 입력값 검사
+        if (name == null || name.trim().isEmpty()) {
+            throw new BusinessException(ErrorCode.JOB_NAME_REQUIRED);
+        }
 
-		// MySQL에서 ID 자동 생성
-		int result = jobMapper.insert(job);
+        name = name.trim();
 
-		if (result != 1) {
-			throw new IllegalStateException("직급 등록 실패");
-		}
+        // 2. 직급명 중복 검사
+        if (jobMapper.countByName(name) > 0) {
+        	System.out.println("직급 중복 검사 실행됨: " + name);
+            throw new BusinessException(ErrorCode.JOB_ALREADY_EXISTS);
+        }
 
-		// 최초 등록 시 코드 생성
-		String code = String.format("JOB%04d", job.getJobId());
+        // 3. 직급 등록
+        Job job = new Job();
+        job.setJobName(name);
 
-		job.setJobCode(code);
+        int result = jobMapper.insert(job);
 
-		if (jobMapper.updateCode(job) != 1) {
-			throw new IllegalStateException("직급 코드 저장 실패");
-		}
-		
-		if (name == null || name.trim().isEmpty()) {
-		    throw new BusinessException(ErrorCode.INVALID_INPUT);
-		}
+        if (result != 1) {
+            throw new BusinessException(ErrorCode.JOB_REGIST_FAIL);
+        }
 
-		if (jobMapper.countByName(name.trim()) > 0) {
-		    throw new BusinessException(ErrorCode.JOB_ALREADY_EXISTS);
-		}
+        // 4. 직급 코드 자동 생성
+        String code = String.format("JOB%04d", job.getJobId());
+        job.setJobCode(code);
 
-		return result;
-	}
+        if (jobMapper.updateCode(job) != 1) {
+            throw new BusinessException(
+                ErrorCode.JOB_CODE_GENERATION_FAIL
+            );
+        }
 
-	// 직급 목록 조회
-	public List<Job> getList() {
-		return jobMapper.selectAll();
-	}
+        return result;
+    }
 
-	// 직급 상세 조회
-	public Job getDetail(int jobId) {
+    // 직급 목록 조회
+    public List<Job> getList() {
+        return jobMapper.selectAll();
+    }
 
-		Job job = jobMapper.select(jobId);
+    // 직급 상세 조회
+    public Job getDetail(int jobId) {
 
-		if (job == null) {
-			throw new IllegalArgumentException("직급을 찾을 수 없습니다.");
-		}
+        Job job = jobMapper.select(jobId);
 
-		return job;
-	}
+        if (job == null) {
+            throw new BusinessException(ErrorCode.JOB_NOT_FOUND);
+        }
 
-	// 직급 검색
-	public List<Job> search(String jobName) {
+        return job;
+    }
 
-		if (jobName == null || jobName.trim().isEmpty()) {
-			return jobMapper.selectAll();
-		}
+    // 직급 검색
+    public List<Job> search(String jobName) {
 
-		return jobMapper.search(jobName.trim());
-	}
+        if (jobName == null || jobName.trim().isEmpty()) {
+            return jobMapper.selectAll();
+        }
 
-	// 직급 수정
-	@Transactional
-	public int update(int jobId, JobDTO dto) {
+        return jobMapper.search(jobName.trim());
+    }
 
-		Job job = getDetail(jobId);
+    // 직급 수정
+    @Transactional
+    public int update(int jobId, JobDTO dto) {
 
-		if (job.getIsActive() != 1) {
-			throw new IllegalStateException("비활성 직급은 수정할 수 없습니다.");
-		}
+        Job job = getDetail(jobId);
 
-		String name = dto == null ? null : dto.getJobName();
+        if (job.getIsActive() != 1) {
+            throw new BusinessException(
+                ErrorCode.JOB_INACTIVE_UPDATE
+            );
+        }
 
-		if (name == null || name.trim().isEmpty()) {
-			throw new IllegalArgumentException("직급명을 입력하세요.");
-		}
+        String name = dto == null ? null : dto.getJobName();
 
-		int result = jobMapper.updateName(jobId, name.trim());
+        if (name == null || name.trim().isEmpty()) {
+            throw new BusinessException(ErrorCode.JOB_NAME_REQUIRED);
+        }
 
-		if (result != 1) {
-			throw new IllegalStateException("직급 수정 실패");
-		}
+        name = name.trim();
 
-		return result;
-	}
+        // 자기 자신은 제외하고 동일한 직급명이 있는지 확인
+        if (jobMapper.countByNameExcludingId(name, jobId) > 0) {
+            throw new BusinessException(ErrorCode.JOB_ALREADY_EXISTS);
+        }
 
-	// 직급 비활성화
-	@Transactional
-	public int deactivity(int jobId) {
+        int result = jobMapper.updateName(jobId, name);
 
-		Job job = getDetail(jobId);
+        if (result != 1) {
+            throw new BusinessException(ErrorCode.JOB_UPDATE_FAIL);
+        }
 
-		if (job.getIsActive() != 1) {
-			throw new IllegalStateException("이미 비활성화된 직급입니다.");
-		}
+        return result;
+    }
 
-		int result = jobMapper.deactivate(jobId);
+    // 직급 비활성화
+    @Transactional
+    public int deactivity(int jobId) {
 
-		if (result != 1) {
-			throw new IllegalStateException("직급 비활성화 실패");
-		}
+        Job job = getDetail(jobId);
 
-		return result;
-	}
+        if (job.getIsActive() != 1) {
+            throw new BusinessException(
+                ErrorCode.JOB_ALREADY_INACTIVE
+            );
+        }
+
+        int result = jobMapper.deactivate(jobId);
+
+        if (result != 1) {
+            throw new BusinessException(ErrorCode.JOB_DELETE_FAIL);
+        }
+
+        return result;
+    }
 }

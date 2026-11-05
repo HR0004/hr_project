@@ -305,10 +305,20 @@ document.getElementById("searchStatus")
 // 6. 등록 팝업
 document.getElementById("openRegisterBtn").addEventListener("click", () => {
 
+	const width = 650;
+	const height = 500;
+
+    const left = Math.round(window.screenX + (window.outerWidth - width) / 2);
+    const top = Math.round(window.screenY + (window.outerHeight - height) / 2);
+
     window.open(
         contextPath + "/jobs/new",
         "jobRegisterPopup",
-        "width=650,height=450"
+        "width=" + width +
+        ",height=" + height +
+        ",left=" + left +
+        ",top=" + top +
+        ",scrollbars=yes,resizable=yes"
     );
 });
 
