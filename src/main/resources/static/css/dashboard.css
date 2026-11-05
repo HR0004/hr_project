@@ -1,0 +1,14 @@
+/* 카드 링크 스타일 정돈 */
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-link:hover {
+            transform: translateY(-3px);
+        }
+        .card-link:hover .card {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #cbd5e1;
+        }

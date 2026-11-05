@@ -64,13 +64,13 @@
 <select id="selectByIdNum"
         resultType="com.hexagon.hrproject.domain.Account">
 
-    SELECT account_id AS accountId,
-           emp_id AS empId,
-           login_id AS loginId,
-           password,
-           enabled
-    FROM account
-    WHERE account_id = #{accountId}
+	<!-- 2. 특정 계정 상세 정보 조회 (필요에 따라 권한 목록도 JOIN 또는 별도 조회) -->
+	<select id="selectByIdNum"
+		resultMap="joinMap">
+		SELECT account_id, emp_id, login_id, password, enabled, created_at, last_login_at
+		FROM account
+		WHERE account_id = #{accountId}
+	</select>
 
 </select>
 
