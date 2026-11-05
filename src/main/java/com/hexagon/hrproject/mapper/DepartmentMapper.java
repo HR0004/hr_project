@@ -20,6 +20,9 @@ public interface DepartmentMapper {
 
     List<Department> selectAll();
     
+    // 부서 검색기능으로 부서조회
+    List<Department> search(@Param("departmentName") String departmentName);
+    
     // 수정
     int updateName(@Param("departmentId") int departmentId,
                    @Param("departmentName") String departmentName);

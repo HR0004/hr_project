@@ -71,7 +71,13 @@
 
 						<div class="table-actions">
 
-							<input type="text" id="keyword" placeholder="부서명 검색">
+							<input type="text" id="keyword" placeholder="부서명 / 부서 코드 검색">
+
+							<select id="searchStatus" aria-label="부서 상태 필터">
+								<option value="">전체 상태</option>
+								<option value="1">활성</option>
+								<option value="0">비활성</option>
+							</select>
 
 							<button type="button" id="openRegisterBtn" class="primary-btn">
 								+ 부서 등록</button>
@@ -131,7 +137,7 @@ const getList = async () => {
 
         departmentList = result.data;
 
-        renderList(departmentList);
+        filterDepartments();
         updateSummary();
 
     } catch (error) {
@@ -147,6 +153,17 @@ const renderList = (list) => {
     const tbody = document.getElementById("departmentBody");
 
     tbody.replaceChildren();
+
+    if (list.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 5;
+        td.textContent = "검색 결과가 없습니다.";
+        td.style.textAlign = "center";
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+    }
 
     list.forEach(dept => {
 
@@ -180,12 +197,11 @@ const renderList = (list) => {
 
         editBtn.onclick = () => {
 
-            window.open(
-                contextPath + "/departments/edit?departmentId="
-                    + dept.departmentId,
-                "departmentEditPopup",
-                "width=600,height=450"
-            );
+        	window.open(
+        		    contextPath + "/jobs/new",
+        		    "jobRegisterPopup",
+        		    "width=700,height=700,scrollbars=yes"
+        		);
         };
 
         // 비활성화 버튼
@@ -258,17 +274,28 @@ const updateSummary = () => {
 };
 
 
-// 5. 부서명 검색
-document.getElementById("keyword").addEventListener("input", function() {
+// 5. 부서 검색 (별도 JS 파일 없이 현재 JSP에서 처리)
+const filterDepartments = () => {
+    const keyword = document.getElementById("keyword")
+        .value.trim().toLowerCase();
+    const status = document.getElementById("searchStatus").value;
 
-    const keyword = this.value.trim().toLowerCase();
-
-    const filtered = departmentList.filter(dept =>
-        dept.departmentName.toLowerCase().includes(keyword)
-    );
+    const filtered = departmentList.filter(dept => {
+        const code = String(dept.departmentCode ?? "").toLowerCase();
+        const name = String(dept.departmentName ?? "").toLowerCase();
+        const matchesKeyword = code.includes(keyword) || name.includes(keyword);
+        const matchesStatus = status === "" || Number(dept.isActive) === Number(status);
+        return matchesKeyword && matchesStatus;
+    });
 
     renderList(filtered);
-});
+};
+
+document.getElementById("keyword")
+    .addEventListener("input", filterDepartments);
+
+document.getElementById("searchStatus")
+    .addEventListener("change", filterDepartments);
 
 
 // 6. 등록 팝업

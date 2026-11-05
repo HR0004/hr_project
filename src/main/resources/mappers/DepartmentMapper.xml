@@ -11,7 +11,7 @@
 		department_name, is_active
 		)
 		VALUES (#{departmentName}, 1
-		)
+		) 
 
 	</insert>
 
@@ -34,12 +34,12 @@
 	</resultMap>
 
 	<select id="selectAll" resultMap="joinMap">
-    SELECT
+        SELECT
         d.department_id,
         d.department_code,
         d.department_name,
         d.is_active,
-        COUNT(e.department_id) AS employee_count
+        COUNT(e.emp_id) AS employee_count
 
     FROM department d
 
@@ -53,6 +53,28 @@
         d.is_active
 
     ORDER BY d.department_id DESC
+	</select>
+	
+		<!-- 부서명 또는 부서 코드 검색 -->
+	<select id="search" resultMap="joinMap">
+		SELECT
+		d.department_id,
+		d.department_code,
+		d.department_name,
+		d.is_active,
+		COUNT(e.emp_id) AS employee_count
+		FROM department d
+		LEFT JOIN emp e
+		ON d.department_id = e.department_id
+		WHERE
+		d.department_name LIKE CONCAT('%', #{departmentName}, '%')
+		OR d.department_code LIKE CONCAT('%', #{departmentName}, '%')
+		GROUP BY
+		d.department_id,
+		d.department_code,
+		d.department_name,
+		d.is_active
+		ORDER BY d.department_id DESC
 	</select>
 
 	<!-- 생성된 ID로 부서 코드 저장 -->
