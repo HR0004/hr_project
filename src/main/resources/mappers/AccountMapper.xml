@@ -6,7 +6,7 @@
 		<id column="account_id" property="accountId" />
 		<result column="login_id" property="loginId" />
 		<result column="password" property="password" />
-		<result column="createdAt" property="createdAt" />
+		<result column="created_at" property="createdAt" />
 		<result column="last_login_at" property="lastLoginAt" />
 
 		<!-- 부모님 정보 가져오기 1:1 대응되는 테이블간 조인 -->
@@ -60,14 +60,16 @@
 		FROM hr_role
 	</select>
 
-	<!-- 특정 계정 상세 정보 조회 -->
+
 	<!-- 2. 특정 계정 상세 정보 조회 (필요에 따라 권한 목록도 JOIN 또는 별도 조회) -->
 	<select id="selectByIdNum" resultMap="joinMap">
-		SELECT account_id, emp_id, login_id, password, enabled, created_at,
-		last_login_at
+		SELECT account_id, emp_id,
+		login_id, password, enabled, created_at, last_login_at
 		FROM account
 		WHERE account_id = #{accountId}
 	</select>
+
+
 
 	<!-- 3. 특정 계정의 기존 권한 전체 삭제 -->
 	<delete id="deleteAccountRolesByAccountId">
@@ -81,6 +83,28 @@
 		VALUES (#{accountId}, #{hrRoleId})
 	</insert>
 
+	<!-- 계정 목록 조회 및 검색 -->
+	<select id="selectAccountList" resultMap="joinMap">
+		SELECT
+		a.account_id,
+		a.emp_id,
+		a.login_id,
+		a.enabled,
+		a.created_at,
+		a.last_login_at
+		FROM account a
+		LEFT JOIN emp e ON e.emp_id = a.emp_id
 
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(
+				a.login_id LIKE CONCAT('%', #{keyword}, '%')
+				OR e.ename LIKE CONCAT('%', #{keyword}, '%')
+				)
+			</if>
+		</where>
+
+		ORDER BY a.account_id DESC
+	</select>
 
 </mapper>
