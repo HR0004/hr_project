@@ -15,14 +15,10 @@
 }
 
 .lh-page {
-	max-width: 1540px;
-	margin: 0 auto;
-	padding: 8px 49px 35px;
-	background: #fff;
-	color: #172033;
-	font-family: "Pretendard", "Malgun Gothic", Arial, sans-serif;
-	font-size: 13px;
-	line-height: 1.5
+	width: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    padding: 8px 49px 35px;
 }
 
 .lh-page h1, .lh-page h2, .lh-page p {
@@ -451,21 +447,26 @@
 
 /* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
 .main-content {
-	flex: 1;
-	width: calc(100% - 250px);
-	background: #fff;
-	overflow-x: hidden;
-	padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+	display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    background: #fff;
+    overflow-x: hidden;
+    padding-top: 0;
 }
 </style>
 </head>
 <body>
 	<div class="page-wrapper">
-
+		
 		<%@ include file="../common/sidebar.jspf"%>
 
 		<!-- 공통 헤더/사이드바를 제외한 화면 본문 -->
 		<div class="main-content main-area">
+		
+			<%@ include file="../common/header.jspf"%>
 			<main class="lh-page">
 				<h1 class="lh-heading">휴가 신청 내역</h1>
 				<p class="lh-caption">신청한 휴가의 기간과 승인 상태를 확인할 수 있습니다.</p>
@@ -505,7 +506,7 @@
 				<section class="lh-card" aria-labelledby="lhHistoryTitle">
 					<div class="lh-card-head">
 						<h2 class="lh-card-title" id="lhHistoryTitle">신청 내역</h2>
-						<span class="lh-count" name="historyCount">총 5건</span>
+						<span class="lh-count" name="historyCount">총 0건</span>
 					</div>
 					<div class="lh-table-scroll">
 						<table class="lh-table">
@@ -521,58 +522,10 @@
 								</tr>
 							</thead>
 							<!-- 아래 5건은 Figma 시안의 예시 데이터. REST 조회 연결 시 교체 -->
+
 							<tbody name="historyRows">
-								<tr data-submitted="2026-10-12" data-status="APPROVED">
-									<td>2026-10-12</td>
-									<td>연차</td>
-									<td>2026-11-02 ~ 2026-11-03</td>
-									<td>2일</td>
-									<td><span class="lh-status">승인 완료</span></td>
-									<td class="lh-remark">-</td>
-									<td><button type="button" class="lh-detail-btn"
-											name="detailButton">상세</button></td>
-								</tr>
-								<tr data-submitted="2026-10-08" data-status="PENDING">
-									<td>2026-10-08</td>
-									<td>오전 반차</td>
-									<td>2026-10-20</td>
-									<td>0.5일</td>
-									<td><span class="lh-status">승인 대기</span></td>
-									<td class="lh-remark">-</td>
-									<td><button type="button" class="lh-detail-btn"
-											name="detailButton">상세</button></td>
-								</tr>
-								<tr data-submitted="2026-09-22" data-status="REJECTED">
-									<td>2026-09-22</td>
-									<td>연차</td>
-									<td>2026-10-01 ~ 2026-10-02</td>
-									<td>2일</td>
-									<td><span class="lh-status">반려</span></td>
-									<td class="lh-remark">사유 확인</td>
-									<td><button type="button" class="lh-detail-btn"
-											name="detailButton">상세</button></td>
-								</tr>
-								<tr data-submitted="2026-09-15" data-status="CANCELED">
-									<td>2026-09-15</td>
-									<td>연차</td>
-									<td>2026-09-25</td>
-									<td>1일</td>
-									<td><span class="lh-status">취소됨</span></td>
-									<td class="lh-remark">신청자 취소</td>
-									<td><button type="button" class="lh-detail-btn"
-											name="detailButton">상세</button></td>
-								</tr>
-								<tr data-submitted="2026-08-28" data-status="APPROVED">
-									<td>2026-08-28</td>
-									<td>오후 반차</td>
-									<td>2026-09-04</td>
-									<td>0.5일</td>
-									<td><span class="lh-status">승인 완료</span></td>
-									<td class="lh-remark">-</td>
-									<td><button type="button" class="lh-detail-btn"
-											name="detailButton">상세</button></td>
-								</tr>
 							</tbody>
+
 							<tbody>
 								<tr id="historyEmptyRow" style="display: none">
 									<td colspan="7" class="lh-empty">검색 결과가 없습니다.</td>
@@ -582,7 +535,7 @@
 					</div>
 					<div class="lh-card-bottom">
 						<span class="lh-footer-count" name="historyFooterCount">총
-							5건</span>
+							0건</span>
 						<nav class="lh-pagination" aria-label="페이지 이동">
 							<button type="button" class="lh-page-btn" name="previousPage"
 								aria-label="이전 페이지">‹</button>
@@ -629,10 +582,117 @@
 		$(function() {
 			const contextPath = "${pageContext.request.contextPath}";
 			const pageSize = 5;
-			const allRows = $("tbody[name='historyRows'] tr").toArray();
-			let filteredRows = allRows.slice();
+
+			let allRows = [];
+			let filteredRows = [];
+
 			let currentPage = 1;
 			let lastDetailButton = null;
+
+			// 로그인한 사원의 휴가 신청 내역 조회
+			async function loadHistory() {
+
+				try {
+
+					const response = await
+					fetch(contextPath + "/api/leave/my/requests", {
+						method : "GET"
+					});
+
+					if (!response.ok) {
+						throw new Error("휴가 신청 내역 조회 실패: " + response.status);
+					}
+
+					const records = await
+					response.json();
+
+					if (!Array.isArray(records)) {
+						throw new Error("서버 응답 형식이 올바르지 않습니다.");
+					}
+
+					console.log("휴가 신청 내역 조회 결과", records);
+
+					const tbody = $("tbody[name='historyRows']");
+					tbody.empty();
+
+					// 승인 상태를 한글로 변환
+					const statusNames = {
+						APPROVED : "승인 완료",
+						PENDING : "승인 대기",
+						REJECTED : "반려",
+						CANCELED : "취소됨"
+					};
+
+					// DB에서 가져온 기록을 테이블에 추가
+					records.forEach(function(row) {
+
+						const submitted = row.submittedDate || "-";
+						const startDate = row.startDate || "-";
+						const endDate = row.endDate || "-";
+
+						const period = startDate === endDate ? startDate
+								: startDate + " ~ " + endDate;
+
+						const leaveType = row.leaveType || "휴가";
+						const days = row.days != null ? row.days + "일" : "-";
+						const status = statusNames[row.status] || row.status
+								|| "-";
+						const remark = row.remark || "-";
+
+						const tr = $("<tr>");
+
+						tr.attr("data-submitted", submitted);
+						tr.attr("data-status", row.status || "");
+
+						$("<td>").text(submitted).appendTo(tr);
+						$("<td>").text(leaveType).appendTo(tr);
+						$("<td>").text(period).appendTo(tr);
+						$("<td>").text(days).appendTo(tr);
+
+						const statusTd = $("<td>");
+
+						$("<span>").addClass("lh-status").text(status)
+								.appendTo(statusTd);
+
+						tr.append(statusTd);
+
+						$("<td>").addClass("lh-remark").text(remark).appendTo(
+								tr);
+
+						const detailTd = $("<td>");
+
+						$("<button>").attr("type", "button").attr("name",
+								"detailButton").addClass("lh-detail-btn").text(
+								"상세").appendTo(detailTd);
+
+						tr.append(detailTd);
+						tbody.append(tr);
+
+					});
+
+					// 실제 DB 데이터로 목록 갱신
+					allRows = tbody.children("tr").toArray();
+
+					$("#historyEmptyRow td").text("검색 결과가 없습니다.");
+
+					filterHistory();
+
+				} catch (error) {
+
+					console.error("휴가 신청 내역 조회 오류", error);
+
+					allRows = [];
+					filteredRows = [];
+
+					$("tbody[name='historyRows']").empty();
+
+					$("#historyEmptyRow td").text("휴가 신청 내역을 불러오지 못했습니다.");
+
+					renderHistory();
+
+				}
+
+			}
 
 			function renderHistory() {
 				const total = filteredRows.length;
@@ -708,21 +768,24 @@
 				}
 			});
 			// 버튼 이동
-			
+
 			$("button[name='moveApplyButton']").on("click", function() {
+				console.log("휴가 신청 버튼 클릭 성공");
 				window.location.href = contextPath + "/leave/apply";
 			});
-			
+
 			$("button[name='moveViewButton']").on("click", function() {
+				console.log("휴가 목록 버튼 클릭 성공");
 				window.location.href = contextPath + "/leave";
 			});
 
 			// .버튼 이용
-			
-			
-			$("button[name='detailButton']").on(
+
+			$("tbody[name='historyRows']").on(
 					"click",
+					"button[name='detailButton']",
 					function() {
+
 						lastDetailButton = this;
 						const cells = $(this).closest("tr").children("td");
 						$("dd[name='detailSubmitted']").text(
@@ -747,9 +810,9 @@
 				if (lastDetailButton)
 					$(lastDetailButton).trigger("focus");
 			}
-			
+
 			$("button[name='closeDetail']").on("click", closeDetail);
-			
+
 			$("#leaveDetailOverlay").on("click", function(event) {
 				if (event.target === this)
 					closeDetail();
@@ -764,7 +827,8 @@
 									closeDetail();
 							});
 
-			renderHistory();
+			loadHistory();
+
 		});
 	</script>
 </body>
