@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hexagon.hrproject.mapper.SalaryMapper">
+
+	<!-- ===================================== 1. 급여 조회 결과 매핑 ====================================== -->
+	<resultMap id="salaryMap"
+		type="com.hexagon.hrproject.domain.Salary">
+
+		<id column="salary_id" property="salaryId" />
+
+		<result column="emp_id" property="empId" />
+		<result column="employee_name" property="employeeName" />
+		<result column="salary_year_month" property="salaryYearMonth" />
+		<result column="base_salary" property="baseSalary" />
+		<result column="bonus" property="bonus" />
+		<result column="deduction" property="deduction" />
+		<result column="net_salary" property="netSalary" />
+		<result column="payment_date" property="paymentDate" />
+
+	</resultMap>
+
+	<!-- ===================================== 2. 사원 선택 목록 매핑 ====================================== -->
+	<resultMap id="employeeOptionMap"
+		type="com.hexagon.hrproject.dto.response.SalaryEmployeeOption">
+
+		<id column="emp_id" property="empId" />
+		<result column="employee_name" property="employeeName" />
+
+	</resultMap>
+
+	<!-- ===================================== 3. 급여 목록 조회 ====================================== -->
+	<select id="selectAll" resultMap="salaryMap">
+
+		SELECT
+		s.salary_id,
+		s.emp_id,
+		e.ename AS employee_name,
+		s.salary_year_month,
+		s.base_salary,
+		s.bonus,
+		s.deduction,
+		s.net_salary,
+		s.payment_date
+
+		FROM salary s
+
+		LEFT JOIN emp e
+		ON s.emp_id = e.emp_id
+
+		ORDER BY
+		s.salary_year_month DESC,
+		s.salary_id DESC
+
+	</select>
+
+	<!-- ===================================== 4. 급여 검색 지급 연월 + 사번 또는 사원명 ====================================== -->
+	<select id="selectByFilters" resultMap="salaryMap">
+
+		SELECT
+		s.salary_id,
+		s.emp_id,
+		e.ename AS employee_name,
+		s.salary_year_month,
+		s.base_salary,
+		s.bonus,
+		s.deduction,
+		s.net_salary,
+		s.payment_date
+
+		FROM salary s
+
+		LEFT JOIN emp e
+		ON s.emp_id = e.emp_id
+
+		<where>
+
+			<if test="salaryYearMonth != null and salaryYearMonth != ''">
+				AND s.salary_year_month = #{salaryYearMonth}
+			</if>
+
+			<if test="employeeKeyword != null and employeeKeyword != ''">
+
+				AND (
+				LOCATE(#{employeeKeyword}, e.ename) > 0
+
+				<if test="employeeId != null">
+					OR s.emp_id = #{employeeId}
+				</if>
+				)
+
+			</if>
+
+		</where>
+
+		ORDER BY
+		s.salary_year_month DESC,
+		s.salary_id DESC
+
+	</select>
+
+	<!-- ===================================== 5. 급여 상세 조회 ====================================== -->
+	<select id="selectById" resultMap="salaryMap">
+
+		SELECT
+		s.salary_id,
+		s.emp_id,
+		e.ename AS employee_name,
+		s.salary_year_month,
+		s.base_salary,
+		s.bonus,
+		s.deduction,
+		s.net_salary,
+		s.payment_date
+
+		FROM salary s
+
+		LEFT JOIN emp e
+		ON s.emp_id = e.emp_id
+
+		WHERE s.salary_id = #{salaryId}
+
+	</select>
+
+	<!-- ===================================== 6. 급여 등록용 사원 목록 ====================================== -->
+	<select id="selectEmployeeOptions" resultMap="employeeOptionMap">
+
+		SELECT
+		emp_id,
+		ename AS employee_name
+
+		FROM emp
+
+		ORDER BY ename, emp_id
+
+	</select>
+
+	<!-- ===================================== 7. 사원 존재 여부 확인 ====================================== -->
+	<select id="countEmployeeById" resultType="int">
+
+		SELECT COUNT(*)
+
+		FROM emp
+
+		WHERE emp_id = #{empId}
+
+	</select>
+
+	<!-- ===================================== 8. 중복 급여 등록 검사 ====================================== -->
+	<select id="countByEmpAndYearMonth" resultType="int">
+
+		SELECT COUNT(*)
+
+		FROM salary
+
+		WHERE emp_id = #{empId}
+		AND salary_year_month = #{salaryYearMonth}
+
+	</select>
+
+	<!-- ===================================== 9. 급여 등록 ====================================== -->
+	<insert id="insert"
+		parameterType="com.hexagon.hrproject.domain.Salary"
+		useGeneratedKeys="true" keyProperty="salaryId" keyColumn="salary_id">
+
+		INSERT INTO salary (
+		emp_id,
+		salary_year_month,
+		base_salary,
+		bonus,
+		deduction,
+		net_salary,
+		payment_date
+		)
+
+		VALUES (
+		#{empId},
+		#{salaryYearMonth},
+		#{baseSalary},
+		#{bonus},
+		#{deduction},
+		#{netSalary},
+		#{paymentDate,jdbcType=DATE}
+		)
+
+	</insert>
+
+
+	<!-- ===================================== 10. 본인 급여 목록 조회 ====================================== -->
+	<select id="selectMySalaries" resultMap="salaryMap">
+
+		SELECT
+		s.salary_id,
+		s.emp_id,
+		e.ename AS employee_name,
+		s.salary_year_month,
+		s.base_salary,
+		s.bonus,
+		s.deduction,
+		s.net_salary,
+		s.payment_date
+
+		FROM salary s
+
+		LEFT JOIN emp e
+		ON s.emp_id = e.emp_id
+
+		WHERE s.emp_id = #{empId}
+
+		<if test="year != null and year != ''">
+			AND s.salary_year_month LIKE CONCAT(#{year}, '-%')
+		</if>
+
+		ORDER BY s.salary_year_month DESC,
+		s.salary_id DESC
+
+	</select>
+
+	<!-- ===================================== 11. 본인 급여 상세 조회 ====================================== -->
+	<select id="selectMySalaryDetail" resultMap="salaryMap">
+
+		SELECT
+		s.salary_id,
+		s.emp_id,
+		e.ename AS employee_name,
+		s.salary_year_month,
+		s.base_salary,
+		s.bonus,
+		s.deduction,
+		s.net_salary,
+		s.payment_date
+
+		FROM salary s
+
+		LEFT JOIN emp e
+		ON s.emp_id = e.emp_id
+
+		WHERE s.emp_id = #{empId}
+		AND s.salary_id = #{salaryId}
+
+	</select>
+
+
+</mapper>

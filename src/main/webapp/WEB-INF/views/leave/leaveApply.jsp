@@ -15,14 +15,10 @@
 }
 
 .la-page {
-	max-width: 1540px;
-	margin: 0 auto;
-	padding: 8px 50px 30px;
-	color: #172033;
-	background: #fff;
-	font-family: "Pretendard", "Malgun Gothic", Arial, sans-serif;
-	font-size: 13px;
-	line-height: 1.5
+	width: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    padding: 8px 50px 30px;
 }
 
 .la-page h1, .la-page h2, .la-page p {
@@ -287,108 +283,100 @@
 }
 /* 전체 레이아웃 래퍼 */
 .page-wrapper {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
+	display: flex;
+	width: 100%;
+	min-height: 100vh;
+	position: relative;
 }
 
 /* 사이드바 영역 자체의 고정 너비 확보 (보통 AdminLTE 기반 사이드바는 250px 사용) */
-.page-wrapper > aside {
-    width: 250px;
-    flex-shrink: 0;
+.page-wrapper>aside {
+	width: 250px;
+	flex-shrink: 0;
 }
 
 /* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
 .main-content {
+	display: flex;
+    flex-direction: column;
     flex: 1;
-    width: calc(100% - 250px);
+    min-width: 0;
+    width: auto;
     background: #fff;
     overflow-x: hidden;
-    padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+    padding-top: 0;
 }
 </style>
 </head>
 <body>
 	<div class="page-wrapper">
-	
+
 		<%@ include file="../common/sidebar.jspf"%>
-		
+
 		<div class="main-content main-area">
+			<%@ include file="../common/header.jspf"%>
 			<main class="la-page">
-		<h1 class="la-heading">휴가 신청</h1>
-		<p class="la-subheading">휴가 종류와 기간을 입력하여 휴가를 신청합니다.</p>
-		<section class="la-card" aria-labelledby="laFormTitle">
-			<div class="la-card-header">
-				<h2 class="la-card-title" id="laFormTitle">휴가 신청서</h2>
-			</div>
-			<form id="leaveApplyForm" name="leaveApplyForm" novalidate>
-				<div class="la-card-body">
-					<div class="la-field">
-						<label class="la-label" for="leaveType">휴가 종류 <span
-							class="la-required">*</span></label>
-						<div class="la-select-wrap">
-							<select id="leaveType" name="leaveType" class="la-select"
-								required>
-								<option value="" selected disabled>휴가 종류를 선택하세요</option>
-								<!-- 휴가 종류는 테스트용 예시이며, 실제 DB 코드와 연결할 때 맞춰 수정 -->
-								<option value="ANNUAL">연차</option>
-								<option value="SICK">병가</option>
-								<option value="OTHER">기타</option>
-							</select>
-						</div>
+				<h1 class="la-heading">휴가 신청</h1>
+				<p class="la-subheading">휴가 종류와 기간을 입력하여 휴가를 신청합니다.</p>
+				<section class="la-card" aria-labelledby="laFormTitle">
+					<div class="la-card-header">
+						<h2 class="la-card-title" id="laFormTitle">휴가 신청서</h2>
 					</div>
-					<div class="la-date-grid">
-						<div class="la-field">
-							<label class="la-label" for="leaveStartDate">시작일 <span
-								class="la-required">*</span></label> <input type="date"
-								id="leaveStartDate" name="startDate" class="la-input" required>
+					<form id="leaveApplyForm" name="leaveApplyForm" novalidate>
+						<div class="la-card-body">
+
+							<div class="la-date-grid">
+								<div class="la-field">
+									<label class="la-label" for="leaveStartDate">시작일 <span
+										class="la-required">*</span></label> <input type="date"
+										id="leaveStartDate" name="startDate" class="la-input" required>
+								</div>
+								<div class="la-field">
+									<label class="la-label" for="leaveEndDate">종료일 <span
+										class="la-required">*</span></label> <input type="date"
+										id="leaveEndDate" name="endDate" class="la-input" required>
+								</div>
+							</div>
+							<div class="la-field la-radio-field">
+								<span class="la-label" id="halfDayLabel">반차 여부 <span
+									class="la-required">*</span></span>
+								<div class="la-radios" role="radiogroup"
+									aria-labelledby="halfDayLabel">
+									<label class="la-radio-option"><input type="radio"
+										name="halfDayType" value="FULL" checked>종일</label> <label
+										class="la-radio-option"><input type="radio"
+										name="halfDayType" value="AM">오전 반차</label> <label
+										class="la-radio-option"><input type="radio"
+										name="halfDayType" value="PM">오후 반차</label>
+								</div>
+							</div>
+							<div class="la-field la-reason-field">
+								<label class="la-label" for="leaveReason">신청 사유 <span
+									class="la-required">*</span></label>
+								<div class="la-textarea-box">
+									<textarea id="leaveReason" name="reason" class="la-textarea"
+										maxlength="50" placeholder="휴가 신청 사유를 입력하세요" required></textarea>
+									<span class="la-count" name="reasonCount">0 / 500</span>
+								</div>
+							</div>
+							<p class="la-notice">※ 신청한 휴가는 관리자 승인 후 확정되며, 승인 결과는 나의 휴가 신청
+								내역에서 확인할 수 있습니다.</p>
+							<div class="la-card-footer">
+								<button type="button" class="la-btn" name="cancelButton">취소</button>
+								<button type="submit" class="la-btn la-btn-primary"
+									name="applyButton">신청</button>
+							</div>
 						</div>
-						<div class="la-field">
-							<label class="la-label" for="leaveEndDate">종료일 <span
-								class="la-required">*</span></label> <input type="date"
-								id="leaveEndDate" name="endDate" class="la-input" required>
-						</div>
-					</div>
-					<div class="la-field la-radio-field">
-						<span class="la-label" id="halfDayLabel">반차 여부 <span
-							class="la-required">*</span></span>
-						<div class="la-radios" role="radiogroup"
-							aria-labelledby="halfDayLabel">
-							<label class="la-radio-option"><input type="radio"
-								name="halfDayType" value="FULL" checked>종일</label> <label
-								class="la-radio-option"><input type="radio"
-								name="halfDayType" value="AM">오전 반차</label> <label
-								class="la-radio-option"><input type="radio"
-								name="halfDayType" value="PM">오후 반차</label>
-						</div>
-					</div>
-					<div class="la-field la-reason-field">
-						<label class="la-label" for="leaveReason">신청 사유 <span
-							class="la-required">*</span></label>
-						<div class="la-textarea-box">
-							<textarea id="leaveReason" name="reason" class="la-textarea"
-								maxlength="500" placeholder="휴가 신청 사유를 입력하세요" required></textarea>
-							<span class="la-count" name="reasonCount">0 / 500</span>
-						</div>
-					</div>
-					<p class="la-notice">※ 신청한 휴가는 관리자 승인 후 확정되며, 승인 결과는 나의 휴가 신청
-						내역에서 확인할 수 있습니다.</p>
-					<div class="la-card-footer">
-						<button type="button" class="la-btn" name="cancelButton">취소</button>
-						<button type="submit" class="la-btn la-btn-primary" name="applyButton">신청</button>
-					</div>
-				</div>
-			</form>
-		</section>
-	</main>
+					</form>
+				</section>
+			</main>
 		</div>
 	</div>
 	<!-- 공통 헤더/사이드바를 제외한 화면 본문 -->
-	
+
 	<script>
 $(function () {
-    const contextPath = "";
+	const contextPath = "${pageContext.request.contextPath}";
 
     // 신청 사유 글자 수 표시
     $("textarea[name='reason']").on("input", function () {
@@ -417,24 +405,89 @@ $(function () {
     });
 
     // 저장 API 미구현: 입력 검증만 수행하며 DB에는 저장하지 않음
-    $("#leaveApplyForm").on("submit", function (event) {
-        event.preventDefault();
-        const leaveType = $("select[name='leaveType']").val();
-        const startDate = $("input[name='startDate']").val();
-        const halfDayType = $("input[name='halfDayType']:checked").val();
-        const endDate = halfDayType === "FULL" ? $("input[name='endDate']").val() : startDate;
-        const reason = $("textarea[name='reason']").val().trim();
-        if (!leaveType) { alert("휴가 종류를 선택하세요."); $("select[name='leaveType']").focus(); return; }
-        if (!startDate) { alert("시작일을 선택하세요."); $("input[name='startDate']").focus(); return; }
-        if (!endDate) { alert("종료일을 선택하세요."); $("input[name='endDate']").focus(); return; }
-        if (endDate < startDate) { alert("종료일은 시작일보다 빠를 수 없습니다."); return; }
-        if (!reason) { alert("신청 사유를 입력하세요."); $("textarea[name='reason']").focus(); return; }
 
-        const requestData = { leaveType, startDate, endDate, halfDayType, reason };
-        console.log("휴가 신청 입력값 (DB 미저장)", requestData);
-        alert("입력 검사가 완료됐습니다. 아직 휴가 신청 저장 API가 연결되지 않아 실제 신청은 저장되지 않습니다.");
-        // 추후: POST REST API를 연결할 때 여기에서 fetch() 호출
-    });
+ // 휴가 신청 DB 저장
+ $("#leaveApplyForm").on("submit", async function(event) {
+
+     event.preventDefault();
+
+     const startDate = $("input[name='startDate']").val();
+
+     const halfDayType =
+         $("input[name='halfDayType']:checked").val();
+
+     const endDate = halfDayType === "FULL"
+         ? $("input[name='endDate']").val()
+         : startDate;
+
+     const reason =
+         $("textarea[name='reason']").val().trim();
+
+     if (!startDate || !endDate) {
+         alert("휴가 기간을 선택하세요.");
+         return;
+     }
+
+     if (endDate < startDate) {
+         alert("종료일을 확인하세요.");
+         return;
+     }
+
+     if (!reason || reason.length > 50) {
+         alert("신청 사유를 1~50자로 입력하세요.");
+         return;
+     }
+
+     const button = $("button[name='applyButton']");
+
+     if (button.prop("disabled")) {
+         return;
+     }
+
+     button.prop("disabled", true);
+
+     try {
+
+         const response = await fetch(
+             contextPath + "/api/leave/my/requests",
+             {
+                 method: "POST",
+                 headers: {
+                     "Content-Type": "application/json"
+                 },
+                 body: JSON.stringify({
+                     startDate: startDate,
+                     endDate: endDate,
+                     halfDayType: halfDayType,
+                     reason: reason
+                 })
+             }
+         );
+
+         if (!response.ok) {
+             throw new Error(
+                 "신청 실패 (HTTP " + response.status + ")"
+             );
+         }
+
+         alert("휴가 신청이 완료되었습니다.");
+
+         window.location.href =
+             contextPath + "/leave/history";
+
+     } catch (error) {
+
+         console.error(error);
+         alert(error.message);
+
+     } finally {
+
+         button.prop("disabled", false);
+
+     }
+
+ });
+
 });
 </script>
 </body>

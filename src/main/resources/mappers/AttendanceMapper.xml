@@ -3,14 +3,54 @@
 <mapper namespace="com.hexagon.hrproject.mapper.AttendanceMapper">
 	<select id="findByEmpId"
 		resultType="com.hexagon.hrproject.domain.Attendance">
-		
+
 		SELECT
-        DATE_FORMAT(work_date, '%Y-%m-%d') AS workDate,
-        DATE_FORMAT(clock_in, '%H:%i') AS clockIn,
-        DATE_FORMAT(clock_out, '%H:%i') AS clockOut,
-        status
-    	FROM tb_attendance
-    	WHERE emp_id = #{empId}
-    	ORDER BY work_date DESC
+		DATE_FORMAT(work_date, '%Y-%m-%d') AS workDate,
+		DATE_FORMAT(clock_in, '%H:%i') AS clockIn,
+		DATE_FORMAT(clock_out, '%H:%i') AS clockOut,
+		status
+		FROM tb_attendance
+		WHERE emp_id = #{empId}
+		ORDER BY work_date DESC
 	</select>
+
+	<insert id="insertClockIn">
+
+		INSERT INTO tb_attendance (
+		emp_id,
+		work_date,
+		clock_in,
+		clock_out,
+		status
+		)
+
+		SELECT
+		#{empId},
+		#{workDate},
+		#{clockIn},
+		NULL,
+		#{status}
+
+		WHERE NOT EXISTS (
+		SELECT 1
+		FROM tb_attendance
+		WHERE emp_id = #{empId}
+		AND work_date = #{workDate}
+		)
+
+	</insert>
+
+	<!-- 퇴근 등록 -->
+	<update id="updateClockOut">
+
+		UPDATE tb_attendance
+
+		SET clock_out = #{clockOut}
+
+		WHERE emp_id = #{empId}
+		AND work_date = #{workDate}
+		AND clock_in IS NOT NULL
+		AND clock_out IS NULL
+
+	</update>
 </mapper>

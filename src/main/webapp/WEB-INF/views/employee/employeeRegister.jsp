@@ -7,13 +7,6 @@
 <meta charset="UTF-8">
 <title>HRMS - 신규 사원 등록</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<!-- AdminLTE -->
-<link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
 
 <!-- 사원관리 통합 CSS -->
@@ -272,10 +265,15 @@ const registerEmployee = async () => {
         );
 
         if (!response.ok) {
-			const message = response.status === 409
-			? await response.text() : "사원 등록에 실패했습니다.";
-			
-			throw new Error(message);
+
+            const message = await response.text();
+
+            console.error("사원 등록 HTTP 상태:", response.status);
+            console.error("서버 응답:", message);
+
+            throw new Error(
+                "사원 등록 실패 (HTTP " + response.status + ")"
+            );
         }
 
         showRegisterPopup("success", {

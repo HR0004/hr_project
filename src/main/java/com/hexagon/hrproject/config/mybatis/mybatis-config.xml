@@ -14,6 +14,7 @@
 			<typeAlias type="com.hexagon.hrproject.domain.Account" 		alias="Account"/>
 			<typeAlias type="com.hexagon.hrproject.domain.Permission" 	alias="Permission"/>
 			<typeAlias type="com.hexagon.hrproject.domain.HrRole" 		alias="HrRole"/>
+			<typeAlias type="com.hexagon.hrproject.domain.Salary" 		alias="Salary"/>
 			
 		</typeAliases>
 </configuration>

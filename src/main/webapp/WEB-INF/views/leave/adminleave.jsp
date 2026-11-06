@@ -5,19 +5,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ì§ì í´ê° ì ì²­ ê´ë¦¬</title>
+<title>직원 휴가 신청 관리</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
-/* ê´ë¦¬ì í´ê° ê´ë¦¬ íë©´ ì ì©. ê³µíµ ì¬ì´ëë° CSSë¥¼ ë³ê²½íì§ ììµëë¤. */
-.alr-content-area {
-	margin-left: 250px;
-	min-width: 0;
-	background: #fff;
+.main-content.main-area {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: auto;
+    min-height: 100vh;
+    background: #fff;
 }
 
-.sidebar-collapse .alr-content-area {
-	margin-left: 74px;
+/* 관리자 휴가 관리 화면 전용 스타일. 공통 사이드바와 별도로 사용합니다. */
+.alr-content-area {
+	flex: 1;
+	width: 100%;
+	min-width: 0;
+	background: #fff;
 }
 
 .alr-page, .alr-page * {
@@ -387,6 +393,7 @@
 </style>
 </head>
 <body style="margin: 0;">
+<<<<<<< HEAD:src/main/webapp/WEB-INF/views/leave/adminLeaveRequests.jsp
 	<!-- íë©´ íì¸ì© ì¬ì´ëë° ìë¦¬. JSPììë íë¡ì í¸ì sidebar.jspfê° ì¬ì©ë©ëë¤. -->
 	<aside
 		style="position: fixed; top: 0; left: 0; bottom: 0; width: 250px; background: #172238; color: #c5d1e5; padding: 28px 19px; font: 14px Arial;">
@@ -404,6 +411,7 @@
 	</aside>
 	<div class="alr-content-area">
 		<main class="alr-page">
+		
 			<header class="alr-heading">
 				<div>
 					<h1 class="alr-title">ì§ì í´ê° ì ì²­ ê´ë¦¬</h1>
@@ -413,130 +421,140 @@
 				<span class="alr-demo">íë©´ ìì ë°ì´í° Â· DB
 					ë¯¸ì°ê²°</span>
 			</header>
+=======
+>>>>>>> origin/develop:src/main/webapp/WEB-INF/views/leave/adminleave.jsp
 
-			<section class="alr-panel alr-filter"
-				aria-label="í´ê° ì ì²­ ê²ì ì¡°ê±´">
-				<div class="alr-field">
-					<label for="alrStartDate">ì ì²­ ììì¼</label><input
-						id="alrStartDate" name="startDate" type="date" value="2026-10-01">
-				</div>
-				<div class="alr-field">
-					<label for="alrEndDate">ì ì²­ ì¢ë£ì¼</label><input
-						id="alrEndDate" name="endDate" type="date" value="2026-11-30">
-				</div>
-				<div class="alr-field">
-					<label for="alrStatus">ì²ë¦¬ ìí</label> <select id="alrStatus"
-						name="statusFilter"><option value="ALL">ì ì²´</option>
-						<option value="PENDING">ì¹ì¸ ëê¸°</option>
-						<option value="APPROVED">ì¹ì¸ ìë£</option>
-						<option value="REJECTED">ë°ë ¤</option></select>
-				</div>
-				<div class="alr-field alr-grow">
-					<label for="alrKeyword">ì¬ì ê²ì</label><input id="alrKeyword"
-						name="keyword" type="search" placeholder="ì´ë¦ ëë ì¬ë²">
-				</div>
-				<div class="alr-actions">
-					<button class="alr-btn alr-btn-primary" type="button"
-						name="searchLeaveRequests">ì¡°í</button>
-					<button class="alr-btn" type="button" name="resetLeaveRequests">ì´ê¸°í</button>
-				</div>
-			</section>
+	<%@ include file="../common/sidebar.jspf"%>
 
-			<section class="alr-stats" aria-label="í´ê° ì ì²­ ì§ê³">
-				<div class="alr-stat">
-					<div class="alr-stat-label">ì ì²´ ì ì²­</div>
-					<div class="alr-stat-value" name="allCount">0ê±´</div>
-				</div>
-				<div class="alr-stat">
-					<div class="alr-stat-label">ì¹ì¸ ëê¸°</div>
-					<div class="alr-stat-value" name="pendingCount">0ê±´</div>
-				</div>
-				<div class="alr-stat">
-					<div class="alr-stat-label">ì¹ì¸ ìë£</div>
-					<div class="alr-stat-value" name="approvedCount">0ê±´</div>
-				</div>
-				<div class="alr-stat">
-					<div class="alr-stat-label">ë°ë ¤</div>
-					<div class="alr-stat-value" name="rejectedCount">0ê±´</div>
-				</div>
-			</section>
+	<div class="main-content main-area">
+		<%@ include file="../common/header.jspf"%>
 
-			<section class="alr-panel" aria-label="ì§ì í´ê° ì ì²­ ëª©ë¡">
-				<div class="alr-panel-head">
-					<h2 class="alr-section-title">í´ê° ì ì²­ ëª©ë¡</h2>
-					<div class="alr-count" name="resultCount">ì´ 0ê±´</div>
-				</div>
-				<div class="alr-scroll">
-					<table class="alr-table">
-						<thead>
-							<tr>
-								<th>ì ì²­ì¼</th>
-								<th>ì¬ë² / ì´ë¦</th>
-								<th>ì¬ì© ê¸°ê°</th>
-								<th>ì ì²­ ì¼ì</th>
-								<th>ì ì²­ ì¬ì </th>
-								<th>ì²ë¦¬ ìí</th>
-								<th>ê´ë¦¬</th>
-							</tr>
-						</thead>
-						<tbody name="leaveRequestRows"></tbody>
-					</table>
-				</div>
-				<div class="alr-footer">â» ìí íë©´ìëë¤.
-					ì¹ì¸Â·ë°ë ¤ë ë°±ìë ê¶í ê²ì¦ ë° ì²ë¦¬ API ì°ê²° í
-					ì¬ì©í  ì ììµëë¤.</div>
-			</section>
-		</main>
+		<div class="alr-content-area">
+			<main class="alr-page">
+				<header class="alr-heading">
+					<div>
+						<h1 class="alr-title">직원 휴가 신청 관리</h1>
+						<p class="alr-subtitle">담당 직원의 휴가 신청을 조회하고 승인 상태를 확인합니다.</p>
+					</div>
+					<span class="alr-demo">화면 예시 데이터 · DB 미연결</span>
+				</header>
+				<section class="alr-panel alr-filter" aria-label="휴가 신청 검색 조건">
+					<div class="alr-field">
+						<label for="alrStartDate">신청 시작일</label><input id="alrStartDate"
+							name="startDate" type="date" value="2026-10-01">
+					</div>
+					<div class="alr-field">
+						<label for="alrEndDate">신청 종료일</label><input id="alrEndDate"
+							name="endDate" type="date" value="2026-11-30">
+					</div>
+					<div class="alr-field">
+						<label for="alrStatus">처리 상태</label> <select id="alrStatus"
+							name="statusFilter"><option value="ALL">전체</option>
+							<option value="PENDING">승인 대기</option>
+							<option value="APPROVED">승인 완료</option>
+							<option value="REJECTED">반려</option></select>
+					</div>
+					<div class="alr-field alr-grow">
+						<label for="alrKeyword">사원 검색</label><input id="alrKeyword"
+							name="keyword" type="search" placeholder="이름 또는 사번">
+					</div>
+					<div class="alr-actions">
+						<button class="alr-btn alr-btn-primary" type="button"
+							name="searchLeaveRequests">조회</button>
+						<button class="alr-btn" type="button" name="resetLeaveRequests">초기화</button>
+					</div>
+				</section>
+				<section class="alr-stats" aria-label="휴가 신청 집계">
+					<div class="alr-stat">
+						<div class="alr-stat-label">전체 신청</div>
+						<div class="alr-stat-value" name="allCount">0건</div>
+					</div>
+					<div class="alr-stat">
+						<div class="alr-stat-label">승인 대기</div>
+						<div class="alr-stat-value" name="pendingCount">0건</div>
+					</div>
+					<div class="alr-stat">
+						<div class="alr-stat-label">승인 완료</div>
+						<div class="alr-stat-value" name="approvedCount">0건</div>
+					</div>
+					<div class="alr-stat">
+						<div class="alr-stat-label">반려</div>
+						<div class="alr-stat-value" name="rejectedCount">0건</div>
+					</div>
+				</section>
+				<section class="alr-panel" aria-label="직원 휴가 신청 목록">
+					<div class="alr-panel-head">
+						<h2 class="alr-section-title">휴가 신청 목록</h2>
+						<div class="alr-count" name="resultCount">총 0건</div>
+					</div>
+					<div class="alr-scroll">
+						<table class="alr-table">
+							<thead>
+								<tr>
+									<th>신청일</th>
+									<th>사번 / 이름</th>
+									<th>사용 기간</th>
+									<th>신청 일수</th>
+									<th>신청 사유</th>
+									<th>처리 상태</th>
+									<th>관리</th>
+								</tr>
+							</thead>
+							<tbody name="leaveRequestRows"></tbody>
+						</table>
+					</div>
+					<div class="alr-footer">※ 샘플 화면입니다. 승인·반려는 백엔드 권한 검증 및 처리 API
+						연결 후 사용할 수 있습니다.</div>
+				</section>
+			</main>
+		</div>
 	</div>
-
-	<!-- ìì¸ ì ë³´ íì -->
+	<!-- 상세 정보 팝업 -->
 	<div class="alr-overlay" name="leaveDetailOverlay" role="dialog"
 		aria-modal="true" aria-labelledby="alrDetailTitle">
 		<div class="alr-dialog">
 			<div class="alr-dialog-head">
-				<h2 id="alrDetailTitle">í´ê° ì ì²­ ìì¸</h2>
+				<h2 id="alrDetailTitle">휴가 신청 상세</h2>
 				<button type="button" class="alr-close" name="closeLeaveDetail"
-					aria-label="ë«ê¸°">Ã</button>
+					aria-label="닫기">×</button>
 			</div>
 			<dl class="alr-detail" name="leaveDetailContent"></dl>
 			<div class="alr-dialog-bottom">
-				<button type="button" class="alr-btn" name="closeLeaveDetail">ë«ê¸°</button>
+				<button type="button" class="alr-btn" name="closeLeaveDetail">닫기</button>
 			</div>
 		</div>
 	</div>
 	<script>
-// ê°ë°ì© ìì. ì¤ì  êµ¬íììë REST API ìëµì¼ë¡ êµì²´í©ëë¤.
+// 개발용 예시. 실제 구현에서는 REST API 응답으로 교체합니다.
 const adminLeaveDemo = [
-    {requestId:101, empId:1, empName:"ê¹ë¯¼ì¤", department:"ê°ë°í", requestDate:"2026-11-05", startDate:"2026-11-17", endDate:"2026-11-18", days:2, reason:"ê°ì¸ ì¼ì ", status:"PENDING"},
-    {requestId:102, empId:4, empName:"ì´ìì°", department:"ê°ë°í", requestDate:"2026-11-04", startDate:"2026-11-12", endDate:"2026-11-12", days:0.5, reason:"ì¤ì  ë³ì ì§ë£", status:"PENDING"},
-    {requestId:103, empId:7, empName:"ë°ì§í", department:"ê°ë°í", requestDate:"2026-11-03", startDate:"2026-11-10", endDate:"2026-11-10", days:1, reason:"ê°ì¡± íì¬ ì°¸ì", status:"APPROVED"},
-    {requestId:104, empId:9, empName:"ìµì ì§", department:"ê°ë°í", requestDate:"2026-10-29", startDate:"2026-11-06", endDate:"2026-11-07", days:2, reason:"ê°ì¸ ì¬ì ", status:"REJECTED"},
-    {requestId:105, empId:11, empName:"ì ëí", department:"ê°ë°í", requestDate:"2026-10-27", startDate:"2026-11-21", endDate:"2026-11-21", days:1, reason:"ì°ì°¨ ì¬ì©", status:"APPROVED"},
-    {requestId:106, empId:13, empName:"íì§ë¯¼", department:"ê°ë°í", requestDate:"2026-10-20", startDate:"2026-10-24", endDate:"2026-10-24", days:1, reason:"ê°ì¸ ì¼ì ", status:"APPROVED"}
+    {requestId:101, empId:1, empName:"김민준", department:"개발팀", requestDate:"2026-11-05", startDate:"2026-11-17", endDate:"2026-11-18", days:2, reason:"개인 일정", status:"PENDING"},
+    {requestId:102, empId:4, empName:"이서연", department:"개발팀", requestDate:"2026-11-04", startDate:"2026-11-12", endDate:"2026-11-12", days:0.5, reason:"오전 병원 진료", status:"PENDING"},
+    {requestId:103, empId:7, empName:"박지훈", department:"개발팀", requestDate:"2026-11-03", startDate:"2026-11-10", endDate:"2026-11-10", days:1, reason:"가족 행사 참석", status:"APPROVED"},
+    {requestId:104, empId:9, empName:"최유진", department:"개발팀", requestDate:"2026-10-29", startDate:"2026-11-06", endDate:"2026-11-07", days:2, reason:"개인 사정", status:"REJECTED"},
+    {requestId:105, empId:11, empName:"정도현", department:"개발팀", requestDate:"2026-10-27", startDate:"2026-11-21", endDate:"2026-11-21", days:1, reason:"연차 사용", status:"APPROVED"},
+    {requestId:106, empId:13, empName:"한지민", department:"개발팀", requestDate:"2026-10-20", startDate:"2026-10-24", endDate:"2026-10-24", days:1, reason:"개인 일정", status:"APPROVED"}
 ];
-const adminLeaveStatusText = {PENDING:"ì¹ì¸ ëê¸°", APPROVED:"ì¹ì¸ ìë£", REJECTED:"ë°ë ¤"};
+const adminLeaveStatusText = {PENDING:"승인 대기", APPROVED:"승인 완료", REJECTED:"반려"};
 const adminLeaveStatusClass = {PENDING:"alr-pill-pending", APPROVED:"alr-pill-approved", REJECTED:"alr-pill-rejected"};
-
 const displayLeaveRequests = function() {
     const start = $("input[name='startDate']").val();
     const end = $("input[name='endDate']").val();
     const status = $("select[name='statusFilter']").val();
     const keyword = $("input[name='keyword']").val().trim().toLowerCase();
-    if (start && end && start > end) { alert("ì ì²­ ì¢ë£ì¼ì ììì¼ë³´ë¤ ë¹ ë¥¼ ì ììµëë¤."); return; }
-
+    if (start && end && start > end) { alert("신청 종료일은 시작일보다 빠를 수 없습니다."); return; }
     const rows = adminLeaveDemo.filter(function(item) {
         return (!start || item.requestDate >= start) && (!end || item.requestDate <= end)
             && (status === "ALL" || item.status === status)
             && (!keyword || item.empName.toLowerCase().includes(keyword) || String(item.empId).includes(keyword));
     }).sort(function(a,b) { return b.requestDate.localeCompare(a.requestDate); });
     const $body = $("tbody[name='leaveRequestRows']").empty();
-    $("div[name='allCount']").text(rows.length + "ê±´");
-    $("div[name='pendingCount']").text(rows.filter(r => r.status === "PENDING").length + "ê±´");
-    $("div[name='approvedCount']").text(rows.filter(r => r.status === "APPROVED").length + "ê±´");
-    $("div[name='rejectedCount']").text(rows.filter(r => r.status === "REJECTED").length + "ê±´");
-    $("div[name='resultCount']").text("ì´ " + rows.length + "ê±´");
+    $("div[name='allCount']").text(rows.length + "건");
+    $("div[name='pendingCount']").text(rows.filter(r => r.status === "PENDING").length + "건");
+    $("div[name='approvedCount']").text(rows.filter(r => r.status === "APPROVED").length + "건");
+    $("div[name='rejectedCount']").text(rows.filter(r => r.status === "REJECTED").length + "건");
+    $("div[name='resultCount']").text("총 " + rows.length + "건");
     if (rows.length === 0) {
-        $body.append($("<tr>").append($("<td>", {colspan:7, "class":"alr-empty", text:"ì¡°íë í´ê° ì ì²­ì´ ììµëë¤."})));
+        $body.append($("<tr>").append($("<td>", {colspan:7, "class":"alr-empty", text:"조회된 휴가 신청이 없습니다."})));
         return;
     }
     rows.forEach(function(item) {
@@ -544,14 +562,14 @@ const displayLeaveRequests = function() {
         $tr.append($("<td>").text(item.requestDate));
         $tr.append($("<td>").text(item.empId + " / " + item.empName));
         $tr.append($("<td>").text(item.startDate + (item.startDate === item.endDate ? "" : " ~ " + item.endDate)));
-        $tr.append($("<td>").text(item.days + "ì¼"));
+        $tr.append($("<td>").text(item.days + "일"));
         $tr.append($("<td>", {"class":"alr-ellipsis", title:item.reason}).text(item.reason));
         $tr.append($("<td>").append($("<span>", {"class":"alr-pill " + adminLeaveStatusClass[item.status], text:adminLeaveStatusText[item.status]})));
         const $actions = $("<div>", {"class":"alr-row-actions"});
-        $actions.append($("<button>", {type:"button", "class":"alr-btn alr-btn-small", text:"ìì¸", "data-id":item.requestId, "data-action":"detail"}));
+        $actions.append($("<button>", {type:"button", "class":"alr-btn alr-btn-small", text:"상세", "data-id":item.requestId, "data-action":"detail"}));
         if (item.status === "PENDING") {
-            $actions.append($("<button>", {type:"button", "class":"alr-btn alr-btn-small alr-btn-primary", text:"ì¹ì¸", "data-id":item.requestId, "data-action":"approve"}));
-            $actions.append($("<button>", {type:"button", "class":"alr-btn alr-btn-small", text:"ë°ë ¤", "data-id":item.requestId, "data-action":"reject"}));
+            $actions.append($("<button>", {type:"button", "class":"alr-btn alr-btn-small alr-btn-primary", text:"승인", "data-id":item.requestId, "data-action":"approve"}));
+            $actions.append($("<button>", {type:"button", "class":"alr-btn alr-btn-small", text:"반려", "data-id":item.requestId, "data-action":"reject"}));
         }
         $tr.append($("<td>").append($actions));
         $body.append($tr);
@@ -561,10 +579,10 @@ const showLeaveDetail = function(id) {
     const item = adminLeaveDemo.find(row => row.requestId === id);
     if (!item) return;
     const details = [
-        ["ì ì²­ ë²í¸", item.requestId], ["ì¬ì", item.empName + " (" + item.empId + ")"],
-        ["ìì ë¶ì", item.department], ["ì ì²­ì¼", item.requestDate],
-        ["ì¬ì© ê¸°ê°", item.startDate + " ~ " + item.endDate], ["ì¬ì© ì¼ì", item.days + "ì¼"],
-        ["ì ì²­ ì¬ì ", item.reason], ["ì²ë¦¬ ìí", adminLeaveStatusText[item.status]]
+        ["신청 번호", item.requestId], ["사원", item.empName + " (" + item.empId + ")"],
+        ["소속 부서", item.department], ["신청일", item.requestDate],
+        ["사용 기간", item.startDate + " ~ " + item.endDate], ["사용 일수", item.days + "일"],
+        ["신청 사유", item.reason], ["처리 상태", adminLeaveStatusText[item.status]]
     ];
     const $content = $("dl[name='leaveDetailContent']").empty();
     details.forEach(function(pair) {
@@ -588,8 +606,8 @@ $(function() {
         const action = $(this).attr("data-action");
         const id = Number($(this).attr("data-id"));
         if (action === "detail") { showLeaveDetail(id); return; }
-        // ì¹ì¸Â·ë°ë ¤ë ì¤ì  ìë² ê²ì¦ê³¼ DB í¸ëì­ìì´ íìí©ëë¤. íë©´ììë§ ì±ê³µ ì²ë¦¬íì§ ììµëë¤.
-        alert((action === "approve" ? "ì¹ì¸" : "ë°ë ¤") + " ê¸°ë¥ì ìì§ DBì ì°ê²°ëì§ ìììµëë¤. íë©´ ìììëë¤.");
+        // 승인·반려는 실제 서버 검증과 DB 트랜잭션이 필요합니다. 화면에서만 성공 처리하지 않습니다.
+        alert((action === "approve" ? "승인" : "반려") + " 기능은 아직 DB에 연결되지 않았습니다. 화면 예시입니다.");
     });
     $("button[name='closeLeaveDetail']").on("click", function() { $("div[name='leaveDetailOverlay']").removeClass("alr-open"); });
     $("div[name='leaveDetailOverlay']").on("click", function(e) { if (e.target === this) $(this).removeClass("alr-open"); });

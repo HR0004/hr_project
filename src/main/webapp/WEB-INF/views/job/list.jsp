@@ -73,11 +73,11 @@
 
 							<input type="text" id="keyword" placeholder="직급명 / 직급 코드 검색">
 
-                            <select id="searchStatus" aria-label="직급 상태 필터">
-                                <option value="">전체 상태</option>
-                                <option value="1">활성</option>
-                                <option value="0">비활성</option>
-                            </select>
+							<select id="searchStatus" aria-label="직급 상태 필터">
+								<option value="">전체 상태</option>
+								<option value="1">활성</option>
+								<option value="0">비활성</option>
+							</select>
 
 							<button type="button" id="openRegisterBtn" class="primary-btn">
 								+ 직급 등록</button>
@@ -102,7 +102,10 @@
 						<tbody id="jobBody"></tbody>
 
 					</table>
-
+					<!-- 직급 페이징 -->
+					<div id="pagination"
+						style="display: flex; justify-content: center; gap: 8px; margin-top: 20px;">
+					</div>
 				</div>
 			</section>
 
@@ -111,42 +114,117 @@
 	</div>
 
 
-    <!-- 직급 관리 JavaScript -->
+	<!-- 직급 관리 JavaScript -->
 	<script>
 
 const contextPath = '${pageContext.request.contextPath}';
 
 let jobList = [];
+let currentPage = 1;
+const pageSize = 10;
 
 
 // 1. 직급 목록 조회
 const getList = async () => {
-
     try {
-        const response = await fetch(
-            contextPath + "/api/jobs", {
-                method: "GET"
-            }
-        );
-
+        const response = await fetch(contextPath + "/api/jobs");
         const result = await response.json();
 
         if (!response.ok || !result.success) {
             throw new Error(result.message || "직급 목록 조회 실패");
         }
 
-        if (!Array.isArray(result.data)) {
-            throw new Error("직급 목록 데이터가 배열이 아닙니다. RestJobController의 getList() 응답을 확인하세요.");
-        }
         jobList = result.data;
 
-        filterJobs();
         updateSummary();
+        await loadPage(1);
 
     } catch (error) {
         console.error(error);
         alert(error.message);
     }
+};
+
+
+//서버에서 페이지별 직급 조회
+const loadPage = async (page = 1) => {
+ try {
+     const response = await fetch(
+         contextPath + "/api/jobs/page?currentPage=" + page
+     );
+
+     const result = await response.json();
+
+     if (!response.ok || !result.success) {
+         throw new Error(result.message || "페이지 조회 실패");
+     }
+
+     const pager = result.data;
+
+     currentPage = pager.currentPage;
+
+     renderList(pager.list);
+     renderPagination(pager.totalCount);
+
+ } catch (error) {
+     console.error(error);
+     alert(error.message);
+ }
+};
+
+
+//페이지 버튼 생성
+const renderPagination = (totalCount) => {
+
+ const container = document.getElementById("pagination");
+ container.replaceChildren();
+
+ const totalPage = Math.ceil(totalCount / pageSize);
+
+ if (totalPage <= 1) return;
+
+ const firstPage =
+     currentPage - (currentPage - 1) % 10;
+
+ const lastPage = Math.min(firstPage + 9, totalPage);
+
+ const addButton = (text, page, disabled = false) => {
+     const btn = document.createElement("button");
+
+     btn.type = "button";
+     btn.textContent = text;
+     btn.disabled = disabled;
+     btn.className = "btn btn-sm " +
+         (page === currentPage
+             ? "btn-primary"
+             : "btn-outline-secondary");
+
+     btn.onclick = () => changePage(page);
+
+     container.appendChild(btn);
+ };
+
+ addButton("이전", currentPage - 1, currentPage === 1);
+
+ for (let i = firstPage; i <= lastPage; i++) {
+     addButton(i, i);
+ }
+
+ addButton("다음", currentPage + 1, currentPage === totalPage);
+};
+
+
+//페이지 이동
+const changePage = async (page) => {
+
+ const keyword = document.getElementById("keyword").value.trim();
+ const status = document.getElementById("searchStatus").value;
+
+ if (keyword || status !== "") {
+     filterJobs(page);
+ } else {
+     await loadPage(page);
+ }
 };
 
 
@@ -278,53 +356,100 @@ const updateSummary = () => {
 };
 
 
-// 5. 직급 검색 (별도 JS 파일 없이 현재 JSP에서 처리)
-const filterJobs = () => {
+
+/*-------------------------------------
+  5. 직급 검색 + 페이징
+-------------------------------------*/
+const filterJobs = (page = 1) => {
+
     const keyword = document.getElementById("keyword")
         .value.trim().toLowerCase();
+
     const status = document.getElementById("searchStatus").value;
 
+    // 검색 조건이 없으면 서버 페이징 사용
+    if (!keyword && status === "") {
+        loadPage(page);
+        return;
+    }
+
+    // 직급명, 직급 코드, 활성 상태 검색
     const filtered = jobList.filter(job => {
+
         const code = String(job.jobCode ?? "").toLowerCase();
         const name = String(job.jobName ?? "").toLowerCase();
-        const matchesKeyword = code.includes(keyword) || name.includes(keyword);
-        const matchesStatus = status === "" || Number(job.isActive) === Number(status);
+
+        const matchesKeyword =
+            code.includes(keyword) || name.includes(keyword);
+
+        const matchesStatus =
+            status === "" ||
+            Number(job.isActive) === Number(status);
+
         return matchesKeyword && matchesStatus;
     });
 
-    renderList(filtered);
+    // 검색 결과의 전체 페이지 수
+    const totalPage = Math.max(
+        1,
+        Math.ceil(filtered.length / pageSize)
+    );
+
+    // 현재 페이지 설정
+    currentPage = Math.max(1, Math.min(page, totalPage));
+
+    // 현재 페이지에 출력할 데이터
+    const start = (currentPage - 1) * pageSize;
+
+    renderList(filtered.slice(start, start + pageSize));
+
+    // 페이지 버튼 출력
+    renderPagination(filtered.length);
 };
 
+// 검색어 입력 시 1페이지부터 조회
 document.getElementById("keyword")
-    .addEventListener("input", filterJobs);
+    .addEventListener("input", () => filterJobs(1));
 
+// 활성/비활성 필터 변경 시 1페이지부터 조회
 document.getElementById("searchStatus")
-    .addEventListener("change", filterJobs);
+    .addEventListener("change", () => filterJobs(1));
 
 
-// 6. 등록 팝업
-document.getElementById("openRegisterBtn").addEventListener("click", () => {
+/*-------------------------------------
+  6. 직급 등록 팝업
+-------------------------------------*/
+document.getElementById("openRegisterBtn")
+    .addEventListener("click", () => {
 
-	const width = 650;
-	const height = 500;
+        const width = 650;
+        const height = 500;
 
-    const left = Math.round(window.screenX + (window.outerWidth - width) / 2);
-    const top = Math.round(window.screenY + (window.outerHeight - height) / 2);
+        const left = Math.round(
+            window.screenX + (window.outerWidth - width) / 2
+        );
 
-    window.open(
-        contextPath + "/jobs/new",
-        "jobRegisterPopup",
-        "width=" + width +
-        ",height=" + height +
-        ",left=" + left +
-        ",top=" + top +
-        ",scrollbars=yes,resizable=yes"
-    );
-});
+        const top = Math.round(
+            window.screenY + (window.outerHeight - height) / 2
+        );
+
+        window.open(
+            contextPath + "/jobs/new",
+            "jobRegisterPopup",
+            "width=" + width +
+            ",height=" + height +
+            ",left=" + left +
+            ",top=" + top +
+            ",scrollbars=yes,resizable=yes"
+        );
+    });
 
 
-// 7. 목록 자동 조회
+/*-------------------------------------
+  7. 목록 자동 조회
+-------------------------------------*/
 getList();
+
 
 </script>
 

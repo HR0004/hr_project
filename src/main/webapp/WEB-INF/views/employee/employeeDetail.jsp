@@ -14,13 +14,6 @@ String contextPath = request.getContextPath();
 
 <title>HRMS - 사원 상세 정보 조회</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<!-- AdminLTE -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
 <!-- 사원 관리 통합 CSS -->
 <link rel="stylesheet" href="<%=contextPath%>/css/employee.css">

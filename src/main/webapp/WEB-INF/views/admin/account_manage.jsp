@@ -62,6 +62,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HRMS Admin - 권한 및 역할 설정</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; }
+        body { background-color: #fffff; color: #1e293b; display: flex; min-height: 100vh; }
+        
+        .main-area {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 32px 40px;
+        }
 
     <title>HRMS - 권한 부여</title>
 
