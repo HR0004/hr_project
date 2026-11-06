@@ -19,6 +19,7 @@
 
 /* 근태 본문 전용 스타일: 다른 JSP에 영향을 주지 않도록 att- 접두어 사용 */
 .att-dashboard {
+	width: 100%;
 	font-family: "Pretendard", "Malgun Gothic", Arial, sans-serif;
 	color: #10192e;
 	box-sizing: border-box;
@@ -492,11 +493,14 @@ body {
 
 /* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
 .main-content {
-	flex: 1;
-	width: calc(100% - 250px);
-	background: #fff;
-	overflow-x: hidden;
-	padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+	display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    background: #fff;
+    overflow-x: hidden;
+    padding-top: 0;
 }
 </style>
 
@@ -804,6 +808,8 @@ body {
 	<div class="page-wrapper">
 		<%@ include file="../common/sidebar.jspf"%>
 		<div class="main-content main-area">
+
+			<%@ include file="../common/header.jspf"%>
 			<section class="att-dashboard" id="att-dashboard">
 				<header>
 					<h2 class="att-heading">내 근태 현황</h2>
