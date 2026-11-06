@@ -1,0 +1,302 @@
+@charset "UTF-8";
+
+/* 공통 사이드바 */
+body .main-sidebar.hrms-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px !important;
+    height: 100vh;
+    padding-top: 24px;
+    background: #fff;
+    color: #374151;
+    border-right: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    transform: translateX(0) !important;
+    transition: transform 0.2s ease;
+}
+
+.hrms-sidebar .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 24px 16px;
+    color: #111827;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.hrms-sidebar .sidebar-logo-mark {
+    font-size: 14px;
+}
+
+.hrms-sidebar .sidebar-title {
+    padding: 0 24px 16px;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.hrms-sidebar .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 12px;
+}
+
+.hrms-sidebar .sidebar-menu .menu-item {
+    display: block;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.hrms-sidebar .sidebar-menu .menu-item:hover {
+    background: #f3f4f6;
+    color: #111827;
+    text-decoration: none;
+}
+
+.hrms-sidebar .sidebar-menu .menu-item.active {
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* 펼친 상태의 본문 */
+body .main-area,
+body .content-wrapper {
+    margin-left: 240px !important;
+    min-width: 0;
+    transition: margin-left 0.2s ease;
+}
+
+body .content-wrapper .main-area {
+    margin-left: 0 !important;
+}
+
+body > .main-header,
+body .wrapper > .main-header {
+    margin-left: 240px !important;
+}
+
+/* 사이드바 접기 */
+body.sidebar-collapse .main-sidebar.hrms-sidebar {
+    width: 240px !important;
+    transform: translateX(-100%) !important;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+body.sidebar-collapse .main-area,
+body.sidebar-collapse .content-wrapper,
+body.sidebar-collapse > .main-header,
+body.sidebar-collapse .wrapper > .main-header {
+    margin-left: 0 !important;
+}
+
+/* 공통 헤더 */
+.hrms-common-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.hrms-common-header > .navbar-nav {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+.hrms-common-header > .navbar-nav.ml-auto {
+    margin-left: auto;
+}
+
+.hrms-common-header .admin-profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hrms-common-header .profile-btn {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    color: #334155;
+}
+
+.hrms-common-header .profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 220px;
+    padding: 8px 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    z-index: 1100;
+}
+
+.hrms-common-header .admin-profile-container:hover .profile-dropdown,
+.hrms-common-header .admin-profile-container:focus-within .profile-dropdown {
+    display: block;
+}
+
+.hrms-common-header .dropdown-header {
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.hrms-common-header .dropdown-item {
+    display: block;
+    padding: 10px 16px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 13px;
+    white-space: normal;
+}
+
+.hrms-common-header .dropdown-item:hover,
+.hrms-common-header .dropdown-item:focus {
+    background: #f8fafc;
+}
+
+.hrms-common-header .dropdown-item.highlight {
+    background: #f1f5f9;
+    font-weight: 500;
+}
+
+.hrms-common-header .dropdown-item.danger {
+    color: #dc2626;
+}
+
+/* 왼쪽 사이드바 접기 버튼 */
+.hrms-common-header .hrms-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 8px;
+    padding: 0;
+    background: #fff;
+    color: #475569;
+    font-family: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.hrms-common-header .hrms-sidebar-toggle:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* 왼쪽 버튼 / 가운데 제목 / 오른쪽 관리자 */
+body .top-nav-bar {
+    display: grid !important;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    column-gap: 16px;
+    align-items: start;
+    position: relative;
+    min-height: 44px;
+    padding-left: 0 !important;
+    margin-bottom: 32px;
+}
+
+body .top-nav-bar > .page-title-area {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+}
+
+body .top-nav-bar > .page-title-area h1,
+body .top-nav-bar > .page-title-area h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+body .top-nav-bar > .hrms-common-header.main-header {
+    display: contents !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+body .top-nav-bar > .hrms-common-header > .navbar-nav:first-child {
+    position: static !important;
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    padding: 0;
+}
+
+body .top-nav-bar > .hrms-common-header > .navbar-nav:last-child {
+    grid-column: 3;
+    grid-row: 1;
+    margin: 0;
+    padding: 0;
+}
+
+/* 로그아웃 */
+.hrms-common-header .hrms-logout-form {
+    margin: 0;
+}
+
+.hrms-common-header .hrms-logout-button {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.hrms-common-header .hrms-logout-button:hover,
+.hrms-common-header .hrms-logout-button:focus {
+    background: #f8fafc;
+}
+
+@media (max-width: 600px) {
+    body .top-nav-bar {
+        column-gap: 10px;
+    }
+
+    body .top-nav-bar > .page-title-area h1,
+    body .top-nav-bar > .page-title-area h2 {
+        font-size: 20px;
+    }
+
+    .hrms-common-header .profile-btn {
+        padding: 8px 12px;
+    }
+}

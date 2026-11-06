@@ -1,0 +1,15 @@
+/* 원래 로그인 화면 크기 */
+body .container.login-container {
+    width: 400px;
+    max-width: 100%;
+    margin: 50px auto 0;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* 로그인 실패 메시지 */
+.login-error {
+    color: red;
+    margin-bottom: 15px;
+    font-weight: bold;
+}

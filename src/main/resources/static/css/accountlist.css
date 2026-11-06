@@ -1,0 +1,212 @@
+@charset "UTF-8";
+
+.account-list-page,
+.account-list-page * {
+    box-sizing: border-box;
+}
+
+.content-wrapper.account-list-page {
+    background: #fff;
+}
+
+.account-list-page .account-filter-toggle {
+    border: 0;
+    background: transparent;
+    color: #007bff;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.account-list-page .account-filter-toggle i {
+    margin-right: 4px;
+}
+
+.account-list-page .employee-register-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.account-list-page .account-search-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0 0 18px;
+    padding: 13px 18px;
+    background: #f8fafc;
+    border: 1px solid #dce5f1;
+    border-radius: 10px;
+}
+
+.account-list-page .account-search-form[hidden] {
+    display: none;
+}
+
+.account-list-page .account-search-form input {
+    flex: 1;
+    min-width: 180px;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #dce5f1;
+    border-radius: 8px;
+    background: #fff;
+    font: inherit;
+    color: #172033;
+}
+
+.account-list-page .account-search-form input:focus {
+    outline: 2px solid #dce5f1;
+    outline-offset: 1px;
+}
+
+.account-list-page .account-search-submit {
+    min-width: 90px;
+    height: 42px;
+}
+
+.account-list-page .account-reset-link {
+    color: #007bff;
+    padding: 8px;
+}
+
+.account-list-page .account-select-table {
+    min-width: 820px;
+}
+
+.account-list-page .account-select-table th:nth-child(1),
+.account-list-page .account-select-table td:nth-child(1) {
+    width: 7%;
+}
+
+.account-list-page .account-select-table th:nth-child(2),
+.account-list-page .account-select-table td:nth-child(2) {
+    width: 16%;
+}
+
+.account-list-page .account-select-table th:nth-child(3),
+.account-list-page .account-select-table td:nth-child(3) {
+    width: 20%;
+}
+
+.account-list-page .account-select-table th:nth-child(4),
+.account-list-page .account-select-table td:nth-child(4) {
+    width: 29%;
+}
+
+.account-list-page .account-select-table th:nth-child(5),
+.account-list-page .account-select-table td:nth-child(5),
+.account-list-page .account-select-table th:nth-child(6),
+.account-list-page .account-select-table td:nth-child(6) {
+    width: 14%;
+}
+
+.account-list-page [data-account-row] {
+    cursor: pointer;
+}
+
+.account-list-page .employee-table tr.is-selected td {
+    background: #edf3fc;
+}
+
+.account-list-page .employee-table input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    vertical-align: middle;
+    accent-color: #315eaa;
+    cursor: pointer;
+}
+
+.account-list-page .account-role-badge {
+    display: inline-block;
+    margin: 2px 3px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #f0f4f9;
+    color: #344054;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.account-list-page .account-muted {
+    color: #718099;
+}
+
+.account-list-page .employee-table .account-empty-list {
+    height: 100px;
+    color: #718099;
+}
+
+.account-list-page .account-scope-note {
+    margin: 0 4px 28px;
+    color: #718099;
+    font-size: 12px;
+}
+
+.account-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.account-list-page .account-status-form[hidden] {
+    display: none;
+}
+
+.account-list-page .account-status-button {
+    padding: 8px 12px;
+    border: 1px solid #dce5f1;
+    border-radius: 8px;
+    background: #fff;
+    font: inherit;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.account-list-page .account-disable {
+    color: #b42318;
+    border-color: #fecdca;
+}
+
+.account-list-page .account-enable {
+    color: #175cd3;
+    border-color: #b2ccff;
+}
+
+.account-list-page .account-status-button:hover {
+    background: #f8fafc;
+}
+
+.account-list-page .account-status-button:disabled {
+    color: #718099;
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.account-list-page .account-status-feedback {
+    margin: 0 0 20px;
+    padding: 14px 18px;
+    border: 1px solid #dce5f1;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #172033;
+}
+
+@media (max-width: 767px) {
+    .account-list-page .account-search-form input {
+        min-width: 0;
+        flex-basis: 100%;
+    }
+
+    .account-list-page .employee-toolbar-actions {
+        width: 100%;
+    }
+}
