@@ -4,105 +4,6 @@
 	사원 목록 보는용 css
 ------------------------------------- */
 
-/* 기본 */
-body {
-	font-family: "Malgun Gothic", Arial, sans-serif;
-	font-size: 13px;
-	color: #172033;
-	background: #ffffff;
-}
-
-/* 헤더 */
-.main-header {
-	min-height: 90px;
-	background: #ffffff;
-	padding: 0 32px;
-	border-bottom: none !important;
-}
-
-.user-role {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 188px;
-	height: 52px;
-	border: 1px solid #dce5f1;
-	border-radius: 11px;
-	background: #ffffff;
-}
-
-/* 사이드바 */
-.main-sidebar {
-	width: 290px;
-	background: #ffffff;
-	box-shadow: none !important;
-}
-
-.brand-link {
-	height: 90px;
-	display: flex;
-	align-items: center;
-	padding-left: 45px;
-	border-bottom: none !important;
-}
-
-.brand-text {
-	color: #172033;
-	font-size: 13px;
-	font-weight: 600;
-}
-
-.sidebar {
-	padding: 0 20px;
-}
-
-.sidebar-title {
-	margin: 10px 0 32px 27px;
-	color: #172033;
-}
-
-.nav-sidebar .nav-item {
-	margin-bottom: 18px;
-}
-
-.nav-sidebar .nav-link {
-	min-height: 60px;
-	display: flex;
-	align-items: center;
-	padding-left: 32px;
-	border-radius: 10px;
-	color: #172033 !important;
-}
-
-.nav-sidebar .nav-link p {
-	font-size: 13px;
-}
-
-.sidebar-light-primary .nav-sidebar
-.nav-item>.nav-link.active {
-	background: #eef3f9;
-	color: #172033;
-	box-shadow: none;
-}
-
-/* 사원 관리 메뉴 활성화 */
-.employee-page-active {
-	background: #eef3f9 !important;
-	color: #172033 !important;
-}
-
-/* AdminLTE 레이아웃 */
-@media (min-width: 992px) {
-    body:not(.sidebar-collapse) .content-wrapper,
-    body:not(.sidebar-collapse) .main-header {
-        margin-left: 290px;
-    }
-
-    body:not(.sidebar-collapse) .content-wrapper.employee-detail-page {
-        margin-left: 290px !important;
-    }
-}
-
 /* 사원 관리 메인 */
 .content-wrapper.employee-page {
 	min-height: calc(100vh - 90px) !important;
@@ -135,22 +36,26 @@ body {
 }
 
 .employee-stat-card {
-	height: 121px;
-	border: 1px solid #dce5f1;
-	border-radius: 11px;
-	background: #ffffff;
-	padding: 24px 29px;
+    height: 130px;
+    min-height: 0;
+    padding: 24px 29px;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+    background: #ffffff;
+    box-sizing: border-box;
 }
-
+/* 카드 항목 이름 */
 .employee-stat-label {
-	font-size: 13px;
-	margin-bottom: 13px;
+    margin-bottom: 13px;
+    font-size: 13px;
+    color: #728199;
 }
-
+/* 카드 숫자 */
 .employee-stat-number {
-	font-size: 27px;
-	font-weight: 700;
-	line-height: 1.3;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #172033;
 }
 
 /* 목록 조회 */
@@ -447,11 +352,11 @@ body {
 
 .employee-detail-page .employee-detail-container {
 	width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 26px 30px 52px;
-    box-sizing: border-box;
-    min-width: 0;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 26px 30px 52px;
+	box-sizing: border-box;
+	min-width: 0;
 }
 
 /* 페이지 제목 */
@@ -735,39 +640,36 @@ body {
 		width: 100%;
 	}
 }
-	
-	/* =================================
+
+/* =================================
    사원 정보 수정
 ================================= */
-
 .employee-edit-page .employee-edit-input {
-    width: 100%;
-    height: 46px;
-    padding: 10px 16px;
-    border: 1px solid #dce5f1;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #17243d;
-    font-size: 14px;
-    outline: none;
+	width: 100%;
+	height: 46px;
+	padding: 10px 16px;
+	border: 1px solid #dce5f1;
+	border-radius: 8px;
+	background: #ffffff;
+	color: #17243d;
+	font-size: 14px;
+	outline: none;
 }
 
 .employee-edit-page .employee-edit-input:focus {
-    border-color: #5373b7;
-    box-shadow: 0 0 0 3px rgba(83, 115, 183, 0.10);
+	border-color: #5373b7;
+	box-shadow: 0 0 0 3px rgba(83, 115, 183, 0.10);
 }
 
 .employee-edit-page .employee-edit-input[readonly] {
-    background: #f5f7fb;
-    color: #7585a0;
-    cursor: default;
+	background: #f5f7fb;
+	color: #7585a0;
+	cursor: default;
 }
 
 .employee-edit-page select.employee-edit-input {
-    cursor: pointer;
+	cursor: pointer;
 }
-
-
 
 /* ======================================
    사원 등록 화면
@@ -776,424 +678,378 @@ body {
 
 /* 등록 페이지 전체 영역 */
 .employee-register-page .employee-detail-container {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 30px 36px 60px;
-    box-sizing: border-box;
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 30px 36px 60px;
+	box-sizing: border-box;
 }
 
 /* 등록 정보 카드 */
 .employee-register-page .employee-detail-info {
-    width: 100%;
-    padding: 32px;
-    box-sizing: border-box;
+	width: 100%;
+	padding: 32px;
+	box-sizing: border-box;
 }
 
 /* 입력 항목 2열 배치 */
 .employee-register-page .employee-detail-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 26px 30px;
-    width: 100%;
-    margin-top: 24px;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 26px 30px;
+	width: 100%;
+	margin-top: 24px;
 }
 
 /* 개별 입력 항목 */
 .employee-register-page .employee-detail-field {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 0;
-    max-width: none;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+	max-width: none;
 }
 
 /* 입력창 공통 스타일 */
 .employee-register-page .employee-register-input {
-    display: block;
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-    height: 54px;
-    padding: 0 16px;
-
-    border: 1px solid #dce5f1;
-    border-radius: 8px;
-    background: #ffffff;
-
-    color: #17243d;
-    font-size: 15px;
-    box-sizing: border-box;
-    outline: none;
+	display: block;
+	width: 100%;
+	min-width: 0;
+	max-width: none;
+	height: 54px;
+	padding: 0 16px;
+	border: 1px solid #dce5f1;
+	border-radius: 8px;
+	background: #ffffff;
+	color: #17243d;
+	font-size: 15px;
+	box-sizing: border-box;
+	outline: none;
 }
 
 /* 입력창 선택 시 */
 .employee-register-page .employee-register-input:focus {
-    border-color: #5373b7;
-    box-shadow: 0 0 0 3px rgba(83, 115, 183, 0.12);
+	border-color: #5373b7;
+	box-shadow: 0 0 0 3px rgba(83, 115, 183, 0.12);
 }
 
 /* 읽기 전용 입력창 */
 .employee-register-page .employee-register-input[readonly] {
-    background: #f5f7fb;
-    color: #7585a0;
-    cursor: default;
+	background: #f5f7fb;
+	color: #7585a0;
+	cursor: default;
 }
 
 /* 선택 박스 */
 .employee-register-page select.employee-register-input {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 /* 입력 안내 문구 */
 .employee-register-page .employee-register-input::placeholder {
-    color: #a0adc0;
+	color: #a0adc0;
 }
 
 /* 필수 입력 표시 */
 .employee-register-page .employee-register-required {
-    color: #e15b60;
-    margin-left: 3px;
-    font-weight: 700;
+	color: #e15b60;
+	margin-left: 3px;
+	font-weight: 700;
 }
 
 /* 하단 안내 메시지 */
 .employee-register-page .employee-register-notice {
-    margin: 24px 0 0;
-    padding: 14px 17px;
-    background: #f4f7fc;
-    border-radius: 8px;
-    color: #718099;
-    font-size: 13px;
+	margin: 24px 0 0;
+	padding: 14px 17px;
+	background: #f4f7fc;
+	border-radius: 8px;
+	color: #718099;
+	font-size: 13px;
 }
 
 .employee-register-page .employee-register-notice i {
-    margin-right: 6px;
-    color: #5e7fb0;
+	margin-right: 6px;
+	color: #5e7fb0;
 }
 
 /* 모바일 화면 */
-@media (max-width: 767px) {
-    .employee-register-page .employee-detail-container {
-        padding: 20px 16px 40px;
-    }
-
-    .employee-register-page .employee-detail-info {
-        padding: 20px;
-    }
-
-    .employee-register-page .employee-detail-grid {
-        grid-template-columns: 1fr;
-    }
+@media ( max-width : 767px) {
+	.employee-register-page .employee-detail-container {
+		padding: 20px 16px 40px;
+	}
+	.employee-register-page .employee-detail-info {
+		padding: 20px;
+	}
+	.employee-register-page .employee-detail-grid {
+		grid-template-columns: 1fr;
+	}
 }
-    
-/* 신규 사원 등록 화면 */
 
+/* 신규 사원 등록 화면 */
 .employee-register-page {
-    min-height: 100vh;
-    background: #f6f8fc;
-    color: #17243d;
+	min-height: 100vh;
+	background: #f6f8fc;
+	color: #17243d;
 }
 
 .employee-register-container {
-    max-width: 1350px;
-    margin: 0 auto;
-    padding: 30px;
+	max-width: 1350px;
+	margin: 0 auto;
+	padding: 30px;
 }
 
 /* 페이지 제목 */
-
 .employee-register-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 25px;
 }
 
 .employee-register-heading h1 {
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 8px;
+	font-size: 28px;
+	font-weight: 800;
+	margin-bottom: 8px;
 }
 
 .employee-register-heading p {
-    color: #8492aa;
-    font-size: 14px;
-    margin: 0;
+	color: #8492aa;
+	font-size: 14px;
+	margin: 0;
 }
 
 /* 등록 카드 */
-
 .employee-register-card {
-    background: white;
-    border: 1px solid #dce6f3;
-    border-radius: 15px;
-    padding: 32px 34px;
+	background: white;
+	border: 1px solid #dce6f3;
+	border-radius: 15px;
+	padding: 32px 34px;
 }
 
 .employee-register-card h2 {
-    font-size: 21px;
-    font-weight: 800;
-    margin-bottom: 10px;
+	font-size: 21px;
+	font-weight: 800;
+	margin-bottom: 10px;
 }
 
 .employee-register-hint {
-    font-size: 13px;
-    color: #8492aa;
-    margin-bottom: 28px;
+	font-size: 13px;
+	color: #8492aa;
+	margin-bottom: 28px;
 }
 
 /* 3열 레이아웃 */
-
 .employee-register-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-areas:
-        "id name status"
-        "email phone notice"
-        "password hiredate notice"
-        "department job notice";
-    column-gap: 44px;
-    row-gap: 20px;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-areas: "id name status" "email phone notice"
+		"password hiredate notice" "department job notice";
+	column-gap: 44px;
+	row-gap: 20px;
 }
 
 .field-id {
-    grid-area: id;
+	grid-area: id;
 }
 
 .field-name {
-    grid-area: name;
+	grid-area: name;
 }
 
 .field-status {
-    grid-area: status;
+	grid-area: status;
 }
 
 .field-email {
-    grid-area: email;
+	grid-area: email;
 }
 
 .field-phone {
-    grid-area: phone;
+	grid-area: phone;
 }
 
 .field-notice {
-    grid-area: notice;
+	grid-area: notice;
 }
 
 .field-password {
-    grid-area: password;
+	grid-area: password;
 }
 
 .field-hiredate {
-    grid-area: hiredate;
+	grid-area: hiredate;
 }
 
 .field-department {
-    grid-area: department;
+	grid-area: department;
 }
 
 .field-job {
-    grid-area: job;
+	grid-area: job;
 }
 
 /* 입력 필드 */
-
 .register-field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 8px;
+	display: block;
+	font-size: 13px;
+	font-weight: 700;
+	margin-bottom: 8px;
 }
 
-.register-field input,
-.register-field select {
-    width: 100%;
-    height: 49px;
-    padding: 0 15px;
-    border: 1px solid #dce6f3;
-    border-radius: 9px;
-    background: white;
-    color: #243550;
-    font-size: 14px;
-    outline: none;
+.register-field input, .register-field select {
+	width: 100%;
+	height: 49px;
+	padding: 0 15px;
+	border: 1px solid #dce6f3;
+	border-radius: 9px;
+	background: white;
+	color: #243550;
+	font-size: 14px;
+	outline: none;
 }
 
-.register-field input:focus,
-.register-field select:focus {
-    border-color: #7691b9;
-    box-shadow: 0 0 0 3px rgba(118,145,185,0.12);
+.register-field input:focus, .register-field select:focus {
+	border-color: #7691b9;
+	box-shadow: 0 0 0 3px rgba(118, 145, 185, 0.12);
 }
 
 .register-field input::placeholder {
-    color: #a0aec0;
+	color: #a0aec0;
 }
 
-.register-field input:disabled,
-.register-field input[readonly] {
-    background: #f5f7fb;
-    color: #8492aa;
+.register-field input:disabled, .register-field input[readonly] {
+	background: #f5f7fb;
+	color: #8492aa;
 }
 
 /* 등록 확인 사항 */
-
 .register-notice {
-    background: #f3f6fa;
-    border-radius: 10px;
-    padding: 22px;
+	background: #f3f6fa;
+	border-radius: 10px;
+	padding: 22px;
 }
 
 .register-notice h3 {
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 16px;
+	font-size: 14px;
+	font-weight: 800;
+	margin-bottom: 16px;
 }
 
 .register-notice p {
-    font-size: 12px;
-    color: #647590;
-    margin-bottom: 12px;
+	font-size: 12px;
+	color: #647590;
+	margin-bottom: 12px;
 }
 
 /* 하단 안내 */
-
 .register-info {
-    margin-top: 50px;
-    padding: 17px 20px;
-    background: #f3f6fa;
-    border-radius: 9px;
-    font-size: 13px;
-    color: #71829d;
+	margin-top: 50px;
+	padding: 17px 20px;
+	background: #f3f6fa;
+	border-radius: 9px;
+	font-size: 13px;
+	color: #71829d;
 }
 
 #registerMessage {
-    margin-top: 12px;
-    font-size: 13px;
-    color: #c03948;
+	margin-top: 12px;
+	font-size: 13px;
+	color: #c03948;
 }
 
 /* 버튼 */
-
 .register-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 14px;
-    margin-top: 25px;
+	display: flex;
+	justify-content: flex-end;
+	gap: 14px;
+	margin-top: 25px;
 }
 
 .employee-register-btn {
-    min-width: 160px;
-    height: 50px;
-    padding: 0 20px;
-    border-radius: 9px;
-    border: 1px solid transparent;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
+	min-width: 160px;
+	height: 50px;
+	padding: 0 20px;
+	border-radius: 9px;
+	border: 1px solid transparent;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .employee-register-btn.btn-outline {
-    background: white;
-    border-color: #dce6f3;
-    color: #243550;
+	background: white;
+	border-color: #dce6f3;
+	color: #243550;
 }
 
 .employee-register-btn.btn-outline:hover {
-    background: #f5f7fb;
-    color: #243550;
+	background: #f5f7fb;
+	color: #243550;
 }
 
 .employee-register-btn.btn-primary-custom {
-    background: #17243d;
-    color: white;
+	background: #17243d;
+	color: white;
 }
 
 .employee-register-btn.btn-primary-custom:hover {
-    background: #283e61;
+	background: #283e61;
 }
 
 .employee-register-btn:disabled {
-    opacity: 0.6;
-    cursor: wait;
+	opacity: 0.6;
+	cursor: wait;
 }
 
 /* 반응형 */
-
-@media (max-width: 1100px) {
-
-    .employee-register-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-areas:
-            "id name"
-            "status email"
-            "phone hiredate"
-            "department job"
-            "password notice";
-        gap: 22px;
-    }
+@media ( max-width : 1100px) {
+	.employee-register-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-areas: "id name" "status email" "phone hiredate"
+			"department job" "password notice";
+		gap: 22px;
+	}
 }
 
-@media (max-width: 650px) {
-
-    .employee-register-container {
-        padding: 20px 15px;
-    }
-
-    .employee-register-heading {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .employee-register-card {
-        padding: 22px 18px;
-    }
-
-    .employee-register-grid {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "id"
-            "name"
-            "status"
-            "email"
-            "phone"
-            "hiredate"
-            "department"
-            "job"
-            "password"
-            "notice";
-        gap: 18px;
-    }
-
-    .register-actions {
-        flex-direction: column;
-    }
-
-    .employee-register-btn {
-        width: 100%;
-    }
-}
-/* 신규 사원 등록 페이지 - 사이드바 겹침 방지 */
-@media (min-width: 992px) {
-    body:not(.sidebar-collapse) .content-wrapper.employee-register-page {
-        margin-left: 290px !important;
-    }
+@media ( max-width : 650px) {
+	.employee-register-container {
+		padding: 20px 15px;
+	}
+	.employee-register-heading {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+	}
+	.employee-register-card {
+		padding: 22px 18px;
+	}
+	.employee-register-grid {
+		grid-template-columns: 1fr;
+		grid-template-areas: "id" "name" "status" "email" "phone" "hiredate"
+			"department" "job" "password" "notice";
+		gap: 18px;
+	}
+	.register-actions {
+		flex-direction: column;
+	}
+	.employee-register-btn {
+		width: 100%;
+	}
 }
 
 /* 등록 페이지 내부 영역 */
 .employee-register-page .employee-register-container {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 30px 34px 60px;
-    box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 30px 34px 60px;
+	box-sizing: border-box;
 }
-
 
 /* ==============================
    사원 정보 수정 화면
@@ -1201,274 +1057,764 @@ body {
 
 /* 전체 콘텐츠 너비 */
 .employee-edit-page .employee-detail-container {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 32px 24px 60px;
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 32px 24px 60px;
 }
 
 /* 페이지 제목과 카드 간격 */
 .employee-edit-page .employee-detail-heading {
-    margin-bottom: 24px;
+	margin-bottom: 24px;
 }
 
 /* 수정 카드 */
 .employee-edit-page .employee-detail-card {
-    padding: 36px 40px;
-    border-radius: 16px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+	padding: 36px 40px;
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
 }
 
 /* 카드 제목 */
-.employee-edit-page .employee-detail-card > h2 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 0 8px;
-    color: #14213d;
+.employee-edit-page .employee-detail-card>h2 {
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0 0 8px;
+	color: #14213d;
 }
 
 /* 카드 설명 */
-.employee-edit-page .employee-detail-card > p {
-    font-size: 14px;
-    color: #8491a5;
-    margin-bottom: 28px;
+.employee-edit-page .employee-detail-card>p {
+	font-size: 14px;
+	color: #8491a5;
+	margin-bottom: 28px;
 }
 
 /* 입력 항목 사이 간격 */
-.employee-edit-page .row > div {
-    margin-bottom: 22px !important;
+.employee-edit-page .row>div {
+	margin-bottom: 22px !important;
 }
 
 /* 라벨 */
 .employee-edit-page label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: #24344d;
-    margin-bottom: 8px;
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: #24344d;
+	margin-bottom: 8px;
 }
 
 /* 입력창 */
 .employee-edit-page .employee-edit-input {
-    display: block;
-    width: 100%;
-    height: 48px;
-    padding: 10px 14px;
-    border: 1px solid #dce4f0;
-    border-radius: 9px;
-    background: #fff;
-    font-size: 14px;
-    box-sizing: border-box;
+	display: block;
+	width: 100%;
+	height: 48px;
+	padding: 10px 14px;
+	border: 1px solid #dce4f0;
+	border-radius: 9px;
+	background: #fff;
+	font-size: 14px;
+	box-sizing: border-box;
 }
 
 /* 입력창 클릭 */
 .employee-edit-page .employee-edit-input:focus {
-    outline: none;
-    border-color: #5988d8;
-    box-shadow: 0 0 0 3px rgba(89, 136, 216, 0.1);
+	outline: none;
+	border-color: #5988d8;
+	box-shadow: 0 0 0 3px rgba(89, 136, 216, 0.1);
 }
 
 /* 수정 불가능한 항목 */
 .employee-edit-page .employee-edit-input:read-only {
-    background: #f3f6fa;
+	background: #f3f6fa;
 }
 
 /* 하단 버튼 영역 */
 .employee-edit-page .employee-detail-action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid #eef1f5;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 12px;
+	margin-top: 24px;
+	padding-top: 20px;
+	border-top: 1px solid #eef1f5;
 }
 
 /* 버튼 */
 .employee-edit-page .employee-detail-action-buttons
 .employee-detail-button {
-    min-width: 120px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9px;
-    font-size: 14px;
-    font-weight: 600;
+	min-width: 120px;
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 9px;
+	font-size: 14px;
+	font-weight: 600;
 }
 /* 퇴직 처리 버튼 */
 #retireBtn {
-    background-color: #fff;
-    color: #dc3545;
-    border: 1px solid #dc3545;
-    border-radius: 10px;
-    padding: 12px 24px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
+	background-color: #fff;
+	color: #dc3545;
+	border: 1px solid #dc3545;
+	border-radius: 10px;
+	padding: 12px 24px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
 }
 
 /* 마우스를 올렸을 때 */
 #retireBtn:hover {
-    background-color: #dc3545;
-    color: #fff;
+	background-color: #dc3545;
+	color: #fff;
 }
 
 /* 퇴직 처리 완료 */
 #retireBtn:disabled {
-    background-color: #e9ecef;
-    color: #94a3b8;
-    border-color: #e9ecef;
-    cursor: not-allowed;
+	background-color: #e9ecef;
+	color: #94a3b8;
+	border-color: #e9ecef;
+	cursor: not-allowed;
 }
 /* 페이지 처리 */
 .employee-pagination-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    gap: 12px;
-    flex-wrap: wrap;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+	gap: 12px;
+	flex-wrap: wrap;
 }
 
 #pageInfo {
-    font-size: 13px;
-    color: #718096;
+	font-size: 13px;
+	color: #718096;
 }
 
 .employee-pagination {
-    display: flex;
-    gap: 6px;
-    align-items: center;
+	display: flex;
+	gap: 6px;
+	align-items: center;
 }
 
 .employee-page-btn {
-    min-width: 36px;
-    height: 36px;
-    padding: 0 10px;
-    background: white;
-    border: 1px solid #dce3ed;
-    border-radius: 7px;
-    color: #344054;
-    cursor: pointer;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 10px;
+	background: white;
+	border: 1px solid #dce3ed;
+	border-radius: 7px;
+	color: #344054;
+	cursor: pointer;
 }
 
 .employee-page-btn.active {
-    background: #151e35;
-    color: white;
-    border-color: #151e35;
+	background: #151e35;
+	color: white;
+	border-color: #151e35;
 }
 
 .employee-page-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+	opacity: 0.4;
+	cursor: not-allowed;
 }
 /* 검색 결과 테이블 헤더 가운데 정렬 */
 .employee-table thead th {
-    vertical-align: middle !important;
-    text-align: center;
+	vertical-align: middle !important;
+	text-align: center;
 }
 
 /* 검색 결과 제목 + 버튼 세로 가운데 정렬 */
 .search-result-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 48px;
-    margin-bottom: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	min-height: 48px;
+	margin-bottom: 20px;
 }
 
 .search-result-header h2 {
-    margin: 0;
-    line-height: 1.4;
+	margin: 0;
+	line-height: 1.4;
 }
 
 .search-result-header .employee-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
 }
 
 /* 사원 목록 테이블 열 너비 통일 */
 .employee-table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: separate;
-    border-spacing: 0 4px;
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: separate;
+	border-spacing: 0 4px;
 }
 
 /* 헤더와 데이터 가로 정렬 */
-.employee-table th,
-.employee-table td {
-    text-align: center !important;
-    vertical-align: middle !important;
-    box-sizing: border-box;
-    padding: 20px 8px;
+.employee-table th, .employee-table td {
+	text-align: center !important;
+	vertical-align: middle !important;
+	box-sizing: border-box;
+	padding: 20px 8px;
 }
 
 /* 열별 너비 지정 */
-.employee-table th:nth-child(1),
-.employee-table td:nth-child(1) {
-    width: 7%;
+.employee-table th:nth-child(1), .employee-table td:nth-child(1) {
+	width: 7%;
 }
 
-.employee-table th:nth-child(2),
-.employee-table td:nth-child(2) {
-    width: 12%;
+.employee-table th:nth-child(2), .employee-table td:nth-child(2) {
+	width: 12%;
 }
 
-.employee-table th:nth-child(3),
-.employee-table td:nth-child(3) {
-    width: 13%;
+.employee-table th:nth-child(3), .employee-table td:nth-child(3) {
+	width: 13%;
 }
 
-.employee-table th:nth-child(4),
-.employee-table td:nth-child(4) {
-    width: 11%;
+.employee-table th:nth-child(4), .employee-table td:nth-child(4) {
+	width: 11%;
 }
 
-.employee-table th:nth-child(5),
-.employee-table td:nth-child(5) {
-    width: 23%;
+.employee-table th:nth-child(5), .employee-table td:nth-child(5) {
+	width: 23%;
 }
 
-.employee-table th:nth-child(6),
-.employee-table td:nth-child(6) {
-    width: 14%;
+.employee-table th:nth-child(6), .employee-table td:nth-child(6) {
+	width: 14%;
 }
 
-.employee-table th:nth-child(7),
-.employee-table td:nth-child(7) {
-    width: 10%;
+.employee-table th:nth-child(7), .employee-table td:nth-child(7) {
+	width: 10%;
 }
 
-.employee-table th:nth-child(8),
-.employee-table td:nth-child(8) {
-    width: 10%;
+.employee-table th:nth-child(8), .employee-table td:nth-child(8) {
+	width: 10%;
 }
 
 /* 검색/필터, 사원 등록 버튼 세로 정렬 */
 .employee-toolbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
 }
 
 /* 검색/필터 버튼 */
 .employee-toolbar-actions .employee-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    padding: 0 12px;
-    margin: 0;
-    line-height: 1;
-    text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	padding: 0 12px;
+	margin: 0;
+	line-height: 1;
+	text-decoration: none;
 }
 
 /* 사원 등록 버튼 */
 .employee-toolbar-actions .employee-register-btn {
-    height: 60px;
+	height: 60px;
+	margin: 0;
+}
+
+/* ===========================================
+   HRMS 사원관리 공통 디자인 통일
+   목록 / 상세 / 등록 / 수정
+=========================================== */
+:root {
+	--emp-bg: #ffffff;
+	--emp-text: #172033;
+	--emp-muted: #728199;
+	--emp-border: #dce5f1;
+	--emp-light: #f0f4f9;
+	--emp-primary: #111a30;
+}
+
+/* 1. 공통 글꼴과 배경 */
+body { .employee-page , .employee-detail-page, .employee-register-page,
+	.employee-edit-page { font-family:"Malgun Gothic", Arial, sans-serif;
+	font-size: 13px;
+	color: var(--emp-text);
+	background: var(--emp-bg);
+}
+
+}
+.content-wrapper.employee-page, .content-wrapper.employee-detail-page,
+	.content-wrapper.employee-register-page, .content-wrapper.employee-edit-page
+	{
+	background: var(--emp-bg);
+	color: var(--emp-text);
+}
+
+/* 2. 페이지 제목 */
+.employee-page-title, .employee-detail-page .employee-detail-heading h1,
+	.employee-register-heading h1 {
+	font-size: 30px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #172033;
+    margin: 0 0 8px;
+}
+
+/* 3. 페이지 설명 */
+.employee-page-desc, .employee-detail-page .employee-detail-heading p,
+	.employee-detail-page .employee-detail-hint, .employee-register-heading p,
+	.employee-register-hint {
+	font-size: 13px;
+    font-weight: 400;
+    color: #728199;
     margin: 0;
+}
+
+/* 4. 카드 공통 */
+.employee-stat-card, .employee-detail-page .employee-detail-card,
+	.employee-register-page .employee-register-card {
+	background: #ffffff;
+	border: 1px solid var(--emp-border);
+	border-radius: 11px;
+	box-shadow: none;
+}
+
+/* 5. 카드 제목 */
+.employee-list-title, .employee-detail-page .employee-detail-info h2,
+	.employee-register-page .employee-register-card h2, .employee-edit-page .employee-detail-card>h2
+	{
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--emp-text);
+	line-height: 1.4;
+}
+
+/* 6. 카드 보조 설명 */
+.employee-detail-page .employee-detail-person p, .employee-edit-page .employee-detail-card>p
+	{
+	font-size: 13px;
+	color: var(--emp-muted);
+}
+
+/* 7. 통계 카드 */
+.employee-stat-card {
+	min-height: 121px;
+	padding: 24px 29px;
+}
+
+.employee-stat-label {
+	font-size: 13px;
+	color: var(--emp-muted);
+}
+
+.employee-stat-number {
+	font-size: 27px;
+	font-weight: 700;
+	color: var(--emp-text);
+}
+
+/* 8. 테이블 */
+.employee-table thead th {
+	background: var(--emp-light);
+	color: var(--emp-muted);
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.employee-table tbody td {
+	background: #ffffff;
+	color: var(--emp-text);
+	border-color: var(--emp-border);
+	font-size: 12px;
+}
+
+/* 9. 입력 라벨 */
+.employee-detail-page .employee-detail-field label, .employee-edit-page label,
+	.register-field label {
+	color: var(--emp-text);
+	font-size: 13px;
+	font-weight: 600;
+}
+
+/* 10. 입력창 */
+.employee-edit-page .employee-edit-input, .employee-register-page .employee-register-input,
+	.register-field input, .register-field select {
+	height: 52px;
+	border: 1px solid var(--emp-border);
+	border-radius: 9px;
+	background: #ffffff;
+	color: var(--emp-text);
+	font-family: inherit;
+	font-size: 13px;
+}
+
+/* 11. 읽기 전용 입력창 */
+.employee-edit-page .employee-edit-input:read-only,
+	.employee-register-page .employee-register-input[readonly],
+	.register-field input[readonly] {
+	background: #f5f7fb;
+	color: var(--emp-muted);
+}
+
+/* 12. 버튼 공통 */
+.employee-search-btn, .employee-register-btn, .employee-detail-page .employee-detail-button
+	{
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	border-radius: 11px;
+}
+
+/* 13. 주요 버튼 */
+.employee-register-btn, .employee-detail-page .employee-detail-button-primary,
+	.employee-register-btn.btn-primary-custom {
+	background: var(--emp-primary);
+	border-color: var(--emp-primary);
+	color: #ffffff;
+}
+
+/* 14. 보조 버튼 */
+.employee-search-btn, .employee-detail-page .employee-detail-button-outline,
+	.employee-register-btn.btn-outline {
+	background: #ffffff;
+	border: 1px solid var(--emp-border);
+	color: var(--emp-text);
+}
+
+/* 15. 안내 메시지 */
+.employee-notice, .employee-register-hint, .register-info {
+	color: var(--emp-muted);
+	font-size: 13px;
+}
+
+/* 16. 모바일 */
+@media ( max-width : 767px) {
+	.employee-detail-page .employee-detail-heading h1,
+		.employee-register-heading h1, .employee-page-title {
+		font-size: 19px;
+	}
+	.employee-stat-card {
+		padding: 18px;
+	}
+	.employee-stat-number {
+		font-size: 23px;
+	}
+}
+
+/* ==================================
+   사원 목록 검색/필터 버튼 복구
+================================== */
+
+.employee-toolbar-actions .employee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 171px;
+    height: 52px;
+    padding: 0 25px;
+    margin: 0;
+
+    background: #ffffff;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+
+    color: #172033;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.employee-toolbar-actions .employee-btn:hover {
+    background: #f5f7fb;
+    color: #172033;
+    text-decoration: none;
+}
+
+/* 사원 등록 버튼 유지 */
+.employee-toolbar-actions .employee-register-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    background: #111a30;
+    color: #ffffff;
+    border-radius: 11px;
+}
+
+
+/* ==================================
+   사원 목록 검색/필터 버튼 복구
+================================== */
+
+.employee-toolbar-actions .employee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 171px;
+    height: 52px;
+    padding: 0 25px;
+    margin: 0;
+
+    background: #ffffff;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+
+    color: #172033;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.employee-toolbar-actions .employee-btn:hover {
+    background: #f5f7fb;
+    color: #172033;
+    text-decoration: none;
+}
+
+/* 사원 등록 버튼 유지 */
+.employee-toolbar-actions .employee-register-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    background: #111a30;
+    color: #ffffff;
+    border-radius: 11px;
+}
+
+/* ==================================
+   사원 검색 화면 전용 디자인
+================================== */
+
+/* 검색 화면 본문 */
+.employee-search-page {
+    background: #ffffff;
+    color: #172033;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+}
+
+/* 제목과 설명 */
+.employee-search-page .employee-page-title {
+    margin: 0 0 10px;
+    color: #172033;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.employee-search-page .employee-page-desc {
+    margin: 0 0 26px;
+    color: #728199;
+    font-size: 13px;
+}
+
+/* 검색 조건 제목 */
+.employee-search-page form h2,
+.employee-search-page form h3 {
+    margin: 0 0 20px;
+    color: #172033;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* 검색 항목 라벨 */
+.employee-search-page form label {
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 검색 입력창 */
+.employee-search-page form input[type="text"],
+.employee-search-page form input[type="date"],
+.employee-search-page form select {
+    min-height: 44px;
+    padding: 0 14px;
+    background: #ffffff;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+/* 입력창 선택 */
+.employee-search-page form input:focus,
+.employee-search-page form select:focus {
+    outline: none;
+    border-color: #7691b9;
+}
+
+/* 검색 및 초기화 버튼 */
+.employee-search-page form button {
+    min-height: 44px;
+    padding: 0 22px;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.employee-search-page form button[type="submit"] {
+    background: #111a30;
+    border-color: #111a30;
+    color: #ffffff;
+}
+
+.employee-search-page form button:hover {
+    opacity: 0.9;
+}
+
+/* 검색 결과 테이블 */
+.employee-search-page .employee-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+
+.employee-search-page .employee-table thead th {
+    background: #f0f4f9;
+    color: #728199;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* 검색 결과 없음 */
+.employee-search-page .employee-empty {
+    padding: 30px;
+    text-align: center;
+    color: #728199;
+    font-size: 13px;
+}
+
+/* 사원 목록 검색/필터 버튼 - 기존 디자인 복구 */
+.employee-toolbar-actions a.employee-search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 230px;
+    min-width: 230px;
+    height: 68px;
+    padding: 0 20px;
+
+    background: #ffffff;
+    border: 1px solid #dce5f1;
+    border-radius: 13px;
+
+    color: #172033;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.employee-toolbar-actions a.employee-search-btn:hover {
+    background: #f5f7fb;
+    color: #172033;
+    text-decoration: none;
+}
+
+/* ========================================
+   사원 검색 페이지 전용
+   공통 헤더/사이드바에는 적용되지 않음
+======================================== */
+
+.employee-search-page {
+    background: #ffffff;
+    color: #172033;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+}
+
+.employee-search-page .employee-search-form {
+    width: 100%;
+    padding: 26px 30px;
+    margin: 0 0 28px;
+    background: #ffffff;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+    box-sizing: border-box;
+}
+
+/* 검색 조건 입력창 */
+.employee-search-page .employee-search-form input[type="text"],
+.employee-search-page .employee-search-form input[type="date"],
+.employee-search-page .employee-search-form select {
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+/* 검색 조건 라벨 */
+.employee-search-page .employee-search-form label {
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 초기화 및 검색 버튼 */
+.employee-search-page .employee-search-form button {
+    min-height: 46px;
+    padding: 0 25px;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* 검색 실행 버튼 */
+.employee-search-page .employee-search-form button[type="submit"] {
+    background: #111a30;
+    border-color: #111a30;
+    color: #ffffff;
+}
+
+/* 검색 결과 링크 */
+.employee-search-page a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+/* 검색 결과 테이블 */
+.employee-search-page .employee-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+
+.employee-search-page .employee-table thead th {
+    height: 59px;
+    background: #f0f4f9;
+    color: #728199;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.employee-search-page .employee-table tbody td {
+    height: 70px;
+    background: #ffffff;
+    color: #172033;
+    border-top: 1px solid #dce5f1;
+    border-bottom: 1px solid #dce5f1;
 }

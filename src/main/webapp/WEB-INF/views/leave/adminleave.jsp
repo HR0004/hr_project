@@ -393,6 +393,36 @@
 </style>
 </head>
 <body style="margin: 0;">
+<<<<<<< HEAD:src/main/webapp/WEB-INF/views/leave/adminLeaveRequests.jsp
+	<!-- íë©´ íì¸ì© ì¬ì´ëë° ìë¦¬. JSPììë íë¡ì í¸ì sidebar.jspfê° ì¬ì©ë©ëë¤. -->
+	<aside
+		style="position: fixed; top: 0; left: 0; bottom: 0; width: 250px; background: #172238; color: #c5d1e5; padding: 28px 19px; font: 14px Arial;">
+		<div
+			style="font-size: 19px; font-weight: bold; color: white; margin-bottom: 27px">HEXAGON
+			HRMS</div>
+		<div style="padding: 12px 8px; border-bottom: 1px solid #344058">ì¸ì¬
+			ê´ë¦¬</div>
+		<div style="padding: 12px 8px; border-bottom: 1px solid #344058">ê·¼í
+			ê´ë¦¬</div>
+		<div style="padding: 12px 8px; border-bottom: 1px solid #344058">í´ê°
+			ê´ë¦¬</div>
+		<div style="padding: 12px 8px; border-bottom: 1px solid #344058">ê´ë¦¬ì
+			ë©ë´</div>
+	</aside>
+	<div class="alr-content-area">
+		<main class="alr-page">
+		
+			<header class="alr-heading">
+				<div>
+					<h1 class="alr-title">ì§ì í´ê° ì ì²­ ê´ë¦¬</h1>
+					<p class="alr-subtitle">ë´ë¹ ì§ìì í´ê° ì ì²­ì
+						ì¡°ííê³  ì¹ì¸ ìíë¥¼ íì¸í©ëë¤.</p>
+				</div>
+				<span class="alr-demo">íë©´ ìì ë°ì´í° Â· DB
+					ë¯¸ì°ê²°</span>
+			</header>
+=======
+>>>>>>> origin/develop:src/main/webapp/WEB-INF/views/leave/adminleave.jsp
 
 	<%@ include file="../common/sidebar.jspf"%>
 

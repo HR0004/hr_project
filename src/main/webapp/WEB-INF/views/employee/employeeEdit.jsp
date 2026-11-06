@@ -9,13 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS - 사원 정보 수정</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <!-- AdminLTE -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+   
 
     <!-- 사원 관리 CSS -->
     <link rel="stylesheet"

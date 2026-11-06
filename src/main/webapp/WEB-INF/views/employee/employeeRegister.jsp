@@ -7,13 +7,6 @@
 <meta charset="UTF-8">
 <title>HRMS - 신규 사원 등록</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<!-- AdminLTE -->
-<link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
 
 <!-- 사원관리 통합 CSS -->

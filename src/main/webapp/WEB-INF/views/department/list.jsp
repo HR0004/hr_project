@@ -8,13 +8,7 @@
 <meta charset="UTF-8">
 <title>부서 관리</title>
 
-<!-- AdminLTE 3 -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <!-- 부서 관리 CSS -->
 <link rel="stylesheet"
@@ -32,7 +26,7 @@
 		<%@ include file="../common/sidebar.jspf"%>
 
 		<!-- 메인 콘텐츠 -->
-		<div class="content-wrapper">
+		<div class="content-wrapper employee-search-page">
 
 			<section class="content-header">
 				<div class="container-fluid">
@@ -100,7 +94,7 @@
 						</thead>
 
 						<tbody id="departmentBody"></tbody>
-
+						
 					</table>
 
 				</div>

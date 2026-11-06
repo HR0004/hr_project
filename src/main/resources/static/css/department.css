@@ -2,152 +2,75 @@
 @charset "UTF-8";
 
 /* =========================
-   1. 기본 설정
-========================= */
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: "Malgun Gothic", Arial, sans-serif;
-    font-size: 13px;
-    color: #172033;
-    background: #ffffff;
-}
-
-button, input {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-
-/* =========================
-   2. AdminLTE 헤더
-========================= */
-
-.main-header {
-    min-height: 90px;
-    background: #ffffff;
-    padding: 0 32px;
-    border-bottom: none !important;
-}
-
-.user-role {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 188px;
-    height: 52px;
-    border: 1px solid #dce5f1;
-    border-radius: 11px;
-    background: #ffffff;
-}
-
-
-/* =========================
-   3. AdminLTE 사이드바
-========================= */
-
-.main-sidebar {
-    width: 290px;
-    background: #ffffff;
-    box-shadow: none !important;
-}
-
-.brand-link {
-    height: 90px;
-    display: flex;
-    align-items: center;
-    padding-left: 45px;
-    border-bottom: none !important;
-}
-
-.brand-text {
-    color: #172033;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.sidebar {
-    padding: 0 20px;
-}
-
-.sidebar-title {
-    margin: 10px 0 32px 27px;
-    color: #172033;
-}
-
-.nav-sidebar .nav-item {
-    margin-bottom: 18px;
-}
-
-.nav-sidebar .nav-link {
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    padding-left: 32px;
-    border-radius: 10px;
-    color: #172033 !important;
-}
-
-.nav-sidebar .nav-link p {
-    font-size: 13px;
-}
-
-/* 현재 선택된 메뉴 */
-.main-sidebar .nav-sidebar .nav-item > .nav-link.active {
-    background-color: #eef3f9 !important;
-    color: #172033 !important;
-    box-shadow: none !important;
-}
-
-/* 기존 사원 관리 스타일 호환 */
-.employee-page-active {
-    background: #eef3f9 !important;
-    color: #172033 !important;
-}
-
-
-/* =========================
-   4. AdminLTE 메인 레이아웃
+   1. 부서관리 기본 설정
+   공통 헤더 / 사이드바 제외
 ========================= */
 
 .content-wrapper {
-    background: #f5f7fb;
-    min-height: calc(100vh - 90px);
+    min-width: 0;
+    min-height: 100vh;
+    background: #ffffff;
+    color: #172033;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
 }
 
-/* 제목 및 경로 */
-.content-header {
+/* 부서관리 본문 요소 */
+.content-wrapper,
+.content-wrapper *,
+.popup-body,
+.popup-body * {
+    box-sizing: border-box;
+}
+
+.content-wrapper button,
+.content-wrapper input,
+.content-wrapper select,
+.popup-body button,
+.popup-body input {
+    font: inherit;
+}
+
+.content-wrapper button,
+.popup-body button {
+    cursor: pointer;
+}
+
+/* =========================
+   2. 부서관리 제목 및 본문
+========================= */
+
+/* 제목 영역 */
+.content-wrapper .content-header {
     padding: 32px 28px 20px;
 }
 
-.page-title {
+.content-wrapper .page-title {
     font-size: 26px;
     font-weight: 700;
     margin: 0 0 8px;
     color: #14213b;
 }
 
-.page-path {
+.content-wrapper .page-path {
     margin: 0;
     font-size: 13px;
     color: #8293b1;
 }
 
-/* 본문 */
+/* 본문 좌우 여백 */
 .content-wrapper .content {
     padding: 0 28px 40px;
 }
 
+/* 내부 콘텐츠 너비 */
+.content-wrapper .container-fluid {
+    width: 100%;
+    min-width: 0;
+}
 
 /* =========================
-   5. 부서 통계 카드
+   3. 부서 통계 카드
 ========================= */
 
 .summary-row {
@@ -175,9 +98,8 @@ button {
     margin: 0;
 }
 
-
 /* =========================
-   6. 검색 및 등록 버튼
+   4. 검색 및 등록 버튼
 ========================= */
 
 .table-top {
@@ -196,6 +118,7 @@ button {
 
 .table-actions {
     display: flex;
+    align-items: center;
     gap: 12px;
 }
 
@@ -213,6 +136,7 @@ button {
     color: #ffffff;
     border: none;
     border-radius: 8px;
+    white-space: nowrap;
 }
 
 .primary-btn:hover {
@@ -220,9 +144,8 @@ button {
     color: #ffffff;
 }
 
-
 /* =========================
-   7. 부서 목록 테이블
+   5. 부서 목록 테이블
 ========================= */
 
 .department-table {
@@ -275,9 +198,8 @@ button {
     cursor: not-allowed;
 }
 
-
 /* =========================
-   8. 등록·수정 팝업
+   6. 등록·수정 팝업
 ========================= */
 
 .popup-body {
@@ -288,6 +210,9 @@ button {
     justify-content: center;
     align-items: center;
     background: #f4f6f9;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    color: #172033;
 }
 
 .popup-card {
@@ -310,13 +235,13 @@ button {
     margin-bottom: 28px;
 }
 
-.form-group label {
+.popup-card .form-group label {
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
 }
 
-.form-group input {
+.popup-card .form-group input {
     width: 100%;
     padding: 12px;
     border: 1px solid #dce3ec;
@@ -333,51 +258,27 @@ button {
     cursor: not-allowed;
 }
 
-.button-group {
+.popup-card .button-group {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 24px;
 }
 
-.button-group button:not(.primary-btn) {
+.popup-card .button-group button:not(.primary-btn) {
     padding: 12px 22px;
     background: #ffffff;
     border: 1px solid #dce3ec;
     border-radius: 8px;
 }
 
-
 /* =========================
-   9. AdminLTE 사이드바 여백
-========================= */
-
-/* AdminLTE 사이드바와 본문 위치 통일 */
-@media (min-width: 992px) {
-
-    body:not(.sidebar-collapse) .main-sidebar {
-        width: 290px;
-    }
-
-    body:not(.sidebar-collapse) .main-header,
-    body:not(.sidebar-collapse) .content-wrapper {
-        margin-left: 290px !important;
-    }
-
-    body.sidebar-collapse .main-header,
-    body.sidebar-collapse .content-wrapper {
-        margin-left: 4.6rem !important;
-    }
-}
-
-
-/* =========================
-   10. 작은 화면
+   7. 작은 화면
 ========================= */
 
 @media (max-width: 800px) {
 
-    .content-header {
+    .content-wrapper .content-header {
         padding: 20px;
     }
 
@@ -412,47 +313,4 @@ button {
     .department-table td {
         padding: 12px;
     }
-}
-
-/* =========================
-   공통 헤더 / 사이드바 구분
-========================= */
-
-/* 상단 헤더 */
-.main-header {
-    background: #ffffff !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
-    position: relative;
-    z-index: 1035;
-}
-
-/* 왼쪽 사이드바 */
-.main-sidebar {
-    background: #ffffff !important;
-    border-right: 1px solid #e2e8f0;
-    box-shadow: 2px 0 8px rgba(15, 23, 42, 0.03) !important;
-}
-
-/* 로고 아래 경계선 */
-.brand-link {
-    border-bottom: 1px solid #edf1f5 !important;
-}
-
-/* 사이드바 메뉴에 마우스 올렸을 때 */
-.main-sidebar .nav-sidebar .nav-link:hover {
-    background: #f5f7fb !important;
-    color: #172033 !important;
-}
-
-/* 현재 선택된 메뉴 */
-.main-sidebar .nav-sidebar .nav-link.active {
-    background: #eaf0f8 !important;
-    color: #172033 !important;
-    font-weight: 600;
-}
-
-/* 본문 배경 */
-.content-wrapper {
-    background: #f5f7fb;
 }

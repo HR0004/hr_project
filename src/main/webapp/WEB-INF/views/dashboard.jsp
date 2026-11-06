@@ -1,215 +1,198 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>HRMS Admin - 대시보드</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
-          rel="stylesheet">
+    <!-- 기존 공통 디자인 유지 -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-
-        body {
-            background: #f8fafc;
-            color: #1e293b;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .main-area {
-            margin-left: 240px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 32px 40px;
-            position: relative;
-        }
-
-        .breadcrumb {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            transition: transform 0.15s, box-shadow 0.15s;
-        }
-
-        .card-link:hover {
-            transform: translateY(-2px);
-        }
-
-        .card-link:hover .card {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-color: #cbd5e1;
-        }
-
-        .card {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-        }
-
-        .card-title {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .card-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .table-container {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-        }
-
-        .table-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 16px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        th, td {
-            padding: 14px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.9rem;
-        }
-
-        th {
-            background: #f8fafc;
-            color: #475569;
-            font-weight: 600;
-        }
-
-        td {
-            color: #334155;
-        }
-    </style>
+    <!-- 대시보드 내부 전용 CSS -->
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/dashboard.css">
 </head>
 
-<body>
+<body class="hold-transition sidebar-mini layout-fixed">
 
+<div class="wrapper">
+
+    <!-- 공통 사이드바 : 수정하지 않음 -->
     <%@ include file="/WEB-INF/views/common/sidebar.jspf" %>
 
-    <div class="main-area">
+    <!-- 공통 헤더 : 수정하지 않음 -->
+    <%@ include file="/WEB-INF/views/common/header.jspf" %>
 
-        <div class="top-nav-bar">
-            <div class="page-title-area">
-                <div class="breadcrumb">HRMS / 대시보드</div>
-                <h1>관리자 대시보드</h1>
-            </div>
+    <!-- 대시보드 메인 영역 -->
+    <div class="content-wrapper">
 
-            <%@ include file="/WEB-INF/views/common/header.jspf" %>
-        </div>
+        <section class="content-header">
+            <div class="container-fluid">
 
-        <div class="content-body" style="padding: 0;">
+                <!-- 페이지 제목 -->
+                <div class="dashboard-heading">
 
-            <div class="card-grid">
+                    <h1 class="dashboard-heading-title">
+                        관리자 대시보드
+                    </h1>
 
-                <a href="${pageContext.request.contextPath}/employees"
-                   class="card-link">
-                    <div class="card">
-                        <div class="card-title">전체 사원</div>
-                        <div class="card-value">${stats.totalEmp}</div>
-                    </div>
-                </a>
+                    <p class="dashboard-heading-desc">
+                        인사관리 시스템의 전체 현황을 확인할 수 있습니다.
+                    </p>
 
-                <a href="${pageContext.request.contextPath}/employees?status=ACTIVE"
-                   class="card-link">
-                    <div class="card">
-                        <div class="card-title">재직</div>
-                        <div class="card-value" style="color: #2563eb;">
-                            ${stats.activeEmp}
-                        </div>
-                    </div>
-                </a>
-
-                <a href="${pageContext.request.contextPath}/employees?status=LEAVE"
-                   class="card-link">
-                    <div class="card">
-                        <div class="card-title">휴직</div>
-                        <div class="card-value" style="color: #d97706;">
-                            ${stats.leaveEmp}
-                        </div>
-                    </div>
-                </a>
-
-                <a href="${pageContext.request.contextPath}/employees?status=RESIGN"
-                   class="card-link">
-                    <div class="card">
-                        <div class="card-title">퇴직</div>
-                        <div class="card-value" style="color: #dc2626;">
-                            ${stats.resignEmp}
-                        </div>
-                    </div>
-                </a>
+                </div>
 
             </div>
+        </section>
 
-            <div class="table-container">
-                <div class="table-title">시스템 현황 요약</div>
+        <section class="content">
+            <div class="container-fluid">
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>구분</th>
-                            <th>상태 값</th>
-                            <th>비고</th>
-                        </tr>
-                    </thead>
+                <!-- =========================
+                     1. 사원 현황 카드
+                ========================== -->
+                <div class="dashboard-stats">
 
-                    <tbody>
-                        <tr>
-                            <td>데이터베이스 연결</td>
-                            <td>정상 (MySQL)</td>
-                            <td>MyBatis 연동 완료</td>
-                        </tr>
+                    <!-- 전체 사원 -->
+                    <a href="${pageContext.request.contextPath}/employees"
+                       class="dashboard-stat-link">
 
-                        <tr>
-                            <td>보안 및 라우팅</td>
-                            <td>컨트롤러 매핑 완료</td>
-                            <td>사원·부서·근태·휴가·권한 모듈 연동</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <div class="dashboard-stat-card">
+
+                            <div class="dashboard-stat-label">
+                                전체 사원
+                            </div>
+
+                            <div class="dashboard-stat-value">
+                                ${stats.totalEmp}
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    <!-- 재직 -->
+                    <a href="${pageContext.request.contextPath}/employees?status=ACTIVE"
+                       class="dashboard-stat-link">
+
+                        <div class="dashboard-stat-card">
+
+                            <div class="dashboard-stat-label">
+                                재직
+                            </div>
+
+                            <div class="dashboard-stat-value">
+                                ${stats.activeEmp}
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    <!-- 휴직 -->
+                    <a href="${pageContext.request.contextPath}/employees?status=LEAVE"
+                       class="dashboard-stat-link">
+
+                        <div class="dashboard-stat-card">
+
+                            <div class="dashboard-stat-label">
+                                휴직
+                            </div>
+
+                            <div class="dashboard-stat-value">
+                                ${stats.leaveEmp}
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    <!-- 퇴직 -->
+                    <a href="${pageContext.request.contextPath}/employees?status=RESIGN"
+                       class="dashboard-stat-link">
+
+                        <div class="dashboard-stat-card">
+
+                            <div class="dashboard-stat-label">
+                                퇴직
+                            </div>
+
+                            <div class="dashboard-stat-value">
+                                ${stats.resignEmp}
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+                <!-- =========================
+                     2. 시스템 현황 요약
+                ========================== -->
+                <div class="dashboard-system">
+
+                    <h2 class="dashboard-system-title">
+                        시스템 현황 요약
+                    </h2>
+
+                    <div class="dashboard-table-scroll">
+
+                        <table class="dashboard-system-table">
+
+                            <thead>
+                                <tr>
+                                    <th>구분</th>
+                                    <th>상태 값</th>
+                                    <th>비고</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>데이터베이스 연결</td>
+                                    <td>정상 (MySQL)</td>
+                                    <td>MyBatis 연동 완료</td>
+                                </tr>
+
+                                <tr>
+                                    <td>보안 및 라우팅</td>
+                                    <td>컨트롤러 매핑 완료</td>
+                                    <td>
+                                        사원·부서·근태·휴가·권한 모듈 연동
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
             </div>
+        </section>
 
-        </div>
     </div>
+
+</div>
+
+<!-- AdminLTE 스크립트 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
 </body>
 </html>
