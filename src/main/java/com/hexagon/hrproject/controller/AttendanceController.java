@@ -28,4 +28,9 @@ public class AttendanceController {
 	public String attendanceMonthlyPage() {
 		return "attendance/attendMonthly";
 	}
+	
+	@GetMapping("/attendance/admin")
+	public String attendanceAdminPage() {
+		return "attendance/admindepartmentattendance";
+	}
 }

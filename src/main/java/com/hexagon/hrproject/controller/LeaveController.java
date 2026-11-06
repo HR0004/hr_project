@@ -19,4 +19,9 @@ public class LeaveController {
 	public String leaveApplyPage() {
 		return "leave/leaveApply";
 	}
+	
+	@GetMapping("/leave/admin")
+	public String leaveAdminPage() {
+		return "leave/adminleave";
+	}
 }

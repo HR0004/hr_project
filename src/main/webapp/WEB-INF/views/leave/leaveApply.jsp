@@ -15,14 +15,10 @@
 }
 
 .la-page {
-	max-width: 1540px;
-	margin: 0 auto;
-	padding: 8px 50px 30px;
-	color: #172033;
-	background: #fff;
-	font-family: "Pretendard", "Malgun Gothic", Arial, sans-serif;
-	font-size: 13px;
-	line-height: 1.5
+	width: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    padding: 8px 50px 30px;
 }
 
 .la-page h1, .la-page h2, .la-page p {
@@ -301,20 +297,24 @@
 
 /* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
 .main-content {
-	flex: 1;
-	width: calc(100% - 250px);
-	background: #fff;
-	overflow-x: hidden;
-	padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+	display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    background: #fff;
+    overflow-x: hidden;
+    padding-top: 0;
 }
 </style>
 </head>
 <body>
 	<div class="page-wrapper">
-		<%@ include file="../common/header.jspf"%>
+
 		<%@ include file="../common/sidebar.jspf"%>
 
 		<div class="main-content main-area">
+			<%@ include file="../common/header.jspf"%>
 			<main class="la-page">
 				<h1 class="la-heading">휴가 신청</h1>
 				<p class="la-subheading">휴가 종류와 기간을 입력하여 휴가를 신청합니다.</p>

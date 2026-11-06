@@ -17,13 +17,8 @@
 
 .ma-page {
 	width: 100%;
-	min-height: 100vh;
-	padding: 21px 32px 60px 22px;
-	border-top: 2px solid #edf1f6;
-	background: #fff;
-	color: #141c2d;
-	font-family: "Pretendard", "Malgun Gothic", Arial, sans-serif;
-	font-size: 14px;
+    min-height: 0;
+    padding: 21px 32px 60px 22px;
 }
 
 .ma-page h2, .ma-page h3, .ma-page p {
@@ -272,11 +267,14 @@
 
 /* 우측 본문 영역: 사이드바 공간을 제외한 나머지를 꽉 채우도록 설정 */
 .main-content {
-	flex: 1;
-	width: calc(100% - 250px);
-	background: #fff;
-	overflow-x: hidden;
-	padding-top: 20px; /* 상단 여백이 필요하면 조절 */
+	display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    background: #fff;
+    overflow-x: hidden;
+    padding-top: 0;
 }
 </style>
 </head>
@@ -287,6 +285,9 @@
 		<%@ include file="../common/sidebar.jspf"%>
 
 		<div class="main-content main-area">
+		
+			<%@ include file="../common/header.jspf" %>
+			
 			<main class="ma-page">
 				<header class="ma-head">
 					<div>
