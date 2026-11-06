@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; }
-        body { background-color: #f8fafc; color: #1e293b; display: flex; min-height: 100vh; }
+        body { background-color: #fffff; color: #1e293b; display: flex; min-height: 100vh; }
         
         .main-area {
             margin-left: 240px;

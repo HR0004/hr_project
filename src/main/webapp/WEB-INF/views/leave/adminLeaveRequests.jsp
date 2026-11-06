@@ -404,6 +404,7 @@
 	</aside>
 	<div class="alr-content-area">
 		<main class="alr-page">
+		
 			<header class="alr-heading">
 				<div>
 					<h1 class="alr-title">ì§ì í´ê° ì ì²­ ê´ë¦¬</h1>

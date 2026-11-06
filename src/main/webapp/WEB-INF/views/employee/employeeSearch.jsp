@@ -1,371 +1,697 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>HRMS - 사원 조회 · 검색</title>
 
-<!-- Font Awesome -->
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+      href="${pageContext.request.contextPath}/css/employee.css">
 
-<!-- AdminLTE -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+<style>
+/* 검색 화면 본문 전용 CSS - 공통 헤더/사이드바 제외 */
 
-<!-- 기존 사원 관리 CSS -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/employee.css">
+.employee-search-page {
+    background: #fff;
+    color: #172033;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    font-size: 13px;
+    min-height: 100vh;
+    padding: 0 30px 50px;
+    box-sizing: border-box;
+}
+
+.employee-search-page *,
+.employee-search-page *::before,
+.employee-search-page *::after {
+    box-sizing: border-box;
+}
+
+.employee-search-page .content-header {
+    padding: 25px 0 22px;
+}
+
+.employee-search-page .container-fluid {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.employee-search-page .employee-page-title {
+    margin: 0 0 10px;
+    color: #172033;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.employee-search-page .employee-page-desc {
+    margin: 0;
+    color: #728199;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.employee-search-page .content {
+    padding: 0;
+}
+
+/* 검색 카드 */
+.employee-search-page .search-panel {
+    background: #fff;
+    border: 1px solid #dce5f1;
+    border-radius: 11px;
+    padding: 26px 30px;
+    margin-bottom: 26px;
+}
+
+.employee-search-page .search-section-title {
+    margin: 0 0 24px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #172033;
+}
+
+/* 검색 조건 4열 */
+.employee-search-page .search-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px 20px;
+}
+
+.employee-search-page .search-field {
+    min-width: 0;
+}
+
+.employee-search-page .search-field label {
+    display: block;
+    margin: 0 0 9px;
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.employee-search-page .search-input {
+    display: block;
+    width: 100%;
+    height: 46px;
+    padding: 0 13px;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    background: #fff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.employee-search-page .search-input:focus {
+    border-color: #7691b9;
+    box-shadow: 0 0 0 3px rgba(118, 145, 185, .1);
+}
+
+.employee-search-page .search-input::placeholder {
+    color: #9aa8bc;
+}
+
+/* 입사일과 버튼 */
+.employee-search-page .search-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 22px;
+}
+
+.employee-search-page .search-date-field {
+    width: 50%;
+    min-width: 0;
+}
+
+.employee-search-page .date-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-search-page .date-range .search-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.employee-search-page .date-separator {
+    color: #728199;
+    font-size: 14px;
+}
+
+.employee-search-page .search-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-search-page .search-btn {
+    min-width: 110px;
+    height: 46px;
+    padding: 0 20px;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    background: #fff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.employee-search-page .search-btn:hover {
+    background: #f5f7fb;
+}
+
+.employee-search-page .search-btn-primary {
+    background: #111a30;
+    border-color: #111a30;
+    color: #fff;
+}
+
+.employee-search-page .search-btn-primary:hover {
+    background: #27334c;
+}
+
+/* 검색 결과 */
+.employee-search-page .search-results {
+    width: 100%;
+}
+
+.employee-search-page .search-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.employee-search-page .search-result-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.employee-search-page #resultCount {
+    margin-left: 8px;
+    color: #2563eb;
+    font-size: 14px;
+}
+
+.employee-search-page .back-list-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 18px;
+    border: 1px solid #dce5f1;
+    border-radius: 9px;
+    background: #fff;
+    color: #172033;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.employee-search-page .back-list-btn:hover {
+    background: #f5f7fb;
+    color: #172033;
+    text-decoration: none;
+}
+
+/* 검색 결과 테이블 */
+.employee-search-page .search-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.employee-search-page .employee-table {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    table-layout: fixed;
+}
+
+.employee-search-page .employee-table th,
+.employee-search-page .employee-table td {
+    padding: 0 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+.employee-search-page .employee-table thead th {
+    height: 59px;
+    background: #f0f4f9;
+    color: #728199;
+    font-weight: 600;
+    border: none;
+}
+
+.employee-search-page .employee-table thead th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.employee-search-page .employee-table thead th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.employee-search-page .employee-table tbody td {
+    height: 70px;
+    background: #fff;
+    color: #172033;
+    border-top: 1px solid #dce5f1;
+    border-bottom: 1px solid #dce5f1;
+}
+
+.employee-search-page .employee-table tbody td:first-child {
+    border-left: 1px solid #dce5f1;
+    border-radius: 10px 0 0 10px;
+}
+
+.employee-search-page .employee-table tbody td:last-child {
+    border-right: 1px solid #dce5f1;
+    border-radius: 0 10px 10px 0;
+}
+
+.employee-search-page .employee-table tbody tr:hover td {
+    background: #fafcff;
+}
+
+.employee-search-page .employee-table th:nth-child(1) { width: 8%; }
+.employee-search-page .employee-table th:nth-child(2) { width: 12%; }
+.employee-search-page .employee-table th:nth-child(3) { width: 13%; }
+.employee-search-page .employee-table th:nth-child(4) { width: 11%; }
+.employee-search-page .employee-table th:nth-child(5) { width: 23%; }
+.employee-search-page .employee-table th:nth-child(6) { width: 14%; }
+.employee-search-page .employee-table th:nth-child(7) { width: 10%; }
+.employee-search-page .employee-table th:nth-child(8) { width: 9%; }
+
+.employee-search-page .employee-table a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.employee-search-page .employee-table a:hover {
+    text-decoration: underline;
+}
+
+.employee-search-page .empty-message {
+    text-align: center;
+    color: #728199;
+    padding: 25px 12px;
+}
+
+/* 반응형 */
+@media (max-width: 1100px) {
+    .employee-search-page .search-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .employee-search-page {
+        padding: 0 16px 30px;
+    }
+
+    .employee-search-page .search-panel {
+        padding: 20px 16px;
+    }
+
+    .employee-search-page .search-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .employee-search-page .search-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .employee-search-page .search-date-field {
+        width: 100%;
+    }
+
+    .employee-search-page .search-actions {
+        justify-content: flex-end;
+    }
+}
+</style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-	<div class="wrapper">
+<div class="wrapper">
 
-		<!-- 공통 헤더 -->
-		<%@ include file="/WEB-INF/views/common/header.jspf"%>
+    <!-- 공통 헤더 / 사이드바 : 기존 코드 유지 -->
+    <%@ include file="/WEB-INF/views/common/header.jspf" %>
+    <%@ include file="/WEB-INF/views/common/sidebar.jspf" %>
 
-		<!-- 공통 사이드바 -->
-		<%@ include file="/WEB-INF/views/common/sidebar.jspf"%>
+    <!-- 검색 화면 본문 -->
+    <div class="content-wrapper employee-search-page">
 
-		<div class="content-wrapper employee-page">
+        <section class="content-header">
+            <div class="container-fluid">
 
-			<!-- 페이지 제목 -->
-			<section class="content-header">
-				<div class="container-fluid">
+                <h1 class="employee-page-title">사원 조회 · 검색</h1>
 
-					<h1 class="employee-page-title">사원 조회 · 검색</h1>
+                <p class="employee-page-desc">
+                    사번, 성명, 부서, 직급 및 재직 상태로 사원을 검색합니다.
+                </p>
 
-					<p class="employee-page-desc">사번, 성명, 부서, 직급 및 재직 상태로 사원을
-						검색합니다.</p>
+            </div>
+        </section>
 
-				</div>
-			</section>
+        <section class="content">
+            <div class="container-fluid">
 
-			<!-- 검색 화면 -->
-			<section class="content">
-				<div class="container-fluid">
+                <!-- 검색 조건 -->
+                <div class="search-panel">
 
+                    <h2 class="search-section-title">검색 조건</h2>
 
-					<!-- 검색 조건 -->
-					<div class="card">
-						<div class="card-body">
+                    <div class="search-grid">
 
-							<h5 class="mb-4">검색 조건</h5>
+                        <div class="search-field">
+                            <label for="searchKeyword">사번 / 성명</label>
+                            <input type="text"
+                                   id="searchKeyword"
+                                   class="search-input"
+                                   placeholder="사번 또는 이름">
+                        </div>
 
-							<div class="row">
+                        <div class="search-field">
+                            <label for="searchDept">부서</label>
+                            <select id="searchDept" class="search-input">
+                                <option value="">전체 부서</option>
+                            </select>
+                        </div>
 
-								<!-- 사번 / 성명 -->
-								<div class="col-md-3 form-group">
-									<label>사번 / 성명</label> <input type="text" id="searchKeyword"
-										class="form-control" placeholder="사번 또는 이름">
-								</div>
+                        <div class="search-field">
+                            <label for="searchJob">직급</label>
+                            <select id="searchJob" class="search-input">
+                                <option value="">전체 직급</option>
+                            </select>
+                        </div>
 
-								<!-- 부서 -->
-								<div class="col-md-3 form-group">
-									<label>부서</label> <select id="searchDept" class="form-control">
-										<option value="">전체 부서</option>
-									</select>
-								</div>
+                        <div class="search-field">
+                            <label for="searchStatus">재직 상태</label>
+                            <select id="searchStatus" class="search-input">
+                                <option value="">전체</option>
+                                <option value="ACTIVE">재직</option>
+                                <option value="LEAVE">휴직</option>
+                                <option value="RETIRED">퇴직</option>
+                            </select>
+                        </div>
 
-								<!-- 직급 -->
-								<div class="col-md-3 form-group">
-									<label>직급</label> <select id="searchJob" class="form-control">
-										<option value="">전체 직급</option>
-									</select>
-								</div>
+                    </div>
 
-								<!-- 재직 상태 -->
-								<div class="col-md-3 form-group">
-									<label>재직 상태</label> <select id="searchStatus"
-										class="form-control">
-										<option value="">전체</option>
-										<option value="ACTIVE">재직</option>
-										<option value="LEAVE">휴직</option>
-										<option value="RETIRED">퇴직</option>
-									</select>
-								</div>
+                    <div class="search-bottom">
 
-							</div>
+                        <div class="search-field search-date-field">
+                            <label for="startDate">입사일</label>
 
-							<div class="row align-items-end">
+                            <div class="date-range">
+                                <input type="date"
+                                       id="startDate"
+                                       class="search-input">
 
-								<!-- 입사일 -->
-								<div class="col-md-6 form-group">
-									<label>입사일</label>
-									<div class="d-flex align-items-center">
-										<input type="date" id="startDate" class="form-control">
-										<span class="mx-2">~</span> <input type="date" id="endDate"
-											class="form-control">
-									</div>
-								</div>
+                                <span class="date-separator">~</span>
 
-								<!-- 버튼 -->
-								<div class="col-md-6 form-group text-right">
-									<button type="button" id="resetBtn"
-										class="btn btn-outline-secondary">초기화</button>
+                                <input type="date"
+                                       id="endDate"
+                                       class="search-input"
+                                       aria-label="입사일 종료일">
+                            </div>
+                        </div>
 
-									<button type="button" id="searchBtn"
-										class="btn btn-primary ml-2">
-										<i class="fas fa-search"></i> 검색
-									</button>
-								</div>
+                        <div class="search-actions">
 
-							</div>
+                            <button type="button"
+                                    id="resetBtn"
+                                    class="search-btn">
+                                초기화
+                            </button>
 
-						</div>
-					</div>
+                            <button type="button"
+                                    id="searchBtn"
+                                    class="search-btn search-btn-primary">
+                                검색
+                            </button>
 
+                        </div>
 
+                    </div>
 
-					<!-- 검색 결과 -->
-					<div class="card">
-						<div class="card-body">
+                </div>
 
-							<div
-								class="d-flex justify-content-between align-items-center mb-3">
-								<h5 class="mb-0">
-									검색 결과 <span id="resultCount" class="text-primary ml-2">0명</span>
-								</h5>
+                <!-- 검색 결과 -->
+                <div class="search-results">
 
-								<a href="${pageContext.request.contextPath}/employees"
-									class="btn btn-outline-secondary"> 전체 사원 보기 </a>
-							</div>
+                    <div class="search-result-header">
 
-							<div class="table-responsive">
-								<table class="table table-hover employee-table">
-									<thead>
-										<tr>
-											<th>사번</th>
-											<th>성명</th>
-											<th>부서</th>
-											<th>직급</th>
-											<th>이메일</th>
-											<th>입사일</th>
-											<th>재직 상태</th>
-											<th>관리</th>
-										</tr>
-									</thead>
+                        <h2 class="search-result-title">
+                            검색 결과
+                            <span id="resultCount">0명</span>
+                        </h2>
 
-									<tbody id="searchResultBody">
-										<tr>
-											<td colspan="8" class="text-center text-muted py-4">검색
-												조건을 입력하고 검색 버튼을 눌러주세요.</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+                        <a href="${pageContext.request.contextPath}/employees"
+                           class="back-list-btn">
+                            전체 사원 보기
+                        </a>
 
-						</div>
-					</div>
+                    </div>
 
+                    <div class="search-table-wrap">
 
-				</div>
-			</section>
+                        <table class="employee-table">
 
-		</div>
+                            <thead>
+                                <tr>
+                                    <th>사번</th>
+                                    <th>성명</th>
+                                    <th>부서</th>
+                                    <th>직급</th>
+                                    <th>이메일</th>
+                                    <th>입사일</th>
+                                    <th>재직 상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
 
-	</div>
+                            <tbody id="searchResultBody">
+                                <tr>
+                                    <td colspan="8" class="empty-message">
+                                        검색 조건을 입력하고 검색 버튼을 눌러주세요.
+                                    </td>
+                                </tr>
+                            </tbody>
 
-	<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                        </table>
 
-	<!-- Bootstrap -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                    </div>
 
-	<!-- AdminLTE -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+                </div>
 
-	<script>
+            </div>
+        </section>
 
-    // 부서 목록 불러오기
-    async function loadDepartments() {
-        try {
-            const response = await fetch(
-                "${pageContext.request.contextPath}/api/departments"
-            );
+    </div>
 
-            if (!response.ok) {
-                throw new Error("부서 목록 조회 실패");
-            }
+</div>
 
-            const result = await response.json();
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-            // 배열 또는 ApiResponse 형태 모두 처리
-            const departments = Array.isArray(result)
-                ? result
-                : result.data;
+<script>
+const contextPath = "${pageContext.request.contextPath}";
 
-            const select = document.getElementById("searchDept");
+/* 부서 목록 불러오기 */
+async function loadDepartments() {
+    try {
+        const response = await fetch(contextPath + "/api/departments");
 
-            select.innerHTML = '<option value="">전체 부서</option>';
-
-            (departments || []).forEach(dept => {
-                const option = document.createElement("option");
-
-                option.value = dept.departmentId;
-                option.textContent = dept.departmentName;
-
-                select.appendChild(option);
-            });
-
-        } catch (error) {
-            console.error("부서 목록 오류:", error);
+        if (!response.ok) {
+            throw new Error("부서 목록 조회 실패");
         }
+
+        const result = await response.json();
+        const departments = Array.isArray(result) ? result : result.data;
+        const select = document.getElementById("searchDept");
+
+        select.innerHTML = '<option value="">전체 부서</option>';
+
+        (departments || []).forEach(dept => {
+            const option = document.createElement("option");
+            option.value = dept.departmentId;
+            option.textContent = dept.departmentName;
+            select.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("부서 목록 오류:", error);
     }
+}
 
-    // 페이지가 열리면 부서 목록 조회
-    document.addEventListener("DOMContentLoaded", loadDepartments);
+/* 사원 검색 */
+async function searchEmployees() {
+    try {
+        const response = await fetch(contextPath + "/api/employees");
 
-		//사원 검색
-		async function searchEmployees(){
-			try{
-				const response = await fetch(
-					"${pageContext.request.contextPath}/api/employees");
-				
-				if(!response.ok){
-					throw new Error("검색 실패");
-				}
-				
-				const employees = await response.json();
-				
-				// 입력한 검색 조건
-				const keyword = $("#searchKeyword").val().trim().toLowerCase();
-				const dept = $("#searchDept").val();
-				const job = $("#searchJob").val();
-				const status = $("#searchStatus").val();
-				const startDate = $("#startDate").val();
-				const endDate = $("#endDate").val();
-				
-				const result = employees.filter(emp => {
+        if (!response.ok) {
+            throw new Error("검색 실패");
+        }
 
-				    // 사번 또는 이름 검색
-				    const keywordMatch =
-				        String(emp.empId).includes(keyword) ||
-				        (emp.ename ?? "").toLowerCase().includes(keyword);
+        const employees = await response.json();
 
-				    // 재직 상태 검색
-				    const statusMatch =
-				        !status || emp.status === status;
+        const keyword = $("#searchKeyword").val().trim().toLowerCase();
+        const dept = $("#searchDept").val();
+        const job = $("#searchJob").val();
+        const status = $("#searchStatus").val();
+        const startDate = $("#startDate").val();
+        const endDate = $("#endDate").val();
 
-				    // 입사일 검색
-				    const hireDate = emp.hiredate
-				        ? new Date(emp.hiredate)
-				        : null;
+        const result = employees.filter(emp => {
 
-				    const startMatch =
-				        !startDate ||
-				        (hireDate && hireDate >= new Date(startDate + "T00:00:00"));
+            const keywordMatch =
+                String(emp.empId).includes(keyword) ||
+                (emp.ename ?? "").toLowerCase().includes(keyword);
 
-				    const endMatch =
-				        !endDate ||
-				        (hireDate && hireDate <= new Date(endDate + "T23:59:59.999"));
-				    
-				 // 부서 검색
-				    const deptMatch =
-				        !dept || String(emp.department?.departmentId) === dept;
+            const statusMatch =
+                !status || emp.status === status;
 
-				 // 직급 검색
-				    const jobMatch =
-				        !job || String(emp.job?.jobId) === job;
+            const hireDate = emp.hiredate
+                ? new Date(emp.hiredate)
+                : null;
 
-				    // 모든 조건을 만족하는 사원만 검색
-				    return keywordMatch && deptMatch && jobMatch
-				    && statusMatch && startMatch && endMatch;
-				    
-				    
-				    
+            const startMatch =
+                !startDate ||
+                (hireDate &&
+                 hireDate >= new Date(startDate + "T00:00:00"));
 
-				});
-				
-				//검색 결과 출력
-				
-				console.log("검색 결과:", result);
-				
-				$("#resultCount").text(result.length + "명");
-				
-				printSearchResults(result);
-				
-			}catch(error){
-				console.error("사원 검색 오류:",error);
-			}
-		}
-		
-		//검색 버튼 클릭
-		$("#searchBtn").click(searchEmployees);
-		
-		//검색 결과 화면 출력
-		function printSearchResults(employees){
-			
-			const tbody = $("#searchResultBody").empty();
-			
-			employees.forEach(emp=>{
-				
-				const tr = $("<tr>");
-				const url = "${pageContext.request.contextPath}/employees/"+ emp.empId;
-				
-				$("<td>").text(emp.empId).appendTo(tr);
-				$("<td>").text(emp.ename).appendTo(tr);
-				$("<td>").text(emp.department?.departmentName ?? "-").appendTo(tr);
-				$("<td>").text(emp.job?.jobName ?? "-").appendTo(tr);
-				$("<td>").text(emp.email ?? "-").appendTo(tr);
-			
-				const hiredate = emp.hiredate
-					? new Date(emp.hiredate).toLocaleDateString("ko-KR")
-							: "-";
-					
-				$("<td>").text(hiredate).appendTo(tr);
-				
-				const status = {
-					ACTIVE : "재직",
-					LEAVE : "휴직",
-					RETIRED : "퇴직",
-				}[emp.status]?? "미확인";
-				
-				$("<td>").text(status).appendTo(tr);
-				
-				$("<td>").append(
-					$("<a>").attr("href",url).text("상세"),"/",$("<a>").attr("href",url + "/edit").text("수정")).appendTo(tr);
-				
-					tbody.append(tr);
-				});
-			
-			//검색 결과가 없을 때
-			if(employees.length ===0){
-				$("<tr>").append(
-					$("<td>").attr("colspan",8).addClass("text-center py-4").text("검색 결과가 없습니다.")).appendTo(tbody);
-			}
-			
-		}
-		
-		//검색 조건 초기화
-		$("#resetBtn").click(function(){
-			
-			//검색 조건 비우기
-			$("#searchKeyword").val("");
-			$("#searchDept").val("");
-			$("#searchJob").val("");
-			$("#searchDate").val("");
-			$("#startDate").val("");
-			$("#endDate").val("");
-			
-			//검색 결과 초기화
-			$("#resultCount").text("0명");
-			
-			$("#searchResultBody").html(
-				'<tr><td colspan="8" class="text-center py-4">' +
-				'검색 조건을 입력하고 검색 버튼을 눌러주세요.' +
-				'</td></tr>');
-		});
-		
-		
-	</script>
+            const endMatch =
+                !endDate ||
+                (hireDate &&
+                 hireDate <= new Date(endDate + "T23:59:59.999"));
+
+            const deptMatch =
+                !dept ||
+                String(emp.department?.departmentId) === dept;
+
+            const jobMatch =
+                !job ||
+                String(emp.job?.jobId) === job;
+
+            return keywordMatch &&
+                   deptMatch &&
+                   jobMatch &&
+                   statusMatch &&
+                   startMatch &&
+                   endMatch;
+        });
+
+        $("#resultCount").text(result.length + "명");
+        printSearchResults(result);
+
+    } catch (error) {
+        console.error("사원 검색 오류:", error);
+        alert("사원 검색 중 오류가 발생했습니다.");
+    }
+}
+
+/* 검색 결과 출력 */
+function printSearchResults(employees) {
+    const tbody = $("#searchResultBody").empty();
+
+    employees.forEach(emp => {
+        const tr = $("<tr>");
+        const url = contextPath + "/employees/" + emp.empId;
+
+        $("<td>").text(emp.empId).appendTo(tr);
+        $("<td>").text(emp.ename).appendTo(tr);
+        $("<td>").text(emp.department?.departmentName ?? "-").appendTo(tr);
+        $("<td>").text(emp.job?.jobName ?? "-").appendTo(tr);
+        $("<td>").text(emp.email ?? "-").appendTo(tr);
+
+        const hiredate = emp.hiredate
+            ? new Date(emp.hiredate).toLocaleDateString("ko-KR")
+            : "-";
+
+        $("<td>").text(hiredate).appendTo(tr);
+
+        const status = {
+            ACTIVE: "재직",
+            LEAVE: "휴직",
+            RETIRED: "퇴직"
+        }[emp.status] ?? "미확인";
+
+        $("<td>").text(status).appendTo(tr);
+
+        $("<td>").append(
+            $("<a>").attr("href", url).text("상세"),
+            " / ",
+            $("<a>").attr("href", url + "/edit").text("수정")
+        ).appendTo(tr);
+
+        tbody.append(tr);
+    });
+
+    if (employees.length === 0) {
+        $("<tr>").append(
+            $("<td>")
+                .attr("colspan", 8)
+                .addClass("empty-message")
+                .text("검색 결과가 없습니다.")
+        ).appendTo(tbody);
+    }
+}
+
+/* 검색 조건 초기화 */
+function resetSearch() {
+    $("#searchKeyword").val("");
+    $("#searchDept").val("");
+    $("#searchJob").val("");
+    $("#searchStatus").val("");
+    $("#startDate").val("");
+    $("#endDate").val("");
+
+    $("#resultCount").text("0명");
+
+    $("#searchResultBody").html(
+        '<tr><td colspan="8" class="empty-message">' +
+        '검색 조건을 입력하고 검색 버튼을 눌러주세요.' +
+        '</td></tr>'
+    );
+}
+
+/* 이벤트 */
+document.addEventListener("DOMContentLoaded", () => {
+    loadDepartments();
+
+    document.getElementById("searchBtn")
+        .addEventListener("click", searchEmployees);
+
+    document.getElementById("resetBtn")
+        .addEventListener("click", resetSearch);
+
+    document.getElementById("searchKeyword")
+        .addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+                searchEmployees();
+            }
+        });
+});
+</script>
 
 </body>
 </html>
